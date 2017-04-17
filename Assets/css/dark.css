@@ -1,0 +1,82 @@
+body{
+    background: #343c45;
+    color: #f5f7fa;
+}
+.header{
+    background: #252c33;
+    border-bottom: 1px solid #000000;
+    padding: 5px 5px;
+    height: 35px;
+    width: 100%;
+    color: #c1c9d4;
+}
+.header .type {
+    float: right;
+    margin-left: 10px;
+    width: 70px;
+    text-align: center;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 10px;
+    margin-top: 5px;
+}
+.contents {
+    border-top: 1px solid #555e65;
+}
+.contents .attr {
+    color: #d8dadd;
+    height: 96vh;
+    padding: 0 !important;
+}
+.contents .left {
+    background: #343c45;
+    border-right: 1px solid #555e65;
+}
+.contents .middle {
+    background: #131c26;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+}
+.contents .right {
+    background: #363e47;
+    border-left: 1px solid #000;
+    word-wrap: break-word;
+}
+.contents .right .global {
+    border-top: 1px solid #555e65;
+    border-bottom: 1px solid #0d1012;
+    cursor: pointer;
+}
+.contents .right .global:first-child {
+    border-top:none;
+}
+.contents .right .global:last-child {
+    border-bottom:none;
+}
+.contents .right .global .labeled, .contents .right .global .content {
+    display: block;
+}
+.contents .right .global .labeled {
+    font-weight: 500;
+    padding: 10px;
+}
+.contents .listed {
+    padding: 5px 10px;
+    border-bottom: 1px solid #313a46;
+}
+.contents .listed:last-child {
+    border-bottom: none;
+}
+.contents .right .global .content {
+    background: #131c26;
+    padding: 5px 0px;
+}
+.contents .listed .index {
+    font-weight: 500;
+    color: #3689b2;
+    font-size: 10px;
+}
+.contents .listed .value {
+    font-weight: 500;
+    font-size: 10px;
+}
