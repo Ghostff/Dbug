@@ -30,7 +30,13 @@ class Contents
 
     public static function left()
     {
-
+        return '<div class="content-nav">
+                    <div class="top-tog">function</div> 
+                    <div class="top-tog">time</div> 
+                    <div class="top-tog">memory</div> 
+                    <div class="top-tog">location</div> 
+                </div>
+                <div class="content-body"></div> ';
     }
 
 

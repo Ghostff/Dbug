@@ -165,6 +165,7 @@ class Highlight
      */
     private static function format(string $code, string $file_name, bool $cache , bool $tabs_to_space): string
     {
+        #throw new \Exception("Error Processing Request", 1);
         $code = str_replace(
             array('<?php', '<?=', '?>', '\\\\'),
             array('PP_PHP_LONG_TAG_OPEN', 'PP_PHP_SHORT_TAG_OPEN', 'PP_PHP_CLOSE_TAG', 'PP_PHP_DOUBLE_BACK_SLASH'),

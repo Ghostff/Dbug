@@ -43,6 +43,31 @@ body{
     word-wrap: break-word;
 }
 
+.left .content-nav {
+    border-bottom: 1px solid #000;
+}
+.left .content-nav .top-tog {
+    display: inline-block;
+    font-weight: 500;
+    width: 24%;
+    text-align: center;
+    color: #d8dadd;
+    margin-left: -5px;
+    border-right: 1px solid #000;
+    border-left: 1px solid #555e65;
+    cursor: pointer;
+}
+.left .content-nav .top-tog:first-child {
+    margin-left: 5px;
+    border-left: none;
+}
+.left .content-nav .top-tog:last-child {
+    border-right: none;
+}
+.left .content-body{
+    border-top: 1px solid #555e65;
+}
+
 .exception-type {
     background: #343c45;
     padding: 10px;
@@ -68,7 +93,11 @@ body{
 .code-view table {
     font-family: 'Fira Mono', monospace;
     font-size: 13px;
+    font-weight: 400;
     width: 100%;
+}
+.code-view table .keyword {
+    font-weight: 500;
 }
 .code-view table tr .line-number{
     padding-left: 5px;
@@ -80,10 +109,16 @@ body{
     padding-left: 5px;
 }
 .code-view table .highlighted td{
-    background: rgba(220, 53, 62, 0.5);
-    padding: 10px 5px !important;
-    border-top: 10px solid #24374b;
-    border-bottom: 10px solid #24374b;
+    background: rgba(36, 55, 75, 0.5);
+    padding: 8px 5px !important;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #343c45;
+}
+.code-view table .highlighted td:first-child{
+    background: rgba(36, 55, 75, 1);
+    color: #ec4c4e;
+    border-top: none;
+    border-bottom: none;
 }
 .contents .right .global {
     border-top: 1px solid #555e65;
