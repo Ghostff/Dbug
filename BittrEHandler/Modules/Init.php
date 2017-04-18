@@ -7,7 +7,7 @@ class Init
     public function __construct()
     {
         echo sprintf($this->template(),
-            'http://localhost/ErrorHandler',
+            'http://debug/',
             'dark',
             Contents::top(),
             Contents::left(),

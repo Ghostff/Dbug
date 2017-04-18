@@ -5,8 +5,9 @@ namespace BittrEHandler\Modules;
 
 class Highlight
 {
-    private static $styled = null;
+    private static $styled = '.line-number{display:none;}';
     private static $cache_path = null;
+    public static $highlight_line = 0;
 
     private static $cast = 'F25959';
     private static $null = '989898';
@@ -178,7 +179,8 @@ class Highlight
                 $lines = ' ';
             }
             $line_number++;
-            $new_code .= '<div class="line_' . $line_number . ' line" label="' . $line_number . '">';
+            $HT = (self::$highlight_line == $line_number) ? ' class="highlighted"' : '';
+            $new_code .= '<tr' . $HT . '><td class="line-number">' . $line_number . '</td><td class="line-content">';
 
             $pattern = array(
                 self::$operators_ptrn,
@@ -239,7 +241,7 @@ class Highlight
                 self::span(self::$tag_close, 'tag clode', '?>'),
                 '\\\\\\'
             );
-            $new_code .= self::PR($pattern, $replacement, $new_line) . '</div>';
+            $new_code .= self::PR($pattern, $replacement, $new_line) . '</td></tr>';
 
         }
 
@@ -261,7 +263,7 @@ class Highlight
         }
 
         $style = '.strip font,.strip span{color:inherit !important}' . self::$styled;
-        $pretty = '<pre>'. $new_code . '</pre><style>' . $style . '</style>';
+        $pretty = '<table>'. $new_code . '</table><style>' . $style . '</style>';
 
         if ($cache) {
             $cache_name = self::$cache_path . DIRECTORY_SEPARATOR . intval($file_name, 36);
@@ -335,39 +337,9 @@ class Highlight
 
     /**
      * sets formatted string out layer style
-     *
-     * @param array $style
-     * @param bool $line
-     * @param bool $line_number
      */
-    public static function setStyle(array $style, bool $line = true, bool $line_number = true): void
+    public static function numberLines(): void
     {
-        @$margin = $style['line_number_width'];
-        @$padding = $style['line_padding'];
-        @$line_border = $style['line_border_color'];
-        @$line_no_border = $style['line_number_border_color'];
-        @$line_no_color = $style['line_number_color'];
-        @$line_no_border_scale = $style['line_no_border_scale'];
-        @$line_border_scale = $style['line_border_scale'];
-
-        $styled = '.line{
-		  ' . (($line) ? 'border-bottom: ' . $line_border_scale . 'px solid #' . $line_border . ';' : '') .'
-		  margin-left:' . $margin . 'px;
-		  padding:' . $padding . 'px 0;
-		}';
-
-        if ($line_number) {
-            $styled .= '.line::before{
-			  content:attr(label);
-			  position: absolute;
-			  padding:' . ($padding + 1) . 'px 0;
-			  width:' . $margin . 'px;
-			  margin-top: -6px;
-			  margin-left: -' . ($margin + 5) . 'px;
-			  color: #' . $line_no_color . ';
-			  border-right: ' . $line_no_border_scale . 'px solid #' . $line_no_border . ';
-			 }';
-        }
-        self::$styled = trim(preg_replace('/\s\s+/', '', $styled));
+        self::$styled = '';
     }
 }

@@ -8,26 +8,26 @@ class TextTable
 	private $row = 0;
 	private $column = 0;
 	private $padding = 1;
-	
+
 	#[private]
 	private $data = [];
 	private $aligned = [];
 	private $chunked = [];
 	private $column_sizes = [];
-	
+
 	#[serializable] bool
 	public $border_top = true;
 	public $border_bottom = true;
 	public $border_left = true;
 	public $border_right = true;
-	
+
 	#[serializable] string
 	public $border_ud = '-';
 	public $border_lr = '|';
 	public $joint = '+';
 	public $space = ' ';
 	public $new_line = '<br/>';
-	
+
 	#param int
 	#param int
 	#param int
@@ -37,7 +37,7 @@ class TextTable
 		$this->column = $column;
 		$this->padding = $padding * $padding;
 	}
-    
+
 	#return array
 	private function rule(): array
 	{
@@ -52,7 +52,7 @@ class TextTable
 				if (isset($this->chunked[$key])) {
 					$content = $this->chunked[$key];
 					$max_row_size = max(ceil(strlen($this->data[$key]) / $content), $max_row_size);
-					
+
 				}
 				else {
 					if ( ! isset($this->data[$key])) {
@@ -67,7 +67,7 @@ class TextTable
 		}
 		return array($row_rules, $col_rules);
 	}
-	
+
 	#param array
 	#return string
 	private function border(array $column_size): string
@@ -79,7 +79,7 @@ class TextTable
 		}
 		return $border . $this->new_line;
 	}
-	
+
 	#param string
 	#param int
 	#param int
@@ -99,7 +99,7 @@ class TextTable
 		}
 		return str_pad($content, $this->column_sizes[$column], $this->space, $postion);
 	}
-	
+
 	#param int
 	#param int
 	#param int
@@ -108,22 +108,22 @@ class TextTable
 	{
 		if ($current == 1) {
 			if ($line == ceil($size / 2)) {
-				return true;	
+				return true;
 			}
 		}
 		else {
 			$new_size = ceil($size / $current);
 			if ($new_size == 2 && $size - $new_size < 2) {
-				return true;	
+				return true;
 			}
 			elseif ($line >= $new_size) {
-				return true;	
+				return true;
 			}
 		}
 		return false;
 	}
-	
-	
+
+
 	#param array
 	#return string
 	private function foundation(array $row_column): string
@@ -134,27 +134,27 @@ class TextTable
 		$data = null;
 		$start = false;
 		$border = $this->border($column_size);
-		
+
 		if ($this->border_top) {
 			$row_cont .= $border;
 		}
-		
+
 		$border_l = ($this->border_left) ? $this->border_lr : '';
 		$border_r = ($this->border_right) ? $this->border_lr : '';
-					
+
 		for ($r = 1; $r <= count($row_size); $r++)
 		{
 			$last_chunked = 0;
 			$new_chunked = 0;
 			for ($line = 1; $line <= $row_size[$r]; $line++) {
-				
+
 				$row_cont .= $border_l;
 				for ($c = 1; $c <= count($column_size); $c++)
 				{
 					$key = $r . '_' . $c;
 					$data  = $this->data[$key];
 					if (isset($this->chunked[$key])) {
-						
+
 						$chunk = $this->chunked[$key];
 						if (intval(ceil(strlen($data) / $chunk)) == $row_size[$r]) {
 							$start = true;
@@ -167,7 +167,7 @@ class TextTable
 								$start = true;
 								$data = $this->content(substr($data, $new_chunked, $chunk), $r, $c);
 								$new_chunked += $chunk;
-							}				
+							}
 						}
 					}
 					else
@@ -175,31 +175,31 @@ class TextTable
 						$data = $this->content($data, $r, $c);
 						if ($row_size[$r] > 3) {
 							if (floor($row_size[$r] / 2) + 1 == $line) {
-								$start = true;	
+								$start = true;
 							}
 						}
 						elseif ($row_size[$r] > 1) {
 							if (floor($row_size[$r] / 2) == $line) {
-								$start = true;	
+								$start = true;
 							}
 						}
 						else {
 							$start = true;
-						}	
+						}
 					}
-					
+
 					$row_cont .= ($start) ? $data . $border_l : $this->content('', $r, $c) . $border_r;
 					$start = false;
 				}
 				$row_cont .= $this->new_line;
 			}
 			if ($this->border_bottom) {
-				$row_cont .= $border;	
+				$row_cont .= $border;
 			}
 		}
 		return $row_cont;
 	}
-	
+
 	#param bool
 	#return string
 	public function render(bool $to_file = false): string
@@ -209,12 +209,12 @@ class TextTable
 			$table = str_replace($this->new_line, PHP_EOL, $table);
 		}
 		else {
-			$table = '<code>' . str_replace($this->space, '&nbsp;', $table) . '</code>';	
+			$table = '<code>' . str_replace($this->space, '&nbsp;', $table) . '</code>';
 		}
 		return $table;
 	}
-	
-	
+
+
 	#param int
 	#return TextTable
 	public function chunk(int $limit): TextTable
@@ -224,8 +224,8 @@ class TextTable
 		$this->chunked[$last_key] = $limit;
 		return $this;
 	}
-	
-	
+
+
 	#param string
 	#return TextTable
 	public function align(string $position): TextTable
@@ -235,25 +235,25 @@ class TextTable
 		$this->aligned[$last_key] = $position;
 		return $this;
 	}
-	
-	
+
+
 	#param string
 	#param string
 	#return TextTable
 	public function put(string $row_column, string $contents): TextTable
 	{
 		list($row, $column) = explode(',', $row_column);
-		
+
 		if ((int) $row > $this->row) {
 			$format = '%s exceeds specified row. limit(%s)';
-			throw new InvalidArgumentException(sprintf($format, $row, $this->row));	
+			throw new InvalidArgumentException(sprintf($format, $row, $this->row));
 		}
 		elseif ((int) $column > $this->column) {
 			$format = '%s exceeds specified column. limit(%s)';
-			throw new InvalidArgumentException(sprintf($format, $column, $this->column));	
+			throw new InvalidArgumentException(sprintf($format, $column, $this->column));
 		}
 		$this->data[$row . '_' . $column] = $contents;
-		
+
 		return $this;
 	}
 }

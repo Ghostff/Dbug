@@ -39,8 +39,51 @@ body{
 }
 .contents .right {
     background: #363e47;
-    border-left: 1px solid #000;
+    border-left: 1px solid #363e47;
     word-wrap: break-word;
+}
+
+.exception-type {
+    background: #343c45;
+    padding: 10px;
+    border-bottom: 1px solid #000;
+}
+.exception-type span{
+    background: #6789f8;
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 3px 10px;
+}
+.exception-msg {
+    padding: 10px;
+    background: #343c45;
+    border-top: 1px solid #555e65;
+    border-bottom: 1px solid #555e65;
+    font-weight: bold;
+    font-size: 15px;
+}
+.code-view {
+    border-top: 1px solid #000;
+}
+.code-view table {
+    font-family: 'Fira Mono', monospace;
+    font-size: 13px;
+    width: 100%;
+}
+.code-view table tr .line-number{
+    padding-left: 5px;
+    padding-right: 10px;
+    background: #24374b;
+    border-right: 1px solid #0b1016;
+}
+.code-view table tr .line-content{
+    padding-left: 5px;
+}
+.code-view table .highlighted td{
+    background: rgba(220, 53, 62, 0.5);
+    padding: 10px 5px !important;
+    border-top: 10px solid #24374b;
+    border-bottom: 10px solid #24374b;
 }
 .contents .right .global {
     border-top: 1px solid #555e65;

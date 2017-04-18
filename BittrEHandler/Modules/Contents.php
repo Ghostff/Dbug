@@ -11,16 +11,21 @@ namespace BittrEHandler\Modules;
 
 class Contents
 {
+    public static function highlight($message)
+    {
+        return $message;
+    }
+
     public static function top()
     {
         return '<div class="type" style="background:#6789f8";>NULL</div>
-<div class="type" style="background:#f8b93c;">BOOL</div>
-<div class="type" style="background:#6db679;">ARRAY</div>
-<div class="type" style="background:#9C6E25;">FLOAT</div>
-<div class="type" style="background:#a66b47;">DOUBLE</div>
-<div class="type" style="background:#ff9999;">STRING</div>
-<div class="type" style="background:#000000;">OBJECT</div>
-<div class="type" style="background:#1BAABB;">INTEGER</div>';
+                <div class="type" style="background:#f8b93c;">BOOL</div>
+                <div class="type" style="background:#6db679;">ARRAY</div>
+                <div class="type" style="background:#9C6E25;">FLOAT</div>
+                <div class="type" style="background:#a66b47;">DOUBLE</div>
+                <div class="type" style="background:#ff9999;">STRING</div>
+                <div class="type" style="background:#000000;">OBJECT</div>
+                <div class="type" style="background:#1BAABB;">INTEGER</div>';
     }
 
     public static function left()
@@ -28,9 +33,14 @@ class Contents
 
     }
 
+
     public static function middle()
     {
-
+        Highlight::numberLines();
+        Highlight::$highlight_line = 10;
+        return '<div class="exception-type"><span>RuntimeException</span></div>
+                <div class="exception-msg">' . self::highlight('Error Processing Request') . '</div>
+                <div class="code-view">' . Highlight::render('TextTable.php', 1, 0) . '</div>';
     }
 
     public static function right()

@@ -3,4 +3,6 @@ $(document).ready(function(){
         $(this).find('.content').slideToggle("fast");
     });
 });
-$(".right").mCustomScrollbar({theme:"minimal-dark"});
+$(".right, .middle").mCustomScrollbar({theme:"minimal-dark"});
+
+
