@@ -8,6 +8,7 @@ class Highlight
     private static $styled = '.line-number{display:none;}';
     private static $cache_path = null;
     public static $highlight_line = 0;
+    public static $start_number = 0;
 
     private static $cast = 'F25959';
     private static $null = '989898';
@@ -165,7 +166,7 @@ class Highlight
      */
     private static function format(string $code, string $file_name, bool $cache , bool $tabs_to_space): string
     {
-        #throw new \Exception("Error Processing Request", 1);
+
         $code = str_replace(
             array('<?php', '<?=', '?>', '\\\\'),
             array('PP_PHP_LONG_TAG_OPEN', 'PP_PHP_SHORT_TAG_OPEN', 'PP_PHP_CLOSE_TAG', 'PP_PHP_DOUBLE_BACK_SLASH'),
@@ -174,7 +175,8 @@ class Highlight
 
         $code = htmlspecialchars($code, ENT_NOQUOTES);
         $new_code = null;
-        foreach (preg_split('/\n/', $code)  as $line_number => $lines)
+        $line_number = self::$start_number;
+        foreach (preg_split('/\n/', $code) as $lines)
         {
             if (trim($lines) == false) {
                 $lines = ' ';
@@ -246,6 +248,7 @@ class Highlight
 
         }
 
+        $new_code .= '<tr class="last-map"><td></td><td></td></tr>';
         $pattern = array(
             self::$multi_line_comment_ptrn,
             trim(preg_replace('/\s\s+/', '', self::$quote_ptrn))

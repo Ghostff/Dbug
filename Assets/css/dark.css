@@ -36,6 +36,7 @@ body{
     background: #131c26;
     border-left: 1px solid #000;
     border-right: 1px solid #000;
+    overflow: hidden;
 }
 .contents .right {
     background: #363e47;
@@ -49,27 +50,29 @@ body{
 .left .content-nav .top-tog {
     display: inline-block;
     font-weight: 500;
-    width: 17%;
+    width: 24%;
     text-align: center;
     color: #d8dadd;
-    margin-left: -4px;
+    margin-left: -3px;
     padding-top: 5px;
+    font-size: 12px;
     padding-bottom: 5px;
     border-right: 1px solid #000;
     border-left: 1px solid #555e65;
     cursor: pointer;
+    font-family: 'Fira Mono', monospace;
+    text-transform: uppercase;
 }
 .left .content-nav .top-tog:first-child {
-    margin-left: 5px;
+    padding-left: 10px;
     border-left: none;
-    cursor: default;
+}
+.left .content-nav .top-tog:last-child {
+    margin-left: -4px;
 }
 .left .content-nav .top-tog:hover, .left .content-nav .active {
     background: #252c33;
-    border-left: none;
-}
-.left .content-nav .top-tog:first-child:hover {
-    background: transparent;
+    border-left: 1px solid #000;
 }
 .left .content-nav .top-tog:last-child {
     border-right: none;
@@ -77,7 +80,69 @@ body{
 .left .content-body{
     border-top: 1px solid #555e65;
 }
-
+.left .content-body .loops {
+    margin-top: 3px;
+}
+.left .content-body .loops .loop-tog {
+    width: 100%;
+    display: none;
+    border: 1px solid #14171d;
+    background: #343c45;
+    -webkit-box-shadow: 0px 1px 5px 0px rgba(71,80,88,1);
+    -moz-box-shadow: 0px 1px 5px 0px rgba(71,80,88,1);
+    box-shadow: 0px 1px 5px 0px rgba(71,80,88,1);
+}
+.left .content-body .loops .holder:hover {
+    background: #222731;
+    cursor: pointer;
+}
+.left .content-body .loops .holder i {
+    float: right;
+    margin-top: 10px;
+    font-size: 10px;
+    background: #1f577f;
+    border-radius: 10px;
+    padding: 1px 10px;
+    color: #fff;
+    font-style: normal;
+    box-shadow: 0px 1px #222731;
+}
+.left .content-body .loops .holder b {
+    color: #aee288;
+}
+.left .content-body .loops .holder {
+    border: 1px solid #6b757e;
+    padding: 5px 10px;
+}
+.left .content-body .loops div span {
+    display: block;
+}
+.left .content-body .loops div .name {
+    font-weight: 600;
+    padding-left: 10px;
+}
+.left .content-body .loops div .path {
+    font-size: 11px;
+    color: #95a1a9;
+}
+.left .content-body .loops .id {
+    width: 15px;
+    font-size: 10px;
+    text-align: center;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    background: #14171d;
+    position:absolute;
+    left:4px;
+    padding-top:5px;
+    padding-bottom: 5px;
+}
+.left .content-body .loops .active, .left .content-body .loops .id {
+    display: inline-block;
+    vertical-align: middle;
+}
 .exception-type {
     background: #343c45;
     padding: 10px;
@@ -99,6 +164,7 @@ body{
 }
 .code-view {
     border-top: 1px solid #000;
+    height: 85vh;
 }
 .code-view table {
     font-family: 'Fira Mono', monospace;
@@ -106,10 +172,13 @@ body{
     font-weight: 400;
     width: 100%;
 }
+.code-view table .last-map {
+    height: 100%;
+}
 .code-view table .keyword {
     font-weight: 500;
 }
-.code-view table tr .line-number{
+.code-view table tr .line-number, .code-view table .last-map td:first-child{
     padding-left: 5px;
     padding-right: 10px;
     background: #24374b;
