@@ -13,7 +13,7 @@ class Contents
 {
     public static function highlight($message)
     {
-        return $message;
+        return preg_replace('/(\'(.*?)\'|"(.*?)")/s', '<span style="color:#ff7c88;">$1</span>', $message);
     }
 
     public static function top()
@@ -31,10 +31,11 @@ class Contents
     public static function left()
     {
         return '<div class="content-nav">
-                    <div class="top-tog">function</div> 
-                    <div class="top-tog">time</div> 
-                    <div class="top-tog">memory</div> 
-                    <div class="top-tog">location</div> 
+                    <div class="top-tog">ID</div> 
+                    <div class="top-tog active">Location</div> 
+                    <div class="top-tog">Function</div> 
+                    <div class="top-tog">Time</div> 
+                    <div class="top-tog">Memory</div> 
                 </div>
                 <div class="content-body"></div> ';
     }
@@ -45,7 +46,7 @@ class Contents
         Highlight::numberLines();
         Highlight::$highlight_line = 10;
         return '<div class="exception-type"><span>RuntimeException</span></div>
-                <div class="exception-msg">' . self::highlight('Error Processing Request') . '</div>
+                <div class="exception-msg">' . self::highlight('Error Processing Request on "index.php" pleas try again') . '</div>
                 <div class="code-view">' . Highlight::render('TextTable.php', 1, 0) . '</div>';
     }
 
