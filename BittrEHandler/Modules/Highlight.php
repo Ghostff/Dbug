@@ -166,13 +166,11 @@ class Highlight
      */
     private static function format(string $code, string $file_name, bool $cache , bool $tabs_to_space): string
     {
-
         $code = str_replace(
             array('<?php', '<?=', '?>', '\\\\'),
             array('PP_PHP_LONG_TAG_OPEN', 'PP_PHP_SHORT_TAG_OPEN', 'PP_PHP_CLOSE_TAG', 'PP_PHP_DOUBLE_BACK_SLASH'),
             $code
         );
-
         $code = htmlspecialchars($code, ENT_NOQUOTES);
         $new_code = null;
         $line_number = self::$start_number;
@@ -265,6 +263,7 @@ class Highlight
         if ($tabs_to_space) {
             $new_code = preg_replace('/\t/', '&nbsp;&nbsp;&nbsp;&nbsp;', $new_code);
         }
+        $new_code = str_replace('  ', '&nbsp;&nbsp;', $new_code);
 
         $style = '.strip font,.strip span{color:inherit !important}' . self::$styled;
         $pretty = '<table>'. $new_code . '</table><style>' . $style . '</style>';

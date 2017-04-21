@@ -210,7 +210,7 @@ class Dump
      */
     private function format(array $arguments, bool $array_loop = false): string
     {
-        throw  new \RangeException('hey look');
+        #throw  new \RangeException('hey look');
         $format = '';
         foreach ($arguments as $arg)
         {

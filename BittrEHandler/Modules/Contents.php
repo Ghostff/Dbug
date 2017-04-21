@@ -79,7 +79,7 @@ class Contents
             $traced .= '<div class="function loop-tog">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
-                                <span class="name">' . $class . ' <b>' . $traces['type'] . '</b>' . $traces['function'] . '<i class="line">' . $traces['line'] . '</i></span>
+                                <span class="name">' . $class . ' <b>' . $traces['type'] . '</b> ' . $traces['function'] . '<i class="line">' . $traces['line'] . '</i></span>
                                 <span class="path">' . $namespace . '</span> 
                             </div>   
                         </div>';
@@ -134,6 +134,7 @@ class Contents
         return '<div class="exception-type"><span>' . $type . '</span></div>
                 <div class="exception-msg">' . self::highlight($message) . '</div>
                 <div class="code-view">' . Highlight::render($code) . '</div>';
+        exit;
     }
 
     public static function right()
@@ -181,6 +182,8 @@ class Contents
                         <link href="%1$s/Assets/css/bootstrap.css" rel="stylesheet">
                         <link href="%1$s/Assets/css/jquery.mCustomScrollbar.css" rel="stylesheet">
                         <link href="%s/Assets/css/%s.css" rel="stylesheet">
+                        <script src="%1$s/Assets/js/jquery.min.js"></script>
+                        <script src="%1$s/Assets/js/bootstrap.min.js"></script>
                     </head>
                     <body>
                     
@@ -192,9 +195,6 @@ class Contents
                                 <div class="col-md-3 attr right">%s</div>
                             </div>
                         </div>
-
-                        <script src="%1$s/Assets/js/jquery.min.js"></script>
-                        <script src="%1$s/Assets/js/bootstrap.min.js"></script>
                         <script src="%1$s/Assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
                         <script src="%1$s/Assets/js/custom.js"></script>
                     </body>
