@@ -260,9 +260,6 @@ class Highlight
         $new_code = self::PR($pattern, $replacement, $new_code);
         $new_code = str_replace(array('\"', '\\\''), array('"', '\''), $new_code);
 
-        if ($tabs_to_space) {
-            $new_code = preg_replace('/\t/', '&nbsp;&nbsp;&nbsp;&nbsp;', $new_code);
-        }
         $new_code = str_replace('  ', '&nbsp;&nbsp;', $new_code);
 
         $style = '.strip font,.strip span{color:inherit !important}' . self::$styled;
