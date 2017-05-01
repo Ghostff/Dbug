@@ -5,7 +5,7 @@ namespace BittrEHandler\Modules;
 class Init
 {
 
-    public static $config = array();
+    public static $config = [];
 
     public static $time = 0;
 

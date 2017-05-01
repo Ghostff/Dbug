@@ -2,55 +2,53 @@
 
 namespace BittrEHandler\Modules;
 
-
 class Highlight
 {
-    private static $styled = '.line-number{display:none;}';
-    private static $cache_path = null;
-    public static $highlight_line = 0;
-    public static $start_number = 0;
 
-    private static $cast = 'F25959';
-    private static $null = '989898';
-    private static $bool = 'f2368a';
-    private static $self = '1D6F0C';
-    private static $quote = '13ab7b';
+    private static $highlight = [];
+    private static $start_line = 0;
+    private static $cache_path = null;
+    private static $show_line_number = false;
+
+    private static $cast = 'C71FC1';
+    private static $null = 'FFFFFF';
+    private static $bool = '1591D7';
+    private static $self = '88B7FF';
+    private static $quote = '6db679';
     private static $parent = '1D6F0C';
-    private static $number = 'A4AC21';
-    private static $comment = 'FEA500';
-    private static $tag_open = 'F00000';
-    private static $keywords = '13ab7b';
-    private static $function = '13ab7b';
-    private static $variable = '409CC8';
-    private static $constant = '';
-    private static $tag_close = 'F00000';
-    private static $operators = '';
-    private static $semi_colon = '';
-    private static $parenthesis = '';
+    private static $number = 'FF4F51';
+    private static $comment = 'B7B7B7';
+    private static $tag_open = 'EF62FC';
+    private static $keywords = '88B7FF';
+    private static $function = '88B7FF';
+    private static $variable = 'DB97E4';
+    private static $constant = 'FFFFFF';
+    private static $tag_close = 'EF62FC';
+    private static $operators = 'FFFFFF';
+    private static $semi_colon = 'FFFFFF';
+    private static $parenthesis = 'FDD28A';
     private static $return_type = 'f2368a';
     private static $php_function = '6367A7';
     private static $curly_braces = '';
     private static $parameter_type = 'f2368a';
-    private static $square_bracket = '';
-    private static $custom_function = '9313A4';
-    private static $multi_line_comment = 'FEA500';
-
+    private static $square_bracket = 'FFFFFF';
+    private static $custom_function = 'FFC13B';
+    private static $multi_line_comment = 'B7B7B7';
 
 
     private static $self_ptrn = '/(?<!\$|\w)self/';
     private static $cast_ptrn = '/(\(\s*(int|string|float|array|object|unset|binary|bool)\s*\))/';
     private static $bool_ptrn = '/\b(?<!\$)true|false/i';
     private static $null_ptrn = '/\b(?<!\$)(null)\b/';
-    private static $quote_ptrn = '/((?<!\\\)\'(.*?)(?<!\\\)\'|
-        (?<!((style|class|label)=)|(\\\))"(?!\s(class|label)=|>).*?(?<!((style|class|label)=)|(\\\))"(?!\s(class|label)=|>))/s';
+    private static $quote_ptrn = '/(.*?)(?<!\\\\)(\'|(?<!((style|class|label)=))")/';
     private static $parent_ptrn = '/(?<!\$|\w)parent\b/';
-    private static $number_ptrn = '/\b(\d+)\b/';
-    private static $comment_ptrn = '/(?<!(http(s):))\/\/.*|(?<!color:)#.*/';
+    private static $number_ptrn = '/(?<! style="color:#)\b(\d+)\b/';
+    private static $comment_ptrn = '/(?<!http:|https:)\/\/.*|(?<!color:)#.*/';
     private static $variable_ptrn = '/\$(\$*)[a-zA-Z_]+[a-zA-Z0-9_]*/';
     private static $function_ptrn = '/(?<=\s|^)(function)(?=\s)/';
     private static $constant_ptrn = '/\b(?<!(\#|\$))([A-Z_]+)(?!<\/\w+>\()\b/';
     private static $keywords_ptrn = '/(?<!\$|\w)((a(bstract|nd|rray\s*(?=\()|s))|
-        (c(a(llable|se|tch)|l(ass(?!=)|one)|on(st|tinue)))|
+        (c(a(llable|se|tch)|l(ass(?!\=")|one)|on(st|tinue)))|
         (d(e(clare|fault)|ie|o))|
         (e(cho|lse(if)?|mpty|nd(declare|for(each)?|if|switch|while)|val|x(it|tends)))|
         (f(inal|or(each)?))|
@@ -63,15 +61,14 @@ class Highlight
         (t(hrow|r(ait|y)))|
         (u(nset(?!\s*\))|se))|
         (__halt_compiler|break|list|(x)?or|var|while))\b/';
-    private static $operators_ptrn = '/(\=|\.|\!|\+|\%|\-|(?<!https|http)\:|\@|\||\?|&gt;|&lt;|&amp;)/';
+    private static $operators_ptrn = '/((?<! (style|class))\=|\.|\!|\+|\%|\-|(?<!https|http| style="color)\:|\@|\||\?|&gt;|&lt;|&amp;)/';
     private static $semi_colon_ptrn = '/(?<![&lt|&gt|&amp]);/';
     private static $parenthesis_ptrn = '/\(|\)/';
     private static $return_type_ptrn = '/(?<=\:\<\/span\>)\s*(?:\<\w+ \w+="\w+:#\w+" \w+="\w+"\>\?\<\/\w+\>)*(string|bool|array|float|int|callable|void)/';
-    private static $curly_braces_ptrn = '/\{|\}/';
+    private static $curly_braces_ptrn = '/[\{|\}]/';
     private static $parameter_type_ptrn = '/(?<!\w)(string|bool|array|float|int|callable)\s*(?=\<\w+ \w+="\w+:#\w+" \w+="\w+"\>\$)/';
     private static $square_bracket_ptrn = '/\[|\]/';
-    private static $multi_line_comment_ptrn = '/\/\*(.*?)\*\//';
-
+    private static $multi_line_comment_ptrn = '/\/\*|\*\//';
 
 
     /**
@@ -83,54 +80,14 @@ class Highlight
      */
     public static function set(string $property, string $values): void
     {
-        if (property_exists(__CLASS__, $property)) {
+        if (property_exists(__CLASS__, $property))
+        {
             self::${$property} = $values;
-        } else {
-            throw new RuntimeException(sprintf('%s does not exist in %s', $property, __CLASS__));
         }
-    }
-
-
-    /**
-     * adds code to a span tag
-     *
-     * @param string $color
-     * @param string $class
-     * @param string $content
-     * @return string
-     */
-    private static function span(string $color, string $class, string $content = '$0'): string
-    {
-        $span = sprintf('<span style="color:#%s" class="%s">%s</span>', $color, $class, $content);
-        return $span;
-    }
-
-
-    /**
-     * adds code to a font tag
-     *
-     * @param string $color
-     * @param string $class
-     * @param string $content
-     * @return string
-     */
-    private static function font(string $color, string $class, string $content = '$0'): string
-    {
-        $font = sprintf('<font style="color:#%s" class="%s">%s</font>', $color, $class, $content);
-        return $font;
-    }
-
-    /**
-     * php preg replace function
-     *
-     * @param array $pattern
-     * @param array $replacement
-     * @param string $subject
-     * @return string
-     */
-    private static function PR(array $pattern, array $replacement, string $subject): string
-    {
-        return preg_replace($pattern, $replacement, $subject);
+        else
+        {
+            throw new \RuntimeException(sprintf('%s does not exist in %s', $property, __CLASS__));
+        }
     }
 
 
@@ -145,67 +102,196 @@ class Highlight
         return preg_replace_callback('/(\w+)(?=\s\(|\()/', function ($arg)
         {
             $func = $arg[1];
-            if (function_exists($func)) {
-                return self::span(self::$php_function, 'php_function', $func);
+            if (function_exists($func))
+            {
+                return '<span style="color:#' . self::$php_function .'" class="php_function">' . $func . '</span>';
             }
-            else {
-                return self::span(self::$custom_function, 'custom_function', $func);
+            else
+            {
+                return '<span style="color:#' . self::$custom_function .'" class="custom_function">' . $func . '</span>';
             }
         }, $code);
     }
 
+    /**
+     * displays line numbers
+     *
+     * @param bool $switch
+     */
+    public static function showLineNumber(bool $switch, int $start_line = 0)
+    {
+        self::$start_line = $start_line;
+        self::$show_line_number = $switch;
+    }
+
 
     /**
-     * Highlights strings
+     * adds html attributes to line table > tr
+     *
+     * @param int $line
+     * @param array $attributes
+     */
+    public static function setHighlight(int $line, array $attributes = [])
+    {
+        self::$highlight['line'] = $line;
+        self::$highlight['attr'] = $attributes;
+    }
+
+
+    private static function prepare(string $formated): string
+    {
+        $theme_file = __DIR__ . DIRECTORY_SEPARATOR . 'theme.json';
+        if (file_exists($theme_file))
+        {
+            $_theme = file_get_contents($theme_file);
+            $theme = json_decode($_theme, true);
+
+            $selected = $theme['selected'];
+            $active = $theme[$selected];
+            array_shift($active);
+            $searches = [];
+
+            foreach ($active as $key => $attributes)
+            {
+                $attributes = array_map(function (string $key, string $value): string {
+                    return $key . ':' . $value . ';';
+                }, array_keys($attributes), $attributes);
+
+                $replacements['style="color:#' . $key] = implode($attributes);
+            }
+
+        }
+
+        return $formated;
+
+    }
+
+
+    /**
+     * processes supplied text
      *
      * @param string $code
      * @param string $file_name
      * @param bool $cache
-     * @param bool $tabs_to_space
      * @return string
      */
-    private static function format(string $code, string $file_name, bool $cache , bool $tabs_to_space): string
+    private static function format(string $code, string $file_name, bool $cache): string
     {
         $code = str_replace(
-            array('<?php', '<?=', '?>', '\\\\'),
-            array('PP_PHP_LONG_TAG_OPEN', 'PP_PHP_SHORT_TAG_OPEN', 'PP_PHP_CLOSE_TAG', 'PP_PHP_DOUBLE_BACK_SLASH'),
+            ['<?php', '<?=', '?>', '\\\\'],
+            ['PP_PHP_LONG_TAG_OPEN', 'PP_PHP_SHORT_TAG_OPEN', 'PP_PHP_CLOSE_TAG', 'PP_PHP_DOUBLE_BACK_SLASH'],
             $code
         );
+
         $code = htmlspecialchars($code, ENT_NOQUOTES);
         $new_code = null;
-        $line_number = self::$start_number;
+
+        $highlight_line = 0;
+        if ( ! empty(self::$highlight))
+        {
+            $highlight_line = self::$highlight['line'];
+            $highlight_attr = '';
+            foreach (self::$highlight['attr'] as $key => $values)
+            {
+                $highlight_attr .= ' ' . $key . '="' . $values . '"';
+            }
+        }
+
+        $start_number = self::$start_line;
+
+        #is_multi_line_comment
+        $is_MLC = false;
+        $is_multi_line_comment = false;
+        #quote_opened
+        $QO = false;
+        #qoute_type
+        $QT = null;
+        $line_number = self::$show_line_number;
+
         foreach (preg_split('/\n/', $code) as $lines)
         {
-            if (trim($lines) == false) {
-                $lines = ' ';
-            }
-            $line_number++;
-            $HT = (self::$highlight_line == $line_number) ? ' class="highlighted"' : '';
-            $new_code .= '<tr' . $HT . '><td class="line-number">' . $line_number . '</td><td class="line-content">';
+            #single line comment
+            $SLC = false;
+            $start_number++;
 
-            $pattern = array(
+            $gui_line_number = ($line_number) ? '<td>' . $start_number . '</td><td>' : '<td>';
+
+            if ($start_number == $highlight_line)
+            {
+                $gui_highlight = '<tr' . $highlight_attr . '>';
+            }
+            else
+            {
+                $gui_highlight = '<tr>';
+            }
+
+            $new_code .= $gui_highlight . $gui_line_number;
+
+            if ( ! $is_MLC)
+            {
+                if ($is_multi_line_comment)
+                {
+                    $lines = '<font style="color:#' . self::$multi_line_comment .'" class="strip multi_line_comment">' . $lines . '</font>';
+                }
+
+                $lines = preg_replace_callback(self::$multi_line_comment_ptrn, function(array $matches) use (&$is_multi_line_comment): string
+                {
+                    if ($matches[0] == '*/')
+                    {
+                        $is_multi_line_comment = false;
+                        return $matches[0] . '</font>';
+                    }
+                    else
+                    {
+                        $is_multi_line_comment = true;
+                        return '<font style="color:#' . self::$multi_line_comment . '" class="strip multi_line_comment">' . $matches[0];
+                    }
+
+                }, $lines);
+            }
+
+            if ( ! $is_multi_line_comment)
+            {
+                if ($is_MLC)
+                {
+                    $lines = '<font style="color:#' . self::$quote .'" class="strip quote">' . $lines . '</font>';
+                }
+
+                $lines = preg_replace_callback(self::$quote_ptrn, function(array $matches) use (&$QO, &$is_MLC, &$SLC, &$QT): string
+                {
+                    if ($QO)
+                    {
+                        if ($QT == $matches[2])
+                        {
+                            $is_MLC = false;
+                            $QO = false;
+                            return $matches[0] . '</font>';
+                        }
+                        return $matches[0];
+                    }
+                    else
+                    {
+                        if ((strpos($matches[1], '//') !== false) || (strpos($matches[1], '#') !== false) || $SLC)
+                        {
+                            $SLC = true;
+                            return $matches[0];
+                        }
+                        $QO = true;
+                        $QT = $matches[2];
+                        $is_MLC = true;
+                        return $matches[1] . '<font style="color:#' . self::$quote . '" class="strip quote">' . $matches[2];
+                    }
+
+                }, $lines);
+            }
+
+            $pattern = [
                 self::$operators_ptrn,
                 self::$number_ptrn,
-                trim(preg_replace('/\s\s+/', '', self::$keywords_ptrn)),
+                preg_replace('/\s\s+/', '', self::$keywords_ptrn),
                 self::$function_ptrn,
                 self::$variable_ptrn,
-                self::$cast_ptrn
-            );
-
-            $replacement = array(
-                self::span(self::$operators, 'operators'),
-                self::span(self::$number, 'number'),
-                self::span(self::$keywords, 'keyword'),
-                self::span(self::$function, 'function', '$1'),
-                self::span(self::$variable, 'variable'),
-                self::span(self::$cast, 'cast')
-            );
-
-            $new_line = self::PR($pattern, $replacement, $lines);
-
-            $new_line = self::isFunction($new_line);
-
-            $pattern = array(
+                self::$cast_ptrn,
                 self::$constant_ptrn,
                 self::$parenthesis_ptrn,
                 self::$curly_braces_ptrn,
@@ -222,54 +308,52 @@ class Highlight
                 '/PP_PHP_SHORT_TAG_OPEN/',
                 '/PP_PHP_CLOSE_TAG/',
                 '/PP_PHP_DOUBLE_BACK_SLASH/'
-            );
+            ];
 
-            $replacement = array(
-                self::span(self::$constant, 'constant'),
-                self::span(self::$parenthesis, 'parenthesis'),
-                self::span(self::$curly_braces, 'curly_braces'),
-                self::span(self::$square_bracket, 'square_bracket'),
-                self::span(self::$null, 'null'),
-                self::span(self::$self, 'self'),
-                self::span(self::$parent, 'parent'),
-                self::span(self::$bool, 'bool'),
-                self::span(self::$comment, 'strip comment'),
-                self::span(self::$parameter_type, 'parameter_type'),
-                self::span(self::$return_type, 'return_type'),
-                self::span(self::$semi_colon, 'semi_colon'),
-                self::span(self::$tag_open, 'tag long', '&lt;?php'),
-                self::span(self::$tag_open, 'tag short', '&lt;?='),
-                self::span(self::$tag_close, 'tag clode', '?>'),
-                '\\\\\\'
-            );
-            $new_code .= self::PR($pattern, $replacement, $new_line) . '</td></tr>';
+            $replacement = [
+                '<span style="color:#' . self::$operators .'" class="operators">$0</span>',
+                '<span style="color:#' . self::$number .'" class="number">$0</span>',
+                '<span style="color:#' . self::$keywords .'" class="keyword">$0</span>',
+                '<span style="color:#' . self::$function .'" class="function">$1</span>',
+                '<span style="color:#' . self::$variable .'" class="variable">$0</span>',
+                '<span style="color:#' . self::$cast .'" class="cast">$0</span>',
+                '<span style="color:#' . self::$constant .'" class="constant">$0</span>',
+                '<span style="color:#' . self::$parenthesis .'" class="parenthesis">$0</span>',
+                '<span style="color:#' . self::$curly_braces .'" class="curly_braces">$0</span>',
+                '<span style="color:#' . self::$square_bracket .'" class="square_bracket">$0</span>',
+                '<span style="color:#' . self::$null .'" class="null">$0</span>',
+                '<span style="color:#' . self::$self .'" class="self">$0</span>',
+                '<span style="color:#' . self::$parent .'" class="parent">$0</span>',
+                '<span style="color:#' . self::$bool .'" class="bool">$0</span>',
+                '<span style="color:#' . self::$comment .'" class="strip comment">$0</span>',
+                '<span style="color:#' . self::$parameter_type .'" class="parameter_type">$0</span>',
+                '<span style="color:#' . self::$return_type .'" class="return_type">$0</span>',
+                '<span style="color:#' . self::$semi_colon .'" class="semi_colon">$0</span>',
+                '<span style="color:#' . self::$tag_open .'" class="tag long">&lt;?php</span>',
+                '<span style="color:#' . self::$tag_open .'" class="tag short">&lt;?=</span>',
+                '<span style="color:#' . self::$tag_close .'" class="tag clode">?></span>',
+                '\\\\\\',
+            ];
 
+            $lines = self::isFunction($lines);
+            $lines = preg_replace($pattern, $replacement, $lines);
+            $new_code .= $lines . '</td></tr>';
         }
 
-        $new_code .= '<tr class="last-map"><td></td><td></td></tr>';
-        $pattern = array(
-            self::$multi_line_comment_ptrn,
-            trim(preg_replace('/\s\s+/', '', self::$quote_ptrn))
-        );
+        $new_code .= '<tr class="last-map" id="11"><td></td><td></td></tr>';
+        $new_code = self::prepare(str_replace(['\"', '\\\'', '  '], ['"', '\'', '&nbsp;&nbsp;'], $new_code));
 
-        $replacement = array(
-            self::font(self::$multi_line_comment, 'strip multi_line_comment', '$0'),
-            self::font(self::$quote, 'strip quote', '$0')
-        );
-
-        $new_code = self::PR($pattern, $replacement, $new_code);
-        $new_code = str_replace(array('\"', '\\\''), array('"', '\''), $new_code);
-
-        $new_code = str_replace('  ', '&nbsp;&nbsp;', $new_code);
-
-        $style = '.strip font,.strip span{color:inherit !important}' . self::$styled;
+        $style = '.strip font,.strip span{color:inherit !important}';
         $pretty = '<table>'. $new_code . '</table><style>' . $style . '</style>';
 
-        if ($cache) {
-            $cache_name = self::$cache_path . DIRECTORY_SEPARATOR . intval($file_name, 36);
-            @file_put_contents($cache_name, $pretty);
-            self::cache($file_name, false);
+        if ($cache)
+        {
+            self::cache($file_name, $pretty);
         }
+        self::$highlight = [];
+        self::$start_line = 0;
+        self::$cache_path = null;
+        self::$show_line_number = false;
         return $pretty;
     }
 
@@ -278,18 +362,19 @@ class Highlight
      * caches formatted strings and handles gc. (currently available for file highlight alone)
      *
      * @param string $name
-     * @param bool $is_get
+     * @param string $new_cache
      * @return string
      */
-    private static function cache(string $name, bool $is_get = true): string
+    private static function cache(string $name, string $new_cache = null): string
     {
         $file = self::$cache_path . DIRECTORY_SEPARATOR . '_x86';
-        if ($is_get)
+        if ($new_cache == null)
         {
             @$content = file_get_contents($file);
             $content = (array) json_decode($content);
-            if ((isset($content[$name])) && ($content[$name] == filemtime($name))) {
-                return @file_get_contents(self::$cache_path . DIRECTORY_SEPARATOR . intval($name, 36));
+
+            if ((isset($content[$name])) && ($content[$name][0] == filemtime($name))) {
+                return file_get_contents(self::$cache_path . DIRECTORY_SEPARATOR . $content[$name][1]);
             }
         }
         else
@@ -300,9 +385,11 @@ class Highlight
             }
             @$content = file_get_contents($file);
             $content = (array) json_decode($content);
-            if (( ! isset($content[$name])) || ((isset($content[$name])) && ($content[$name] != filemtime($name)))) {
-                $content[$name] = filemtime($name);
+            if (( ! isset($content[$name])) || ((isset($content[$name])) && ($content[$name][0] != filemtime($name)))) {
+                $_name =  time() + mt_rand(1, 500);
+                $content[$name] = array(filemtime($name), $_name);
                 file_put_contents($file, json_encode($content));
+                file_put_contents(self::$cache_path . DIRECTORY_SEPARATOR . $_name, $new_cache);
             }
         }
         return '';
@@ -329,17 +416,9 @@ class Highlight
                     return $cached;
                 }
             }
+
             return self::format(file_get_contents($code), $code, $cache, $tabs_to_space);
         }
         return self::format($code, '', false, true);
-    }
-
-
-    /**
-     * sets formatted string out layer style
-     */
-    public static function numberLines(): void
-    {
-        self::$styled = '';
     }
 }

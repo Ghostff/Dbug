@@ -60,7 +60,7 @@ body{
     border-right: 1px solid #000;
     border-left: 1px solid #555e65;
     cursor: pointer;
-    font-family: 'Fira Mono', monospace;
+    font-family: 'Source Code Pro', monospace;
     text-transform: uppercase;
 }
 .left .content-nav .top-tog:first-child {
@@ -164,21 +164,22 @@ body{
 }
 .code-view {
     border-top: 1px solid #000;
-    height: 85vh;
+    height: 87.3vh;
 }
 .code-view table {
-    font-family: 'Fira Mono', monospace;
-    font-size: 13px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 12px;
     font-weight: 400;
     width: 100%;
+    white-space: nowrap;
 }
 .code-view table .last-map {
-    height: 100%;
+    border: 1px solid #f00;
 }
 .code-view table .keyword {
     font-weight: 500;
 }
-.code-view table tr .line-number, .code-view table .last-map td:first-child{
+.code-view table tr td:first-child, .code-view table .last-map td:first-child{
     padding-left: 5px;
     padding-right: 10px;
     background: #24374b;

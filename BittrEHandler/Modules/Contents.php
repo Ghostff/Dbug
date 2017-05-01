@@ -11,6 +11,8 @@ namespace BittrEHandler\Modules;
 
 class Contents
 {
+    private static $contents = [];
+
     private static function chunk($file, $line)
     {
         $chunk_count = Init::$config['chunk'];
@@ -36,12 +38,12 @@ class Contents
             $up--;
             $down++;
         }
-        Highlight::$highlight_line = $line;
-        Highlight::$start_number = $start_number;
+        Highlight::showLineNumber(true, $start_number);
+        Highlight::setHighlight($line, ['class' => 'highlighted']);
         $_code[$line-1] = $codes[$line-1];
         ksort($_code);
 
-        return implode( $_code);
+        return implode($_code);
     }
 
     public static function highlight($message)
@@ -71,12 +73,13 @@ class Contents
         $time = '';
         $memory = '';
         $_trace = count($trace) - 1;
+
         for ($i = $_trace; $i >= 0; $i--)
         {
             $traces = $trace[$i];
             $class = basename($traces['class']);
             $namespace = str_replace('\\', ' <b>\</b> ', rtrim($traces['class'], $class));
-            $traced .= '<div class="function loop-tog">
+            $traced .= '<div class="function loop-tog" data-id="proc-' . $i . '">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
                                 <span class="name">' . $class . ' <b>' . $traces['type'] . '</b> ' . $traces['function'] . '<i class="line">' . $traces['line'] . '</i></span>
@@ -84,13 +87,14 @@ class Contents
                             </div>   
                         </div>';
 
+
             $micro_time = microtime(true) - $start;
 
             $hours = (int)($micro_time/60/60);
             $minutes = (int)($micro_time/60)-$hours*60;
             $seconds = (int)$micro_time-$hours*60*60-$minutes*60;
 
-            $time .= ' <div class="time loop-tog">
+            $time .= '<div class="time loop-tog" data-id="proc-' . $i . '">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
                                 <span class="name">' . $micro_time . '</span>
@@ -98,13 +102,16 @@ class Contents
                             </div>
                        </div>';
 
-            $memory .= '<div class="memory loop-tog">
+            $memory .= '<div class="memory loop-tog" data-id="proc-' . $i . '">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
                                 <span class="name">' . memory_get_usage() . '</span>
                                 <span class="path"> ' .$hours . ':' . $minutes . ':' . $seconds . '</span> 
                             </div>
                        </div>';
+
+            $_code = self::chunk($traces['file'], $traces['line']);
+            self::$contents[] = '<div class="code-view" id="proc-' . $i . '">' . Highlight::render($_code) . '</div>';
         }
 
         return '<div class="content-nav">
@@ -115,7 +122,7 @@ class Contents
                 </div>
                 <div class="content-body">
                     <div class="loops">
-                        <div class="location loop-tog active">
+                        <div class="location loop-tog active"  data-id="proc-main">
                             <div class="id loop-tog code">' . $code . '</div>
                             <div class="holder">
                                 <span class="name">' . $file_name . '<i class="line">' . $line . '</i> </span>
@@ -127,13 +134,11 @@ class Contents
 
     public static function middle($type, $message, $file, $line)
     {
-        Highlight::numberLines();
-
         $code = self::chunk($file, $line);
 
         return '<div class="exception-type"><span>' . $type . '</span></div>
                 <div class="exception-msg">' . self::highlight($message) . '</div>
-                <div class="code-view">' . Highlight::render($code) . '</div>';
+                <div class="code-view" id="proc-main">' . Highlight::render($code) . '</div>' . implode(self::$contents);
         exit;
     }
 

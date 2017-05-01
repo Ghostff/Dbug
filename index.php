@@ -16,6 +16,7 @@ spl_autoload_register(function ($name) {
      */
 });
 new BittrEHandler\Modules\Init();
+new \BittrEHandler\Modules\Dump('Hey man');
 
 
-throw new \RuntimeException('hey man');
+
