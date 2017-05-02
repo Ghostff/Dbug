@@ -11,6 +11,7 @@ class Init
 
     public function __construct()
     {
+
         self::$config['chunk'] = 30;
         self::$time = microtime(true);
         #set_error_handler(array($this, 'exceptionHandler'));

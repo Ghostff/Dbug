@@ -1,5 +1,6 @@
 <?php
 
+ob_start();
 
 spl_autoload_register(function ($name) {
     include str_replace('\\', DIRECTORY_SEPARATOR, $name) . '.php';

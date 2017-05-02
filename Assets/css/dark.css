@@ -50,10 +50,10 @@ body{
 .left .content-nav .top-tog {
     display: inline-block;
     font-weight: 500;
-    width: 24%;
+    width: 33%;
     text-align: center;
     color: #d8dadd;
-    margin-left: -3px;
+    margin-left: -4px;
     padding-top: 5px;
     font-size: 12px;
     padding-bottom: 5px;
@@ -68,7 +68,7 @@ body{
     border-left: none;
 }
 .left .content-nav .top-tog:last-child {
-    margin-left: -4px;
+    margin-left: -3px;
 }
 .left .content-nav .top-tog:hover, .left .content-nav .active {
     background: #252c33;
@@ -148,7 +148,24 @@ body{
     padding: 10px;
     border-bottom: 1px solid #000;
 }
-.exception-type span{
+.exception-type > span, .exception-type > .action{
+    display: inline-block;
+}
+.exception-type > .action{
+    float: right;
+}
+.exception-type > .action span{
+    cursor: pointer;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 12px;
+    background: #272e37;
+    padding: 0px 10px 2px 10px;
+    border-radius: 10px;
+    border-top: 1px solid #161821;
+    border-bottom: 1px solid #3f4750;
+}
+
+.exception-type > span{
     background: #6789f8;
     border-radius: 10px;
     font-weight: bold;
@@ -162,7 +179,7 @@ body{
     font-weight: bold;
     font-size: 15px;
 }
-.code-view {
+.code-view, .browser-view {
     border-top: 1px solid #000;
     height: 87.3vh;
 }
@@ -172,17 +189,15 @@ body{
     font-weight: 400;
     width: 100%;
     white-space: nowrap;
-}
-.code-view table .last-map {
-    border: 1px solid #f00;
+    table-layout: fixed;
 }
 .code-view table .keyword {
     font-weight: 500;
 }
-.code-view table tr td:first-child, .code-view table .last-map td:first-child{
-    padding-left: 5px;
-    padding-right: 10px;
+.code-view table tr td:first-child {
     background: #24374b;
+    width: 60px;
+    text-align: center;
     border-right: 1px solid #0b1016;
 }
 .code-view table tr .line-content{
@@ -190,7 +205,7 @@ body{
 }
 .code-view table .highlighted td{
     background: rgba(36, 55, 75, 0.5);
-    padding: 8px 5px !important;
+    padding: 8px 0px !important;
     border-top: 1px solid #000;
     border-bottom: 1px solid #343c45;
 }

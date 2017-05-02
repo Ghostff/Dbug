@@ -94,14 +94,6 @@ class Contents
             $minutes = (int)($micro_time/60)-$hours*60;
             $seconds = (int)$micro_time-$hours*60*60-$minutes*60;
 
-            $time .= '<div class="time loop-tog" data-id="proc-' . $i . '">
-                            <div class="id loop-tog code">' . $i . '</div>
-                            <div class="holder">
-                                <span class="name">' . $micro_time . '</span>
-                                <span class="path">' .$hours . ':' . $minutes . ':' . $seconds . '</span> 
-                            </div>
-                       </div>';
-
             $memory .= '<div class="memory loop-tog" data-id="proc-' . $i . '">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
@@ -111,34 +103,53 @@ class Contents
                        </div>';
 
             $_code = self::chunk($traces['file'], $traces['line']);
-            self::$contents[] = '<div class="code-view" id="proc-' . $i . '">' . Highlight::render($_code) . '</div>';
+            self::$contents[] = '<div class="code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
         }
 
         return '<div class="content-nav">
                     <div class="top-tog active" id="location">Location</div> 
                     <div class="top-tog" id="function">Trace</div> 
-                    <div class="top-tog" id="time">Time</div> 
                     <div class="top-tog" id="memory">Memory</div> 
                 </div>
                 <div class="content-body">
                     <div class="loops">
-                        <div class="location loop-tog active"  data-id="proc-main">
+                        <div class="location loop-tog active" data-id="proc-main">
                             <div class="id loop-tog code">' . $code . '</div>
                             <div class="holder">
                                 <span class="name">' . $file_name . '<i class="line">' . $line . '</i> </span>
                                 <span class="path">' . $file_path . '</span>             
                             </div>   
-                        </div>' . $traced . $time . $memory . '</div>
+                        </div>
+                        <div class="location loop-tog active" data-id="proc-buffer" style="position: relative; top: 83vh;">
+                            <div class="holder">
+                                <span class="name" style="padding-left: 0px;">Output Buffer</span>
+                                <span class="path">Toggle contents sent to output buffer</span>             
+                            </div>   
+                        </div>' . $traced . $memory . '<div class="time loop-tog">
+                       </div></div>
                 </div> ';
     }
 
     public static function middle($type, $message, $file, $line)
     {
         $code = self::chunk($file, $line);
+        $output = ob_get_clean();
+        if ($output == '')
+        {
+            $output = '<h3 style="text-align: center;">No output sent to buffer</h3>';
+        }
 
-        return '<div class="exception-type"><span>' . $type . '</span></div>
+
+        return '<div class="exception-type">
+                    <span>' . $type . '</span>
+                    <div class="action">
+                        <span title="lookup error message in stackoveflow" url="http://stackoverflow.com/search?q=' . $message . '">stackoverflow</span>
+                        <span title="lookup error message in google" url="https://www.google.com/search?q=' . $message . '">google</span>
+                    </div>
+                </div>
                 <div class="exception-msg">' . self::highlight($message) . '</div>
-                <div class="code-view" id="proc-main">' . Highlight::render($code) . '</div>' . implode(self::$contents);
+                <div class="code-view" id="proc-main">' . Highlight::render($code) . '</div>
+                <div class="browser-view" id="proc-buffer">' . $output . '</div>' . implode(self::$contents);
         exit;
     }
 
@@ -189,6 +200,10 @@ class Contents
                         <link href="%s/Assets/css/%s.css" rel="stylesheet">
                         <script src="%1$s/Assets/js/jquery.min.js"></script>
                         <script src="%1$s/Assets/js/bootstrap.min.js"></script>
+                        <!--[if lt IE 9]>
+                          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+                          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+                        <![endif]-->
                     </head>
                     <body>
                     
