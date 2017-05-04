@@ -17,6 +17,7 @@ spl_autoload_register(function ($name) {
      */
 });
 new BittrEHandler\Modules\Init();
+$_POST = ['hey' => ['foo' => 'bar']];
 new \BittrEHandler\Modules\Dump('Hey man');
 
 

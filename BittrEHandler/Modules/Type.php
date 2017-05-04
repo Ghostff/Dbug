@@ -84,10 +84,11 @@ class Type
      * @var string - array value accessor symbol
      */
     private static $_child_arr_acc = 'f00000';
-    
-    public static function get($arg)
+
+    public static function get($arg, $array_loop = false)
     {
         $type = gettype($arg);
+        $format = '';
         if ($type == 'string')
         {
             $arg =  str_replace('<', '&lt;', $arg);
@@ -116,6 +117,18 @@ class Type
         }
         elseif ($type == 'array')
         {
+            $format .= 'Array <span class="caret"></span> <div style="padding-left:10px;">';
+            if ( ! $array_loop)
+            {
+                $format .= 'Array<div style="padding-left:10px;">';
+            }
+
+            if ( ! $array_loop)
+            {
+                $format .= '</div>';
+            }
+
+            $format .= '</div>';
         }
 
         return $format;

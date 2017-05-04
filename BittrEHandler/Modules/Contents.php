@@ -53,14 +53,40 @@ class Contents
 
     public static function top()
     {
-        return '<div class="type" style="background:#6789f8";>NULL</div>
-                <div class="type" style="background:#f8b93c;">BOOL</div>
-                <div class="type" style="background:#6db679;">ARRAY</div>
-                <div class="type" style="background:#9C6E25;">FLOAT</div>
-                <div class="type" style="background:#a66b47;">DOUBLE</div>
-                <div class="type" style="background:#ff9999;">STRING</div>
-                <div class="type" style="background:#000000;">OBJECT</div>
-                <div class="type" style="background:#1BAABB;">INTEGER</div>';
+
+        $selected_theme = Init::$theme;
+        $theme_file = __DIR__ . '/theme.json';
+        $_theme = file_get_contents($theme_file);
+        $theme = json_decode($_theme, true);
+        $select = '';
+        foreach ($theme as $names => $vals)
+        {
+            $select .= '<li><a href="#">' . $names . '</a></li> <li role="separator" class="divider"></li>';
+        }
+
+        return '<div class="logo tops">
+                    <span class="logo"><img src="../../Assets/img/' . $selected_theme . '.png"></span>
+                    <span class="theme">
+                        <div class="dropdown">
+                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Theme: ' . $selected_theme . '
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">' . $select . '</ul>
+                        </div>
+                    </span>
+                </div>
+                <div class="hints tops">
+                    <div class="type" style="background:#6789f8";>NULL</div>
+                    <div class="type" style="background:#f8b93c;">BOOL</div>
+                    <div class="type" style="background:#6db679;">ARRAY</div>
+                    <div class="type" style="background:#9C6E25;">FLOAT</div>
+                    <div class="type" style="background:#a66b47;">DOUBLE</div>
+                    <div class="type" style="background:#ff9999;">STRING</div>
+                    <div class="type" style="background:#000000;">OBJECT</div>
+                    <div class="type" style="background:#1BAABB;">INTEGER</div>
+                </div>
+                ';
     }
 
     public static function left($file, $line, $code, $trace = array())
@@ -143,8 +169,8 @@ class Contents
         return '<div class="exception-type">
                     <span>' . $type . '</span>
                     <div class="action">
-                        <span title="lookup error message in stackoveflow" url="http://stackoverflow.com/search?q=' . $message . '">stackoverflow</span>
-                        <span title="lookup error message in google" url="https://www.google.com/search?q=' . $message . '">google</span>
+                        <span title="lookup error message in stackoveflow" url="http://stackoverflow.com/search?q=' . $message . '"><span class="caret"></span> stackoverflow</span>
+                        <span title="lookup error message in google" url="https://www.google.com/search?q=' . $message . '"><span class="caret"></span> google</span>
                     </div>
                 </div>
                 <div class="exception-msg">' . self::highlight($message) . '</div>
@@ -171,7 +197,7 @@ class Contents
         $count = 0;
         foreach ($globals as $names => $attributes)
         {
-            $hide = ($count > 0) ? ' style="display:none;"' : '';
+            $hide = ($count != 2) ? ' style="display:none;"' : '';
             $side .= '<div class="global"><div class="labeled"><span class="caret"></span> &nbsp;&nbsp; ' . $names . '</div><div class="content"' . $hide. '>' . PHP_EOL;
             foreach ($attributes as $key => $values)
             {
@@ -197,7 +223,8 @@ class Contents
                         <title>Bittr Debug</title>
                         <link href="%1$s/Assets/css/bootstrap.css" rel="stylesheet">
                         <link href="%1$s/Assets/css/jquery.mCustomScrollbar.css" rel="stylesheet">
-                        <link href="%s/Assets/css/%s.css" rel="stylesheet">
+                        <link href="%1$s/Assets/css/custom.css" rel="stylesheet">
+                        <link href="%s/Assets/css/' . Init::$theme . '.css" rel="stylesheet">
                         <script src="%1$s/Assets/js/jquery.min.js"></script>
                         <script src="%1$s/Assets/js/bootstrap.min.js"></script>
                         <!--[if lt IE 9]>

@@ -1,66 +1,61 @@
-body{
-    background: #343c45;
-    color: #f5f7fa;
-}
 .header{
-    background: #252c33;
-    border-bottom: 1px solid #000000;
     padding: 5px 5px;
     height: 35px;
     width: 100%;
-    color: #c1c9d4;
+}
+.header .hints {
+    position: absolute;
+    right: 0;
+}
+.header .hints .type {
+    display: inline-block;
 }
 .header .type {
-    float: right;
     margin-left: 10px;
     width: 70px;
     text-align: center;
     border-radius: 10px;
-    color: #fff;
     font-size: 10px;
     margin-top: 5px;
 }
-.contents {
-    border-top: 1px solid #555e65;
+.header .logo span, .header .tops {
+    display: inline-block;
+    margin-left: 20px;
+}
+.header .logo img {
+    width: 80px;
+    height: 30px;
+    margin-top: -4px;
+}
+.header .logo span button, .header .logo  span button:active, .header .logo  span button:active:hover{
+    border: none;
+}
+.header .logo  span .dropdown-menu li a {
+    padding: 8px 30px;
+}
+.header .logo  span .dropdown-menu .divider {
+    margin: 0 0;
 }
 .contents .attr {
-    color: #d8dadd;
     height: 96vh;
     padding: 0 !important;
 }
-.contents .left {
-    background: #343c45;
-    border-right: 1px solid #555e65;
-}
 .contents .middle {
-    background: #131c26;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
     overflow: hidden;
 }
 .contents .right {
-    background: #363e47;
-    border-left: 1px solid #363e47;
     word-wrap: break-word;
-}
-
-.left .content-nav {
-    border-bottom: 1px solid #000;
 }
 .left .content-nav .top-tog {
     display: inline-block;
     font-weight: 500;
     width: 33%;
     text-align: center;
-    color: #d8dadd;
-    margin-left: -4px;
+    margin-left: -8px;
     padding-top: 5px;
     font-size: 12px;
     padding-bottom: 5px;
-    border-right: 1px solid #000;
-    border-left: 1px solid #555e65;
     cursor: pointer;
-    font-family: 'Source Code Pro', monospace;
     text-transform: uppercase;
 }
 .left .content-nav .top-tog:first-child {
@@ -68,17 +63,10 @@ body{
     border-left: none;
 }
 .left .content-nav .top-tog:last-child {
-    margin-left: -3px;
-}
-.left .content-nav .top-tog:hover, .left .content-nav .active {
-    background: #252c33;
-    border-left: 1px solid #000;
+    margin-left: -8px;
 }
 .left .content-nav .top-tog:last-child {
     border-right: none;
-}
-.left .content-body{
-    border-top: 1px solid #555e65;
 }
 .left .content-body .loops {
     margin-top: 3px;
@@ -86,32 +74,19 @@ body{
 .left .content-body .loops .loop-tog {
     width: 100%;
     display: none;
-    border: 1px solid #14171d;
-    background: #343c45;
-    -webkit-box-shadow: 0px 1px 5px 0px rgba(71,80,88,1);
-    -moz-box-shadow: 0px 1px 5px 0px rgba(71,80,88,1);
-    box-shadow: 0px 1px 5px 0px rgba(71,80,88,1);
 }
 .left .content-body .loops .holder:hover {
-    background: #222731;
     cursor: pointer;
 }
 .left .content-body .loops .holder i {
     float: right;
     margin-top: 10px;
     font-size: 10px;
-    background: #1f577f;
     border-radius: 10px;
     padding: 1px 10px;
-    color: #fff;
     font-style: normal;
-    box-shadow: 0px 1px #222731;
-}
-.left .content-body .loops .holder b {
-    color: #aee288;
 }
 .left .content-body .loops .holder {
-    border: 1px solid #6b757e;
     padding: 5px 10px;
 }
 .left .content-body .loops div span {
@@ -123,7 +98,6 @@ body{
 }
 .left .content-body .loops div .path {
     font-size: 11px;
-    color: #95a1a9;
 }
 .left .content-body .loops .id {
     width: 15px;
@@ -133,7 +107,6 @@ body{
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    background: #14171d;
     position:absolute;
     left:4px;
     padding-top:5px;
@@ -144,9 +117,7 @@ body{
     vertical-align: middle;
 }
 .exception-type {
-    background: #343c45;
     padding: 10px;
-    border-bottom: 1px solid #000;
 }
 .exception-type > span, .exception-type > .action{
     display: inline-block;
@@ -156,35 +127,25 @@ body{
 }
 .exception-type > .action span{
     cursor: pointer;
-    font-family: 'Source Code Pro', monospace;
     font-size: 12px;
-    background: #272e37;
     padding: 0px 10px 2px 10px;
     border-radius: 10px;
-    border-top: 1px solid #161821;
-    border-bottom: 1px solid #3f4750;
 }
-
 .exception-type > span{
-    background: #6789f8;
     border-radius: 10px;
     font-weight: bold;
     padding: 3px 10px;
 }
 .exception-msg {
     padding: 10px;
-    background: #343c45;
-    border-top: 1px solid #555e65;
-    border-bottom: 1px solid #555e65;
     font-weight: bold;
     font-size: 15px;
 }
 .code-view, .browser-view {
-    border-top: 1px solid #000;
     height: 87.3vh;
 }
 .code-view table {
-    font-family: 'Source Code Pro', monospace;
+    font-family: Monaco, monospace;
     font-size: 12px;
     font-weight: 400;
     width: 100%;
@@ -195,29 +156,20 @@ body{
     font-weight: 500;
 }
 .code-view table tr td:first-child {
-    background: #24374b;
     width: 60px;
     text-align: center;
-    border-right: 1px solid #0b1016;
 }
 .code-view table tr .line-content{
     padding-left: 5px;
 }
 .code-view table .highlighted td{
-    background: rgba(36, 55, 75, 0.5);
     padding: 8px 0px !important;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #343c45;
 }
 .code-view table .highlighted td:first-child{
-    background: rgba(36, 55, 75, 1);
-    color: #ec4c4e;
     border-top: none;
     border-bottom: none;
 }
 .contents .right .global {
-    border-top: 1px solid #555e65;
-    border-bottom: 1px solid #0d1012;
     cursor: pointer;
 }
 .contents .right .global:first-child {
@@ -235,18 +187,15 @@ body{
 }
 .contents .listed {
     padding: 5px 10px;
-    border-bottom: 1px solid #313a46;
 }
 .contents .listed:last-child {
     border-bottom: none;
 }
 .contents .right .global .content {
-    background: #131c26;
     padding: 5px 0px;
 }
 .contents .listed .index {
     font-weight: 500;
-    color: #3689b2;
     font-size: 10px;
 }
 .contents .listed .value {

@@ -20,7 +20,6 @@ class ExceptionHandler
         #var_dump($e);exit;
         echo sprintf(Contents::template(),
             'http://localhost/Debug/',
-            'dark',
             Contents::top(),
             Contents::left($e->getFile(), $e->getLine(), $e->getCode(), $e->getTrace()),
             Contents::middle(get_class($e), $e->getMessage(), $e->getFile(), $e->getLine()),

@@ -1,11 +1,9 @@
 $(document).ready(function(){
     $(".global").click(function(){
-        $(this).find('.content').slideToggle("fast");
+        $(this).children('.content').slideToggle("fast");
     });
 });
 $(".right, .code-view").mCustomScrollbar({axis:"yx",theme:"minimal-dark"});
-
-
 
 function heightloop(id) {
     var table = $('#' + id + ' table');
