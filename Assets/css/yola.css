@@ -58,6 +58,9 @@ body{
     background: #252c33;
     border-left: 1px solid #000;
 }
+.left .content-body {
+    border-top: 1px solid #555e65;
+}
 .left .content-body .loops .loop-tog {
     border: 1px solid #14171d;
     background: #343c45;
@@ -131,3 +134,12 @@ body{
 .contents .listed .index {
     color: #3689b2;
 }
+.type-object {background:#5ba415}
+.type-null {background:#6789f8}
+.type-bool {background:#f8b93c}
+.type-array {background:#6db679}
+.type-float {background:#9C6E25}
+.type-double {background:#a66b47}
+.type-string {background:#ff9999}
+.type-integer {background:#1BAABB}
+.quote-string { color: #ff7c88}

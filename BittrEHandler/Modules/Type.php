@@ -11,124 +11,93 @@ namespace BittrEHandler\Modules;
 
 class Type
 {
-
-    /**
-     * @var string - null data type
-     */
-    private static $_null = '6789f8';
-    /**
-     * @var string - variable type
-     */
-    private static $_type = 'AAAAAA';
-    /**
-     * @var string - bool data type
-     */
-    private static $_bool = 'f8b93c';
-    /**
-     * @var string - array data type
-     */
-    private static $_array	= '6db679';
-    /**
-     * @var string - float data type
-     */
-    private static $_float = '9C6E25';
-    /**
-     * @var string - double data type
-     */
-    private static $_double = 'a66b47';
-    /**
-     * @var string - string data  type
-     */
-    private static $_string = 'ff9999';
-    /**
-     * @var string - length of any data value
-     */
-    private static $_lenght = '5BA415';
-    /**
-     * @var string - int data type
-     */
-    private static $_integer = '1BAABB';
-    /**
-     * @var string - object data type
-     */
-    private static $_object = '000000';
-    /**
-     * @var string - object properties visibility
-     */
-    private static $_vsble = '741515';
-    /**
-     * @var string - object name
-     */
-    private static $_object_name = '5ba415';
-    /**
-     * @var string - object property name
-     */
-    private static $_obj_prop_name = '987a00';
-    /**
-     * @var string - object property name and value separator
-     */
-    private static $_obj_prop_acc = 'f00000';
-    /**
-     * @var string - array of array key
-     */
-    private static $_parent_arr = '59829e';
-    /**
-     * @var string - array of array accessor symbol
-     */
-    private static $_parent_arr_acc = 'e103c4';
-    /**
-     * @var string - array
-     */
-    private static $_child_arr = 'f07b06';
-    /**
-     * @var string - array value accessor symbol
-     */
-    private static $_child_arr_acc = 'f00000';
-
-    public static function get($arg, $array_loop = false)
+    private static function objects($objects)
     {
-        $type = gettype($arg);
+        $obj = new \ReflectionObject($objects);
+        $temp = '';
         $format = '';
-        if ($type == 'string')
+
+        foreach ($obj->getProperties() as $size => $prop)
         {
-            $arg =  str_replace('<', '&lt;', $arg);
-            $format = '<span class="string" style="color:#' . self::$_string . '">' . $arg . '</span>';
-        }
-        elseif ($type == 'integer')
-        {
-            $format = '<span class="integer" style="color:#' . self::$_integer . '">' . $arg . '</span>';
-        }
-        elseif ($type == 'boolean')
-        {
-            $arg = ($arg) ? 'true' : 'false';
-            $format = '<span class="bool" style="color:#' . self::$_bool . '">' . $arg . '</span>';
-        }
-        elseif ($type == 'double')
-        {
-            $format = '<span class="double" style="color:#' . self::$_double . '">' . $arg . '</span>';
-        }
-        elseif ($type == 'NULL')
-        {
-            $format = '<span class="null" style="color:#' . self::$_null . '">null</span>';
-        }
-        elseif ($type == 'float')
-        {
-            $format = '<span class="float" style="color:#' . self::$_float . '">' . $arg . '</span>';
-        }
-        elseif ($type == 'array')
-        {
-            $format .= 'Array <span class="caret"></span> <div style="padding-left:10px;">';
-            if ( ! $array_loop)
+            if ($prop->isPrivate())
             {
-                $format .= 'Array<div style="padding-left:10px;">';
+                $format .= '<span class="private">private&nbsp;&nbsp; </span> : ';
+            }
+            elseif ($prop->isProtected())
+            {
+                $format .= '<span class="protected">protected </span> : ';
+            }
+            elseif ($prop->isPublic())
+            {
+                $format .= '<span class="public">public&nbsp;&nbsp;&nbsp; </span> : ';
             }
 
-            if ( ! $array_loop)
-            {
-                $format .= '</div>';
-            }
+            $prop->setAccessible(true);
+            $format .= self::get($prop->getValue($objects)) . '; <br />';
+        }
 
-            $format .= '</div>';
+        $temp .= '<span class="char-object">' . $obj->getName() . '</span> [  <span class="caret"></span>  <div class="env-arr">';
+
+        $temp .= $format . '</div>]';
+        return $temp;
+    }
+
+    public static function get($arguments, $array_loop = false)
+    {
+        $arguments = [$arguments];
+        $format = '';
+        foreach ($arguments as $arg)
+        {
+            $type = gettype($arg);
+            if ($type == 'string')
+            {
+                $arg =  str_replace('<', '&lt;', $arg);
+                $format = '<span class="char-string">' . $arg . '</span>';
+            }
+            elseif ($type == 'integer')
+            {
+                $format = '<span class="char-integer">' . $arg . '</span>';
+            }
+            elseif ($type == 'boolean')
+            {
+                $arg = ($arg) ? 'true' : 'false';
+                $format = '<span class="char-bool">' . $arg . '</span>';
+            }
+            elseif ($type == 'double')
+            {
+                $format = '<span class="char-double">' . $arg . '</span>';
+            }
+            elseif ($type == 'NULL')
+            {
+                $format = '<span class="char-null">null</span>';
+            }
+            elseif ($type == 'float')
+            {
+                $format = '<span class="char-float">' . $arg . '</span>';
+            }
+            elseif ($type == 'array')
+            {
+                $format .= '[  <span class="caret"></span>  <div class="env-arr">';
+
+                foreach ($arg as $key => $value)
+                {
+                    $key = str_replace('<', '&lt;', $key);
+                    if ( is_array($value))
+                    {
+                        $format .= '<span class="key">' . $key . '</span> : ' . self::get($value, true) . ',<br />';
+                    }
+                    else
+                    {
+                        $format .= '<span class="key">' . $key . '</span> : ' . self::get($value, true) . ',<br/>';
+                    }
+                }
+
+                $format .= '</div>]';
+            }
+            elseif ($type == 'object')
+            {
+                $format .= self::objects($arg);
+            }
         }
 
         return $format;

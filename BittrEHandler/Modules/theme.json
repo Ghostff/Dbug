@@ -6,7 +6,7 @@
       "null": { "color": "#0000FF" },
       "bool": { "color": "#D8C300" },
       "self": { "color": "#1D6F0C" },
-      "quote": { "color": "#FF0000" },
+      "quote": { "color": "#d74a45" },
       "class": { "color": "#000000" },
       "parent": { "color": "#1D6F0C" },
       "number": { "color": "#A4AC21" },

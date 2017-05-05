@@ -145,9 +145,9 @@
     height: 87.3vh;
 }
 .code-view table {
-    font-family: Monaco, monospace;
+    font-family: 'Inconsolata', monospace;
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
     width: 100%;
     white-space: nowrap;
     table-layout: fixed;
@@ -177,6 +177,18 @@
 }
 .contents .right .global:last-child {
     border-bottom:none;
+}
+.contents .right .global .env-arr {
+    padding-left: 20px;
+}
+.contents .right .global .env-arr .key {
+    color: #3689b2;
+}
+.contents .right .global .content {
+    cursor: default;
+}
+.contents .right .global .content .caret{
+    cursor: pointer;
 }
 .contents .right .global .labeled, .contents .right .global .content {
     display: block;

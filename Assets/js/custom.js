@@ -1,6 +1,6 @@
 $(document).ready(function(){
-    $(".global").click(function(){
-        $(this).children('.content').slideToggle("fast");
+    $(".global .labeled").click(function(){
+        $(this).siblings('.content').slideToggle("fast");
     });
 });
 $(".right, .code-view").mCustomScrollbar({axis:"yx",theme:"minimal-dark"});
@@ -33,6 +33,9 @@ $('.loop-tog').click(function() {
 
 $('.exception-type .action span').click(function () {
     window.open($(this).attr('url'), '_blank');
+})
+$('.contents .right .global .listed .caret').click(function () {
+    $(this).siblings('.env-arr').toggle();
 })
 
 heightloop('proc-main');

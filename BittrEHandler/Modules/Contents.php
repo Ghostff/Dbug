@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * quoteed by PhpStorm.
  * User: Chrys
  * Date: 4/17/2017
  * Time: 12:38 PM
@@ -48,7 +48,7 @@ class Contents
 
     public static function highlight($message)
     {
-        return preg_replace('/(\'(.*?)\'|"(.*?)")/s', '<span style="color:#ff7c88;">$1</span>', $message);
+        return preg_replace('/(\'(.*?)\'|"(.*?)")/s', '<span class="char-string">$1</span>', $message);
     }
 
     public static function top()
@@ -61,7 +61,7 @@ class Contents
         $select = '';
         foreach ($theme as $names => $vals)
         {
-            $select .= '<li><a href="#">' . $names . '</a></li> <li role="separator" class="divider"></li>';
+            $select .= '<li><a href="?theme=' . $names . '">' . $names . '</a></li> <li role="separator" class="divider"></li>';
         }
 
         return '<div class="logo tops">
@@ -77,14 +77,14 @@ class Contents
                     </span>
                 </div>
                 <div class="hints tops">
-                    <div class="type" style="background:#6789f8";>NULL</div>
-                    <div class="type" style="background:#f8b93c;">BOOL</div>
-                    <div class="type" style="background:#6db679;">ARRAY</div>
-                    <div class="type" style="background:#9C6E25;">FLOAT</div>
-                    <div class="type" style="background:#a66b47;">DOUBLE</div>
-                    <div class="type" style="background:#ff9999;">STRING</div>
-                    <div class="type" style="background:#000000;">OBJECT</div>
-                    <div class="type" style="background:#1BAABB;">INTEGER</div>
+                    <div class="type type-object">OBJECT</div>
+                    <div class="type type-null">NULL</div>
+                    <div class="type type-bool">BOOL</div>
+                    <div class="type type-array">ARRAY</div>
+                    <div class="type type-float">FLOAT</div>
+                    <div class="type type-double">DOUBLE</div>
+                    <div class="type type-string">STRING</div>
+                    <div class="type type-integer">INTEGER</div>
                 </div>
                 ';
     }
@@ -96,14 +96,14 @@ class Contents
 
         $start = Init::$time;
         $traced = '';
-        $time = '';
         $memory = '';
         $_trace = count($trace) - 1;
 
         for ($i = $_trace; $i >= 0; $i--)
         {
             $traces = $trace[$i];
-            $class = basename($traces['class']);
+            $peices = explode('\\', $traces['class']);
+            $class = end($peices);
             $namespace = str_replace('\\', ' <b>\</b> ', rtrim($traces['class'], $class));
             $traced .= '<div class="function loop-tog" data-id="proc-' . $i . '">
                             <div class="id loop-tog code">' . $i . '</div>
@@ -116,15 +116,11 @@ class Contents
 
             $micro_time = microtime(true) - $start;
 
-            $hours = (int)($micro_time/60/60);
-            $minutes = (int)($micro_time/60)-$hours*60;
-            $seconds = (int)$micro_time-$hours*60*60-$minutes*60;
-
             $memory .= '<div class="memory loop-tog" data-id="proc-' . $i . '">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
                                 <span class="name">' . memory_get_usage() . '</span>
-                                <span class="path"> ' .$hours . ':' . $minutes . ':' . $seconds . '</span> 
+                                <span class="path"> ' .$micro_time . '</span> 
                             </div>
                        </div>';
 
@@ -197,7 +193,7 @@ class Contents
         $count = 0;
         foreach ($globals as $names => $attributes)
         {
-            $hide = ($count != 2) ? ' style="display:none;"' : '';
+            $hide = ($count > 0) ? ' style="display:none;"' : '';
             $side .= '<div class="global"><div class="labeled"><span class="caret"></span> &nbsp;&nbsp; ' . $names . '</div><div class="content"' . $hide. '>' . PHP_EOL;
             foreach ($attributes as $key => $values)
             {

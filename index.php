@@ -16,8 +16,22 @@ spl_autoload_register(function ($name) {
      *
      */
 });
-new BittrEHandler\Modules\Init();
-$_POST = ['hey' => ['foo' => 'bar']];
+new BittrEHandler\Modules\Init(
+
+
+);
+
+class Foo
+{
+    private $string = 'string';
+    protected $int = 10;
+    public $array = [
+        'foo'   => 'bar'
+    ];
+    protected static $bool = false;
+}
+$_POST = ['foo' => 22, 'bar' => new Foo()];
+
 new \BittrEHandler\Modules\Dump('Hey man');
 
 
