@@ -66,15 +66,7 @@ class Contents
 
         return '<div class="logo tops">
                     <span class="logo-img"></span>
-                    <span class="theme">
-                        <div class="dropdown">
-                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Theme: ' . $selected_theme . '
-                            <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">' . $select . '</ul>
-                        </div>
-                    </span>
+                    <span class="theme">Theme: ' . $selected_theme . '</span>
                 </div>
                 <div class="hints tops">
                     <div class="type type-object">OBJECT</div>
