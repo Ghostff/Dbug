@@ -21,11 +21,12 @@
 .header .logo span, .header .tops {
     display: inline-block;
     margin-left: 20px;
+    vertical-align: middle;
 }
-.header .logo img {
+.header .logo-img{
     width: 80px;
     height: 30px;
-    margin-top: -4px;
+    margin-top: -2px;
 }
 .header .logo span button, .header .logo  span button:active, .header .logo  span button:active:hover{
     border: none;

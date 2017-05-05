@@ -138,15 +138,22 @@ class Highlight
      *
      * @param int $line
      * @param array $attributes
+     * @param bool $override
      */
-    public static function setHighlight(int $line, array $attributes = [])
+    public static function setHighlight(int $line, array $attributes = [], bool $override = false)
     {
+        if( $override)
+        {
+            self::$highlight = [];
+        }
         self::$highlight[$line] = $attributes;
     }
 
 
     /**
      * @param string $name
+     * @param string $default
+     * @return int (2 used $name, 1 used $default, 0 none, -1 no theme.json file found)
      */
     public static function theme(string $name, string $default = null): int
     {

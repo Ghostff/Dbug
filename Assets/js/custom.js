@@ -1,3 +1,6 @@
+
+
+
 $(document).ready(function(){
     $(".global .labeled").click(function(){
         $(this).siblings('.content').slideToggle("fast");
@@ -25,9 +28,9 @@ $('.content-nav .top-tog').click(function () {
 
 $('.loop-tog').click(function() {
     $('.code-view table .last-map').attr('style', '');
-   var toggle = $(this).attr('data-id');
-   $('.code-view, .browser-view').hide()
-   $('#' + toggle).show();
+    var toggle = $(this).attr('data-id');
+    $('.code-view, .browser-view').hide()
+    $('#' + toggle).show();
     heightloop(toggle);
 });
 
@@ -39,5 +42,3 @@ $('.contents .right .global .listed .caret').click(function () {
 })
 
 heightloop('proc-main');
-
-

@@ -15,9 +15,9 @@ class Contents
 
     private static function chunk($file, $line)
     {
-        $chunk_count = Init::$config['chunk'];
+        $chunk_count = Init::$chunk;
         $codes = file($file);
-        $_code = array();
+        $_code = [];
 
         $up = ($line - 1) - 1;
         $down = ($line - 1) + 1;
@@ -39,7 +39,7 @@ class Contents
             $down++;
         }
         Highlight::showLineNumber(true, $start_number);
-        Highlight::setHighlight($line, ['class' => 'highlighted']);
+        Highlight::setHighlight($line, ['class' => 'highlighted'], true);
         $_code[$line-1] = $codes[$line-1];
         ksort($_code);
 
@@ -65,7 +65,7 @@ class Contents
         }
 
         return '<div class="logo tops">
-                    <span class="logo"><img src="../../Assets/img/' . $selected_theme . '.png"></span>
+                    <span class="logo-img"></span>
                     <span class="theme">
                         <div class="dropdown">
                           <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -89,7 +89,7 @@ class Contents
                 ';
     }
 
-    public static function left($file, $line, $code, $trace = array())
+    public static function left($file, $line, $code, $trace = [])
     {
         $file_name = basename($file);
         $file_path = rtrim($file, $file_name);
@@ -102,13 +102,35 @@ class Contents
         for ($i = $_trace; $i >= 0; $i--)
         {
             $traces = $trace[$i];
-            $peices = explode('\\', $traces['class']);
-            $class = end($peices);
-            $namespace = str_replace('\\', ' <b>\</b> ', rtrim($traces['class'], $class));
+            if(isset($traces['class']))
+            {
+                if ( ! isset($traces['line']))
+                {
+                    continue;
+                }
+
+                $peaces = explode('\\', $traces['class']);
+                $class = end($peaces);
+                $namespace = str_replace('\\', ' <b>\</b> ', rtrim($traces['class'], $class));
+                $type = $traces['type'];
+                $function = $traces['function'];
+                $file = $traces['file'];
+                $line = $traces['line'];
+            }
+            else
+            {
+                $class = $traces['function'];
+                $namespace = '$_GLOBAL';
+                $type = '()';
+                $file = $traces['file'];
+                $line = $traces['line'];
+                $function = '';
+            }
+
             $traced .= '<div class="function loop-tog" data-id="proc-' . $i . '">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
-                                <span class="name">' . $class . ' <b>' . $traces['type'] . '</b> ' . $traces['function'] . '<i class="line">' . $traces['line'] . '</i></span>
+                                <span class="name">' . $class . ' <b>' . $type . '</b> ' . $function . '<i class="line">' . $line . '</i></span>
                                 <span class="path">' . $namespace . '</span> 
                             </div>   
                         </div>';
@@ -124,9 +146,14 @@ class Contents
                             </div>
                        </div>';
 
-            $_code = self::chunk($traces['file'], $traces['line']);
+
+            $_code = self::chunk($file, $line);
+
+
+            new Dump($_code);
             self::$contents[] = '<div class="code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
         }
+
 
         return '<div class="content-nav">
                     <div class="top-tog active" id="location">Location</div> 
@@ -161,12 +188,13 @@ class Contents
             $output = '<h3 style="text-align: center;">No output sent to buffer</h3>';
         }
 
-
+        $g = 'php ' . $type . ' ' . $message;
+        $s = '[php] ' . $message;
         return '<div class="exception-type">
                     <span>' . $type . '</span>
                     <div class="action">
-                        <span title="lookup error message in stackoveflow" url="http://stackoverflow.com/search?q=' . $message . '"><span class="caret"></span> stackoverflow</span>
-                        <span title="lookup error message in google" url="https://www.google.com/search?q=' . $message . '"><span class="caret"></span> google</span>
+                        <span title="lookup error message in stackoveflow" url="http://stackoverflow.com/search?q=' . $s . '"><span class="caret"></span> stackoverflow</span>
+                        <span title="lookup error message in google" url="https://www.google.com/search?q=' . $g . '"><span class="caret"></span> google</span>
                     </div>
                 </div>
                 <div class="exception-msg">' . self::highlight($message) . '</div>
@@ -219,10 +247,8 @@ class Contents
                         <title>Bittr Debug</title>
                         <link href="%1$s/Assets/css/bootstrap.css" rel="stylesheet">
                         <link href="%1$s/Assets/css/jquery.mCustomScrollbar.css" rel="stylesheet">
-                        <link href="%1$s/Assets/css/custom.css" rel="stylesheet">
                         <link href="%s/Assets/css/' . Init::$theme . '.css" rel="stylesheet">
                         <script src="%1$s/Assets/js/jquery.min.js"></script>
-                        <script src="%1$s/Assets/js/bootstrap.min.js"></script>
                         <!--[if lt IE 9]>
                           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
                           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>

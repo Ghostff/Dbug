@@ -8,6 +8,10 @@ body{
 .header .type {
     color: #fff;
 }
+.header .logo .logo-img {
+    background: url("../img/default.png") no-repeat;
+    background-size: contain;
+}
 .header .logo span button, .header .logo  span button:active, .header .logo  span button:active:hover{
     color: #555 !important;
     background: transparent !important;
@@ -20,7 +24,7 @@ body{
 }
 .header .logo  span .dropdown-menu .divider {
     background-color: transparent;
-    border-top: 1px solid #fff;
+    border-top: 1px solid #ddd;
 }
 .contents {
     border-top: 1px solid #fff;

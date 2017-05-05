@@ -16,15 +16,14 @@ spl_autoload_register(function ($name) {
      *
      */
 });
-new BittrEHandler\Modules\Init(
+echo 111;
+new BittrEHandler\Modules\Init('prettify', 'default', 20);
 
-
-);
 
 class Foo
 {
     private $string = 'string';
-    protected $int = 10;
+    protected $int = 20;
     public $array = [
         'foo'   => 'bar'
     ];
@@ -32,7 +31,20 @@ class Foo
 }
 $_POST = ['foo' => 22, 'bar' => new Foo()];
 
-new \BittrEHandler\Modules\Dump('Hey man');
+function renderError()
+{
+    trigger_error("Cannot divide by zero", E_USER_ERROR);
+}
+function duplicateKey()
+{
+    renderError();
+}
+
+#duplicateKey();
+\BittrEHandler\Modules\Dump::error();
+
+
+
 
 
 

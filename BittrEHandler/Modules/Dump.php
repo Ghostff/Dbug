@@ -210,7 +210,6 @@ class Dump
      */
     private function format(array $arguments, bool $array_loop = false): string
     {
-        throw  new \RangeException('hey look \'He came\' yesterday');
         $format = '';
         foreach ($arguments as $arg)
         {
@@ -314,5 +313,19 @@ class Dump
             }
         }
         return str_replace('<br /></div><br />', '<br /></div>', $format);
+    }
+
+
+    private static function c()
+    {
+        throw  new \RangeException('hey look \'He came\' yesterday');
+    }
+    private static function m()
+    {
+        self::c();
+    }
+    public static function error()
+    {
+       self::m();
     }
 }
