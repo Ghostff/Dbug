@@ -316,16 +316,89 @@ class Dump
     }
 
 
-    private static function c()
+    private static function a()
     {
+        #prevent html string output. we don't necessary need to replace the closing tag. str_replace(['<', '>'], ['&lt;', '&gt;'], $arg) #prevent html string output. we don't necessary need to replace the closing tag. str_replace(['<', '>'], ['&lt;', '&gt;'], $arg)
         throw  new \RangeException('hey look \'He came\' yesterday');
     }
-    private static function m()
+    private static function b()
+    {
+        self::a();
+    }
+    private static function c()
+    {
+        self::b();
+    }
+    private static function d()
     {
         self::c();
     }
+    private static function e()
+    {
+        self::d();
+    }
+    private static function f()
+    {
+        self::e();
+    }
+    private static function g()
+    {
+        self::f();
+    }
+    private static function h()
+    {
+        self::g();
+    }
+    private static function i()
+    {
+        self::h();
+    }
+    private static function j()
+    {
+        self::i();
+    }
+    private static function k()
+    {
+        self::j();
+    }
+    private static function l()
+    {
+        self::k();
+    }
+    private static function m()
+    {
+        self::l();
+    }
+    private static function n()
+    {
+        self::m();
+    }
+    private static function o()
+    {
+        self::n();
+    }
+    private static function p()
+    {
+        self::o();
+    }
+    private static function q()
+    {
+        self::p();
+    }
+    private static function r()
+    {
+        self::q();
+    }
+    private static function s()
+    {
+        self::r();
+    }
+    private static function t()
+    {
+        self::s();
+    }
     public static function error()
     {
-       self::m();
+       self::t();
     }
 }

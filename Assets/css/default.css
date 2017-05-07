@@ -102,16 +102,16 @@ body{
 }
 .code-view table tr td:first-child {
     background: #efefef;
+    color: #666;
     border-right: 1px solid #ddd;
 }
 .code-view table .highlighted td{
-    background: rgba(131, 131, 131, 0.5);
-    border-top: 1px solid #9b9b9b;
-    border-bottom: 1px solid #9b9b9b;
+    background: #efefef;
+    border-top: 1px solid #d0d0d0;
+    border-bottom: 1px solid #d0d0d0;
 }
 .code-view table .highlighted td:first-child{
-    background: rgb(155, 155, 155);
-    color: #000;
+    color: #af1f42;
 }
 .contents .right {
     border-left: 1px solid #ddd;
@@ -127,7 +127,7 @@ body{
     border-top: 1px solid #ddd;
 }
 .contents .listed .index {
-    color: #295270;
+    color: #356c94;
 }
 .type-object {background:#5ba415}
 .type-null {background:#6789f8}

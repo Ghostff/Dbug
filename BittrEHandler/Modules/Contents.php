@@ -1,13 +1,6 @@
 <?php
-/**
- * quoteed by PhpStorm.
- * User: Chrys
- * Date: 4/17/2017
- * Time: 12:38 PM
- */
 
 namespace BittrEHandler\Modules;
-
 
 class Contents
 {
@@ -91,14 +84,14 @@ class Contents
         $memory = '';
         $_trace = count($trace) - 1;
 
-        for ($i = $_trace; $i >= 0; $i--)
+        for ($i = 0; $i <= $_trace; $i++)
         {
             $traces = $trace[$i];
             if(isset($traces['class']))
             {
                 if ( ! isset($traces['line']))
                 {
-                    continue;
+                   continue;
                 }
 
                 $peaces = explode('\\', $traces['class']);
@@ -122,7 +115,7 @@ class Contents
             $traced .= '<div class="function loop-tog" data-id="proc-' . $i . '">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
-                                <span class="name">' . $class . ' <b>' . $type . '</b> ' . $function . '<i class="line">' . $line . '</i></span>
+                                <span class="name">' . $class . '<b>' . $type . '</b>' . $function . '<i class="line">' . $line . '</i></span>
                                 <span class="path">' . $namespace . '</span> 
                             </div>   
                         </div>';
@@ -138,11 +131,7 @@ class Contents
                             </div>
                        </div>';
 
-
             $_code = self::chunk($file, $line);
-
-
-            new Dump($_code);
             self::$contents[] = '<div class="code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
         }
 
@@ -161,7 +150,7 @@ class Contents
                                 <span class="path">' . $file_path . '</span>             
                             </div>   
                         </div>
-                        <div class="location loop-tog active" data-id="proc-buffer" style="position: relative; top: 83vh;">
+                        <div class="location loop-tog active" data-id="proc-buffer">
                             <div class="holder">
                                 <span class="name" style="padding-left: 0px;">Output Buffer</span>
                                 <span class="path">Toggle contents sent to output buffer</span>             
@@ -191,7 +180,7 @@ class Contents
                 </div>
                 <div class="exception-msg">' . self::highlight($message) . '</div>
                 <div class="code-view" id="proc-main">' . Highlight::render($code) . '</div>
-                <div class="browser-view" id="proc-buffer">' . $output . '</div>' . implode(self::$contents);
+                <div class="browser-view" id="proc-buffer" style="overflow:auto">' . $output . '</div>' . implode(self::$contents);
         exit;
     }
 
@@ -237,10 +226,12 @@ class Contents
                         <meta http-equiv="X-UA-Compatible" content="IE=edge">
                         <meta name="viewport" content="width=device-width, initial-scale=1">
                         <title>Bittr Debug</title>
+                        <style>
+                            @font-face{font-family:InconsolataRegular;src:url(%1$sAssets/fonts/InconsolataRegular.ttf)}
+                            @font-face{font-family:InconsolataBold;src:url(%1$sAssets/fonts/InconsolataBold.ttf)}
+                        </style>
                         <link href="%1$s/Assets/css/bootstrap.css" rel="stylesheet">
-                        <link href="%1$s/Assets/css/jquery.mCustomScrollbar.css" rel="stylesheet">
                         <link href="%s/Assets/css/' . Init::$theme . '.css" rel="stylesheet">
-                        <script src="%1$s/Assets/js/jquery.min.js"></script>
                         <!--[if lt IE 9]>
                           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
                           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -256,8 +247,7 @@ class Contents
                                 <div class="col-md-3 attr right">%s</div>
                             </div>
                         </div>
-                        <script src="%1$s/Assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-                        <script src="%1$s/Assets/js/custom.js"></script>
+                         <script src="%1$s/Assets/js/jquery.min.js"></script>
                     </body>
                </html>';
     }

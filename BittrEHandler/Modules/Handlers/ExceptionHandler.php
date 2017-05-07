@@ -26,7 +26,7 @@ class ExceptionHandler
             $type = get_class($e);
         }
         echo sprintf(Contents::template(),
-            'http://localhost/Debug/',
+            'http://Debug/',
             Contents::top(),
             Contents::left($e->getFile(), $e->getLine(), $e->getCode(), $e->getTrace()),
             Contents::middle($type, $e->getMessage(), $e->getFile(), $e->getLine()),
