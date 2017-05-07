@@ -17,7 +17,7 @@ spl_autoload_register(function ($name) {
      */
 });
 echo 111;
-new BittrEHandler\Modules\Init('prettify', 'bittr', 25);
+new BittrEHandler\Modules\Init('prettify', 'bittr', 2);
 
 
 class Foo

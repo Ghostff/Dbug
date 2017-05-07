@@ -131,7 +131,8 @@ class Contents
                             </div>
                        </div>';
 
-            $_code = self::chunk($file, $line);
+            $_code = rtrim(self::chunk($file, $line));
+
             self::$contents[] = '<div class="code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
         }
 
@@ -162,7 +163,7 @@ class Contents
 
     public static function middle($type, $message, $file, $line)
     {
-        $code = self::chunk($file, $line);
+        $code = rtrim(self::chunk($file, $line));
         $output = ob_get_clean();
         if ($output == '')
         {
