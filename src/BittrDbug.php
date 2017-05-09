@@ -76,7 +76,7 @@ class BittrDbug
             $type = get_class($e);
         }
 
-        $template = '[%s] [%s] %s %s:%d [%s]' . PHP_EOL;
+        $template = '[%s] [%s] --- %s --- %s:%d [%s]' . PHP_EOL;
         $new_trace = '';
 
         $trace = $e->getTrace();
@@ -339,8 +339,8 @@ class BittrDbug
             $traced .= '<div class="function loop-tog" data-id="proc-' . $i . '">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
-                                <span class="name">' . $class . '<b>' . $type . '</b>' . $function . '<i class="line">' . $line . '</i></span>
-                                <span class="path">' . $namespace . '</span> 
+                                <span class="name">' . $namespace. $class . '<b>' . $type . '</b>' . $function . '<i class="line">' . $line . '</i></span>
+                                <span class="path">' . $file . '</span> 
                             </div>   
                         </div>';
 
@@ -458,8 +458,8 @@ class BittrDbug
         $theme_file = __DIR__ . $DIRS . 'Styles' . $DIRS;
         $theme = file_get_contents($theme_file . $this->theme . '.css');
         $image = base64_encode(file_get_contents($theme_file . $this->theme . '.png'));
-        $font_reg = base64_encode(file_get_contents($theme_file . $DIRS . 'fonts' . $DIRS . 'InconsolataRegular.ttf'));
-        $font_bld = base64_encode(file_get_contents($theme_file . $DIRS . 'fonts' . $DIRS . 'InconsolataBold.ttf'));
+        $font_reg = base64_encode(file_get_contents($theme_file . 'fonts' . $DIRS . 'InconsolataRegular.ttf'));
+        $font_bld = base64_encode(file_get_contents($theme_file . 'fonts' . $DIRS . 'InconsolataBold.ttf'));
 
         return '<!DOCTYPE html>
 <html lang="en">
