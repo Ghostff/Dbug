@@ -7,7 +7,7 @@ spl_autoload_register(function ($name) {
 
 });
 
-new Debug\Init('prettify', 'yola', 2);
+new Debug\BittrDbug('prettify', 'yola', 2);
 
 echo 111;
 class Foo
@@ -19,7 +19,7 @@ class Foo
     ];
     protected static $bool = false;
 }
-$_POST = ['foo' => 22, 'bar' => new Foo()];
+#$_POST = ['foo' => 22, 'bar' => new Foo()];
 
 function renderError()
 {

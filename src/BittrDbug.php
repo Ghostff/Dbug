@@ -2,13 +2,146 @@
 
 namespace Debug;
 
-class Contents
+class BittrDbug
 {
-    private static $contents = [];
+    private $contents = [];
+    
+    private $type = null;
 
-    private static function chunk($file, $line)
+    private $chunk = 0;
+
+    private $time = 0;
+
+    private $theme = null;
+
+    private $path = null;
+
+    public function __construct($type = null, string $theme_or_log_path = null, int $line_range = 20)
     {
-        $chunk_count = Init::$chunk;
+        ob_start();
+
+        if ( $type == null || is_string($type))
+        {
+            $this->path = $theme_or_log_path;
+            if ($type == 'prettify')
+            {
+                $this->theme = $theme_or_log_path;
+                if (Highlight::theme($theme_or_log_path, 'yola') == 1)
+                {
+                    $this->theme = 'yola';
+                }
+            }
+            $type = [$this, $type];
+        }
+
+        $this->chunk = $line_range;
+
+        $this->time = microtime(true);
+        set_exception_handler($type);
+        set_error_handler([$this, 'handle']);
+
+    }
+
+    public function prettify(\Throwable $e)
+    {
+        $type = $this->type;
+        if ($type !== null)
+        {
+            $this->type = null;
+        }
+        else
+        {
+            $type = get_class($e);
+        }
+
+        $content = sprintf($this->template(),
+            $this->top(),
+            $this->left($e->getFile(), $e->getLine(), $e->getCode(), $e->getTrace()),
+            $this->middle($type, $e->getMessage(), $e->getFile(), $e->getLine()),
+            $this->right()
+        );
+
+        echo $this->html($content); exit;
+    }
+
+    public function fileLog(\Throwable $e)
+    {
+        $type = $this->type;
+        if ($type !== null)
+        {
+            $this->type = null;
+        }
+        else
+        {
+            $type = get_class($e);
+        }
+
+        $template = '[%s] [%s] %s %s:%d [%s]' . PHP_EOL;
+        $new_trace = '';
+
+        $trace = $e->getTrace();
+
+        $_trace = count($trace) - 1;
+        for ($i = $_trace; $i >= 0; $i--)
+        {
+            $t = $trace[$i];
+            if ( ! isset($t['file']))
+            {
+                continue;
+            }
+
+            if (isset($t['type']))
+            {
+                $peaces = explode('\\', $t['class']);
+                $class = end($peaces);
+                $function = $class . $t['type'] . $t['function'];
+            }
+            else
+            {
+                $function = $t['function'];
+            }
+
+            $new_trace .= '    [' . $function. '] ' . $t['file'] . ':' . $t['line'] . PHP_EOL;
+        }
+
+        $new_trace = PHP_EOL . $new_trace;
+        $file = sprintf($template, date("d-m-Y H:i:s"), $type, $e->getMessage(), $e->getFile(), $e->getLine(), $new_trace);
+        file_put_contents($this->path, $file, FILE_APPEND);
+        ob_end_clean();
+    }
+
+    public function Handle(int $severity, string $message, string $filename, int $lineno)
+    {
+        $l = error_reporting();
+        if ( $l & $severity ) {
+            switch ($severity) {
+                case E_USER_ERROR:
+                    $type = 'Fatal Error';
+                    break;
+                case E_USER_WARNING:
+                case E_WARNING:
+                    $type = 'Warning';
+                    break;
+                case E_USER_NOTICE:
+                case E_NOTICE:
+                case @E_STRICT:
+                    $type = 'Notice';
+                    break;
+                case @E_RECOVERABLE_ERROR:
+                    $type = 'Catchable';
+                    break;
+                default:
+                    $type = 'Unknown Error';
+                    break;
+            }
+        }
+        $this->type = $type;
+        throw new \ErrorException($message, 0, $severity, $filename, $lineno);
+    }
+
+    private function chunk(string $file, int $line): string
+    {
+        $chunk_count = $this->chunk;
         $codes = file($file);
         $_code = [];
 
@@ -39,15 +172,106 @@ class Contents
         return implode($_code);
     }
 
-    public static function highlight($message)
+    private function highlight(string $message): string
     {
         return preg_replace('/(\'(.*?)\'|"(.*?)")/s', '<span class="char-string">$1</span>', $message);
     }
 
-    public static function top()
+    private function objects($objects): string
     {
+        $obj = new \ReflectionObject($objects);
+        $temp = '';
+        $format = '';
 
-        $selected_theme = Init::$theme;
+        foreach ($obj->getProperties() as $size => $prop)
+        {
+            if ($prop->isPrivate())
+            {
+                $format .= '<span class="private">private&nbsp;&nbsp; </span> : ';
+            }
+            elseif ($prop->isProtected())
+            {
+                $format .= '<span class="protected">protected </span> : ';
+            }
+            elseif ($prop->isPublic())
+            {
+                $format .= '<span class="private">private&nbsp;&nbsp;&nbsp; </span> : ';
+            }
+
+            $prop->setAccessible(true);
+            $format .= $this->get($prop->getValue($objects)) . '; <br />';
+        }
+
+        $temp .= '<span class="char-object">' . $obj->getName() . '</span> [  <span class="caret"></span>  <div class="env-arr">';
+
+        $temp .= $format . '</div>]';
+        return $temp;
+    }
+
+    private function get($arguments, bool $array_loop = false): string
+    {
+        $arguments = [$arguments];
+        $format = '';
+        foreach ($arguments as $arg)
+        {
+            $type = gettype($arg);
+            if ($type == 'string')
+            {
+                $arg =  str_replace('<', '&lt;', $arg);
+                $format = '<span class="char-string">' . $arg . '</span>';
+            }
+            elseif ($type == 'integer')
+            {
+                $format = '<span class="char-integer">' . $arg . '</span>';
+            }
+            elseif ($type == 'boolean')
+            {
+                $arg = ($arg) ? 'true' : 'false';
+                $format = '<span class="char-bool">' . $arg . '</span>';
+            }
+            elseif ($type == 'double')
+            {
+                $format = '<span class="char-double">' . $arg . '</span>';
+            }
+            elseif ($type == 'NULL')
+            {
+                $format = '<span class="char-null">null</span>';
+            }
+            elseif ($type == 'float')
+            {
+                $format = '<span class="char-float">' . $arg . '</span>';
+            }
+            elseif ($type == 'array')
+            {
+                $format .= '[  <span class="caret"></span>  <div class="env-arr">';
+
+                foreach ($arg as $key => $value)
+                {
+                    $key = str_replace('<', '&lt;', $key);
+                    if ( is_array($value))
+                    {
+                        $format .= '<span class="key">' . $key . '</span> : ' . $this->get($value, true) . ',<br />';
+                    }
+                    else
+                    {
+                        $format .= '<span class="key">' . $key . '</span> : ' . $this->get($value, true) . ',<br/>';
+                    }
+                }
+
+                $format .= '</div>]';
+            }
+            elseif ($type == 'object')
+            {
+                $format .= $this->objects($arg);
+            }
+        }
+
+        return $format;
+    }
+
+    private function top(): string
+    {
+        $selected_theme = $this->theme;
         $theme_file = __DIR__ . '/theme.json';
         $_theme = file_get_contents($theme_file);
         $theme = json_decode($_theme, true);
@@ -74,12 +298,12 @@ class Contents
         ';
     }
 
-    public static function left($file, $line, $code, $trace = [])
+    private function left(string $file, string $line, int $code, array $trace = [])
     {
         $file_name = basename($file);
         $file_path = rtrim($file, $file_name);
 
-        $start = Init::$time;
+        $start = $this->time;
         $traced = '';
         $memory = '';
         $_trace = count($trace) - 1;
@@ -87,13 +311,13 @@ class Contents
         for ($i = 0; $i <= $_trace; $i++)
         {
             $traces = $trace[$i];
+            if ( ! isset($traces['line']))
+            {
+                continue;
+            }
+
             if(isset($traces['class']))
             {
-                if ( ! isset($traces['line']))
-                {
-                   continue;
-                }
-
                 $peaces = explode('\\', $traces['class']);
                 $class = end($peaces);
                 $namespace = str_replace('\\', ' <b>\</b> ', rtrim($traces['class'], $class));
@@ -104,10 +328,6 @@ class Contents
             }
             else
             {
-                if ( ! isset($traces['line']))
-                {
-                    continue;
-                }
                 $class = $traces['function'];
                 $namespace = '$_GLOBAL';
                 $type = '()';
@@ -135,9 +355,9 @@ class Contents
                             </div>
                        </div>';
 
-            $_code = rtrim(self::chunk($file, $line));
+            $_code = rtrim($this->chunk($file, $line));
 
-            self::$contents[] = '<div class="code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
+            $this->contents[] = '<div class="code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
         }
 
 
@@ -165,9 +385,9 @@ class Contents
                 </div> ';
     }
 
-    public static function middle($type, $message, $file, $line)
+    private function middle(string $type, string $message, string $file, int $line): string
     {
-        $code = rtrim(self::chunk($file, $line));
+        $code = rtrim($this->chunk($file, $line));
         $output = ob_get_clean();
         if ($output == '')
         {
@@ -183,24 +403,22 @@ class Contents
                         <span title="lookup error message in google" url="https://www.google.com/search?q=' . $g . '"><span class="caret"></span> google</span>
                     </div>
                 </div>
-                <div class="exception-msg">' . self::highlight($message) . '</div>
+                <div class="exception-msg">' . $this->highlight($message) . '</div>
                 <div class="code-view" id="proc-main">' . Highlight::render($code) . '</div>
-                <div class="browser-view" id="proc-buffer" style="overflow:auto">' . $output . '</div>' . implode(self::$contents);
-        exit;
+                <div class="browser-view" id="proc-buffer" style="overflow:auto">' . $output . '</div>' . implode($this->contents);
     }
 
-    public static function right()
+    private function right(): string
     {
-
         $globals = array(
-            'Server' => isset($_SERVER) ? $_SERVER : array(),
-            'Get' => isset($_GET) ? $_GET : array(),
-            'Post' => isset($_POST) ? $_POST : array(),
-            'Files' => isset($_FILES) ? $_FILES : array(),
-            'Request' => isset($_REQUEST) ? $_REQUEST : array(),
-            'Session' => isset($_SESSION) ? $_SESSION : array(),
-            'Cookie' => isset($_COOKIE) ? $_COOKIE : array(),
-            'Env' => isset($_ENV) ? $_ENV : array('https://edmondscommerce.github.io/php/php-custom-error-and-exception-handler-make-php-stricter.html')
+            'Server' => $_SERVER ?? [],
+            'Get' => $_GET ?? [],
+            'Post' => $_POST ?? [],
+            'Files' => $_FILES ?? [],
+            'Request' => $_REQUEST ?? [],
+            'Session' => $_SESSION ?? [],
+            'Cookie' => $_COOKIE ?? [],
+            'Env' => $_ENV ?? []
         );
 
         $side = '';
@@ -213,7 +431,7 @@ class Contents
             {
                 $side .= '<div class="listed">
                             <span class="index">' . $key . '</span> :
-                            <span class="value">' . Type::get($values) . '</span>
+                            <span class="value">' . $this->get($values) . '</span>
                         </div>';
             }
             $side .= '</div></div>';
@@ -222,7 +440,7 @@ class Contents
         return $side;
     }
 
-    public static function template()
+    private function template(): string
     {
         return '<div class="header">%s</div>
         <div class="container-fluid">
@@ -234,12 +452,12 @@ class Contents
         </div>';
     }
 
-    public static function html(string $content)
+    private function html(string $content): string
     {
         $DIRS = DIRECTORY_SEPARATOR;
         $theme_file = __DIR__ . $DIRS . 'Styles' . $DIRS;
-        $theme = file_get_contents($theme_file . Init::$theme . '.css');
-        $image = base64_encode(file_get_contents($theme_file . Init::$theme . '.png'));
+        $theme = file_get_contents($theme_file . $this->theme . '.css');
+        $image = base64_encode(file_get_contents($theme_file . $this->theme . '.png'));
         $font_reg = base64_encode(file_get_contents($theme_file . $DIRS . 'fonts' . $DIRS . 'InconsolataRegular.ttf'));
         $font_bld = base64_encode(file_get_contents($theme_file . $DIRS . 'fonts' . $DIRS . 'InconsolataBold.ttf'));
 
@@ -249,7 +467,7 @@ class Contents
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Bittr Debug</title>
+        <title>BittrDbug Debug</title>
         <style>
             @font-face{font-family:InconsolataRegular;src:url(data:font/truetype;charset=utf-8;base64,' . $font_reg . ') format("truetype");}
             @font-face{font-family:InconsolataBold;src:url(data:font/truetype;charset=utf-8;base64,' . $font_bld . ') format("truetype");}
