@@ -1,25 +1,15 @@
 <?php
 
-ob_start();
+
 
 spl_autoload_register(function ($name) {
-    include str_replace('\\', DIRECTORY_SEPARATOR, $name) . '.php';
-    if ($name)
-    {
-        if (3 == 13)
-        {
-            new \BittrEHandler\Modules\Dump('working on test');
-        }
-    }
-    /**
-     * check this
-     *
-     */
+    include str_replace(['\\', 'Debug'], [DIRECTORY_SEPARATOR, 'src'], $name) . '.php';
+
 });
+
+new Debug\Init('prettify', 'yola', 2);
+
 echo 111;
-new BittrEHandler\Modules\Init('prettify', 'bittr', 2);
-
-
 class Foo
 {
     private $string = 'string';

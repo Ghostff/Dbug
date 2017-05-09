@@ -10,7 +10,7 @@ body{
     color: #fff;
 }
 .header .logo .logo-img {
-    background: url("../img/yola.png") no-repeat;
+    background: url("yola.png") no-repeat;
     background-size: contain;
 }
 .header .logo span button, .header .logo  span button:active, .header .logo  span button:active:hover{

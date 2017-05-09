@@ -1,8 +1,6 @@
 <?php
 
-namespace BittrEHandler\Modules\Handlers;
-
-use BittrEHandler\Modules\Contents;
+namespace Debug\Handlers;
 
 class ErrorHandler
 {

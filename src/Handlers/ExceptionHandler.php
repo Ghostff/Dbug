@@ -6,11 +6,11 @@
  * Time: 1:15 PM
  */
 
-namespace BittrEHandler\Modules\Handlers;
+namespace Debug\Handlers;
 
 
-use BittrEHandler\Modules\Contents;
-use BittrEHandler\Modules\Init;
+use Debug\Contents;
+use Debug\Init;
 
 class ExceptionHandler
 {
@@ -25,13 +25,14 @@ class ExceptionHandler
         {
             $type = get_class($e);
         }
-        echo sprintf(Contents::template(),
-            'http://Debug/',
+        $content = sprintf(Contents::template(),
             Contents::top(),
             Contents::left($e->getFile(), $e->getLine(), $e->getCode(), $e->getTrace()),
             Contents::middle($type, $e->getMessage(), $e->getFile(), $e->getLine()),
             Contents::right()
         );
+
+        echo Contents::html($content); exit;
     }
 
     public static function fileLog(\Throwable $e)

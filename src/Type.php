@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Chrys
- * Date: 4/17/2017
- * Time: 3:44 PM
- */
 
-namespace BittrEHandler\Modules;
+namespace Debug;
 
 
 class Type

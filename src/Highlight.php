@@ -1,6 +1,6 @@
 <?php
 
-namespace BittrEHandler\Modules;
+namespace Debug;
 
 class Highlight
 {
