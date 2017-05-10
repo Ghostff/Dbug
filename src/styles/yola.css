@@ -107,12 +107,6 @@ body {
 .left .content-body .loops div .path {
     color: #95a1a9
 }
-.active-desc {
-    background: #343c45;
-    border-top: 1px solid #555e65;
-    border-bottom: 1px solid #555e65;
-
-}
 .left .content-body .loops .id {
     background: #14171d
 }
@@ -156,6 +150,11 @@ body {
 
 .code-view table .highlighted td:first-child {
     color: #ec4c4e
+}
+
+.active-desc {
+    background: #343c45;
+    border-top: 1px solid #555e65;
 }
 
 .contents .right .global {

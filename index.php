@@ -7,7 +7,7 @@ spl_autoload_register(function ($name) {
 
 });
 
-new Debug\BittrDbug(\Debug\BittrDbug::PRETTIFY, 'yola', 2);
+new Debug\BittrDbug(\Debug\BittrDbug::PRETTIFY, 'default', 50);
 
 echo 111;
 class Foo
@@ -30,7 +30,8 @@ function duplicateKey()
     renderError();
 }
 
-#duplicateKey();
+var_dump(new Foo());
+duplicateKey();;
 \BittrEHandler\Modules\Dump::error();
 
 

@@ -434,11 +434,11 @@ class BittrDbug
         );
 
         $side = '';
-        $count = 0;
+        $count = 1;
         foreach ($globals as $names => $attributes)
         {
-            $hide = ($count > 0) ? ' style="display:none;"' : '';
-            $side .= '<div class="global"><div class="labeled"><span class="caret"></span> &nbsp;&nbsp; ' . $names . '</div><div class="content"' . $hide. '>' . PHP_EOL;
+            $side .= '<div class="global"><div class="labeled" id="tog-' . $count . '"><span class="caret"></span> &nbsp;&nbsp; ' . $names . '</div>
+                    <div class="content" style="display:none;">' . PHP_EOL;
             foreach ($attributes as $key => $values)
             {
                 $side .= '<div class="listed">
