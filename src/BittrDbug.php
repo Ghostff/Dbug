@@ -16,6 +16,9 @@ class BittrDbug
 
     private $path = null;
 
+    const FILE_LOG = 'fileLog';
+
+    const PRETTIFY = 'prettify';
 
     public function __construct($type = null, string $theme_or_log_path = null, int $line_range = 20)
     {
@@ -339,7 +342,7 @@ class BittrDbug
 
             $dsc = 'title="'. $namespace . '" data-file="' . $file . '"data-class="' . $class . '"
                     data-type="' . $type . '" data-function="' . $function . '" data-line="' . $line . '"';
-            $traced .= '<div class="function loop-tog active" data-id="proc-' . $i . '" ' . $dsc . '>
+            $traced .= '<div class="function loop-tog" data-id="proc-' . $i . '" ' . $dsc . '>
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
                                 <span class="name">'. $class . '<b>' . $type . '</b>' . $function . '<i class="line">' . $line . '</i></span>
@@ -371,14 +374,14 @@ class BittrDbug
                 </div>
                 <div class="content-body">
                     <div class="loops">
-                        <div class="location loop-tog" data-id="proc-main" data-line="' . $line . '" data-file="' . $file . '">
+                        <div class="location loop-tog active" data-id="proc-main" data-line="' . $line . '" data-file="' . $file . '">
                             <div class="id loop-tog code">' . $code . '</div>
                             <div class="holder">
                                 <span class="name">' . $file_name . '<i class="line">' . $line . '</i> </span>
                                 <span class="path">' . $file_path . '</span>             
                             </div>   
                         </div>
-                        <div class="location loop-tog " data-id="proc-buffer">
+                        <div class="location loop-tog active" data-id="proc-buffer">
                             <div class="holder">
                                 <span class="name" style="padding-left: 0px;">Output Buffer</span>
                                 <span class="path">Toggle contents sent to output buffer</span>             
