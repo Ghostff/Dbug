@@ -31,7 +31,7 @@ function duplicateKey()
 }
 
 var_dump(new Foo());
-duplicateKey();;
+#duplicateKey();;
 \BittrEHandler\Modules\Dump::error();
 
 
