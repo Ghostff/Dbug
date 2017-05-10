@@ -320,7 +320,7 @@ class BittrDbug
             {
                 $peaces = explode('\\', $traces['class']);
                 $class = end($peaces);
-                $namespace = str_replace('\\', ' <b>\</b> ', rtrim($traces['class'], $class));
+                $namespace = str_replace('\\', '\\', rtrim($traces['class'], $class));
                 $type = $traces['type'];
                 $function = $traces['function'];
                 $file = $traces['file'];
@@ -329,17 +329,17 @@ class BittrDbug
             else
             {
                 $class = $traces['function'];
-                $namespace = '$_GLOBAL';
+                $namespace = '_GLOBAL';
                 $type = '()';
                 $file = $traces['file'] ?? '';
                 $line = $traces['line'] ?? '';
                 $function = '';
             }
 
-            $traced .= '<div class="function loop-tog" data-id="proc-' . $i . '">
+            $traced .= '<div class="function loop-tog" data-id="proc-' . $i . '" title="namespace: '. $namespace. '">
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
-                                <span class="name">' . $namespace. $class . '<b>' . $type . '</b>' . $function . '<i class="line">' . $line . '</i></span>
+                                <span class="name">'. $class . '<b>' . $type . '</b>' . $function . '<i class="line">' . $line . '</i></span>
                                 <span class="path">' . $file . '</span> 
                             </div>   
                         </div>';
