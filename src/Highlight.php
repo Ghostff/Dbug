@@ -64,7 +64,7 @@ class Highlight
         (t(hrow|r(ait|y)))|
         (u(nset(?!\s*\))|se))|
         (__halt_compiler|break|list|(x)?or|var|while))\b/';
-    private static $operators_ptrn = '/((?<! (style|class))\=|\.|\!|\+|\%|[^a-z+]-[^a-z+]|(?<!https|http)[^a-z+]:|\@|\||\?|&gt;|&lt;|&amp;)/';
+    private static $operators_ptrn = '/((?<! (style|class))\=|\.|\!|\+|\%|-(?!\w+:)|(?<!https|http)[^a-z+]:|\@|\||\?|&gt;|&lt;|&amp;)/';
     private static $semi_colon_ptrn = '/(?<![&lt|&gt|&amp]);/';
     private static $parenthesis_ptrn = '/\(|\)/';
     private static $return_type_ptrn = '/(?<=\:\<\/span\>)\s*(?:\<\w+ \w+="\w+:#\w+" \w+="\w+"\>\?\<\/\w+\>)*(string|bool|array|float|int|callable|void)/';
@@ -72,27 +72,6 @@ class Highlight
     private static $parameter_type_ptrn = '/(?<!\w)(string|bool|array|float|int|callable)\s*(?=\<span style="[\w:#-;]+" class="variable"\>\$)/';
     private static $square_bracket_ptrn = '/\[|\]/';
     private static $multi_line_comment_ptrn = '/\/\*|\*\//';
-
-
-    /**
-     * updates attributes of class property
-     *
-     * @param string $property
-     * @param string $values
-     * @return void
-     */
-    public static function set(string $property, string $values): void
-    {
-        if (property_exists(__CLASS__, $property))
-        {
-            self::${$property} = $values;
-        }
-        else
-        {
-            throw new \RuntimeException(sprintf('%s does not exist in %s', $property, __CLASS__));
-        }
-    }
-
 
     /**
      * check and highlight user defined  or php pre defined function
@@ -125,6 +104,7 @@ class Highlight
      * displays line numbers
      *
      * @param bool $switch
+     * @param int $start_line
      */
     public static function showLineNumber(bool $switch, int $start_line = 0)
     {
@@ -142,7 +122,7 @@ class Highlight
      */
     public static function setHighlight(int $line, array $attributes = [], bool $override = false)
     {
-        if( $override)
+        if ($override)
         {
             self::$highlight = [];
         }
@@ -185,9 +165,7 @@ class Highlight
                     self::$$property = $style;
                 }
             }
-
             return $return_int;
-
         }
         return -1;
     }
@@ -367,7 +345,7 @@ class Highlight
         $new_code .= '<tr class="last-map"><td></td><td></td></tr>';
         $new_code = str_replace(['\"', '\\\'', '  '], ['"', '\'', '&nbsp;&nbsp;'], $new_code);
 
-        $style = '.strip font,.strip span{color:inherit !important}';
+        $style = '.strip font,.strip span{color:inherit !important;all:initial !important;all:unset !important}';
         $pretty = '<table style="' . self::$body .'">'. $new_code . '</table><style>' . $style . '</style>';
 
         if ($cache)
