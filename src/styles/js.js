@@ -4806,31 +4806,39 @@ $(document).ready(function() {
     var file = $(this).attr('data-file');
     var line = $(this).attr('data-line');
 
-    var gr = '';
-    if (typeof cls !=  'undefined')
-    {
-        if (func.length) {
-            gr += '<div class="keyword">Class: <span class="">' + cls;
-            gr += '</span><span style="font-size: 12px;margin: 3px;">' + type + '</span><span class="char-null">' + func + '</span>';
-        } else {
-            gr += '<div class="keyword">Function: <span class="char-null">BittrDbug</span>';
-        }
-        gr += '<span class="">()</span></div>';
+    if (a != 'proc-buffer') {
 
+        var gr = '';
+        if (typeof cls !=  'undefined')
+        {
+            if (func.length) {
+                gr += '<div class="keyword">Class: <span class="">' + cls;
+                gr += '</span><span style="font-size: 12px;margin: 3px;">' + type + '</span><span class="char-null">' + func + '</span>';
+            } else {
+                gr += '<div class="keyword">Function: <span class="char-null">BittrDbug</span>';
+            }
+            gr += '<span class="">()</span></div>';
+
+        }
+        else {
+            gr += '<div class="keyword">Class: <span class="char-null">null</span></div>';
+        }
+        if (typeof namespace != 'undefined')
+        {
+            namespace = namespace.replace(/\\/g, '<b class="char-object"> \\ </b>');
+            gr += '<div class="namespace">Namespace: ' + namespace + '</div>';
+        } else {
+            gr += '<div class="namespace">Namespace: <span class="char-null">null</span></div>';
+        }
+
+        gr += '<div class="file">File: <span class="">' + file + '</span>:<span class="char-integer">' + line + '</span></div>';
+        $('#repop').show().html(gr);
     }
     else {
-        gr += '<div class="keyword">Class: <span class="char-null">null</span></div>';
+        $('#repop').hide()
     }
-    if (typeof namespace != 'undefined')
-    {
-        namespace = namespace.replace(/\\/g, '<b class="char-object"> \\ </b>');
-        gr += '<div class="namespace">Namespace: ' + namespace + '</div>';
-    } else {
-        gr += '<div class="namespace">Namespace: <span class="char-null">null</span></div>';
-    }
+    console.log(a);
 
-    gr += '<div class="file">File: <span class="">' + file + '</span>:<span class="char-integer">' + line + '</span></div>';
-    $('#repop').html(gr);
 
 
 
