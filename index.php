@@ -7,7 +7,7 @@ spl_autoload_register(function ($name) {
 
 });
 
-new Debug\BittrDbug(\Debug\BittrDbug::PRETTIFY, 'yola', 25);
+new Debug\BittrDbug(\Debug\BittrDbug::PRETTIFY, 'defauk', 25);
 
 echo 111;
 class Foo

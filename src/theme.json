@@ -193,7 +193,7 @@
     "constant": { "color": "#FFFFFF" },
     "tag_close": { "color": "#EF62FC" },
     "operators": { "color": "#FFFFFF" },
-    "semi_colon": { "color": "#555555" },
+    "semi_colon": { "color": "#FFFFFF" },
     "parenthesis": { "color": "#FFFFFF" },
     "return_type": { "color": "#FE648A" },
     "php_function": { "color": "#6367A7" },
