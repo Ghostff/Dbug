@@ -1080,12 +1080,6 @@ a:focus {
     font-size: 13px
 }
 
-.code-view {
-    height: 500px;
-    border: 1px solid #f00;
-    overflow: scroll;
-}
-
 .active-desc {
     position: absolute;
     width: 100%;
@@ -1157,7 +1151,7 @@ a:focus {
 
 .contents .right .global .content,
 .contents .right .global .labeled {
-    display: block
+    display: block;
 }
 
 .contents .right .global .labeled {
@@ -1170,11 +1164,56 @@ a:focus {
 }
 
 .contents .right .global .content {
-    padding: 5px 0
+    padding: 5px 0;
+    width: 102%;
 }
 
 .contents .listed .index,
 .contents .listed .value {
     font-weight: 500;
     font-size: 10px
+}
+
+.ss-wrapper {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    float: left;
+}
+
+.ss-content {
+    height: 100%;
+    width: 102%;
+    position: relative;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+.ss-scroll {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    width: 6px;
+    border-radius: 4px;
+    top: 0;
+    z-index: 2;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.25s linear;
+}
+
+.ss-hidden {
+    display: none;
+}
+
+.ss-container:hover .ss-scroll {
+    opacity: 1;
+}
+
+.ss-grabbed {
+    -o-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }

@@ -469,7 +469,7 @@ class BittrDbug
         <div class="container-fluid">
             <div class="row contents">
                 <div class="col-md-3 attr left">%s</div>
-                <div class="col-md-6 attr middle">%s</div>
+                <div class="col-md-6 attr middle ">%s</div>
                 <div class="col-md-3 attr right">%s</div>
             </div>
         </div>';
