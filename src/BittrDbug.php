@@ -66,7 +66,14 @@ class BittrDbug
             $type = get_class($e);
         }
 
-        $content = sprintf($this->template(),
+        $content = sprintf('<div class="header">%s</div>
+        <div class="container-fluid">
+            <div class="row contents">
+                <div class="col-md-3 attr left">%s</div>
+                <div class="col-md-6 attr middle ">%s</div>
+                <div class="col-md-3 attr right">%s</div>
+            </div>
+        </div>',
             $this->top(),
             $this->left($e->getFile(), $e->getLine(), $e->getCode(), $e->getTrace()),
             $this->middle($type, $e->getMessage(), $e->getFile(), $e->getLine()),
@@ -461,18 +468,6 @@ class BittrDbug
             $count++;
         }
         return $side;
-    }
-
-    private function template(): string
-    {
-        return '<div class="header">%s</div>
-        <div class="container-fluid">
-            <div class="row contents">
-                <div class="col-md-3 attr left">%s</div>
-                <div class="col-md-6 attr middle ">%s</div>
-                <div class="col-md-3 attr right">%s</div>
-            </div>
-        </div>';
     }
 
     private function html(string $content): string
