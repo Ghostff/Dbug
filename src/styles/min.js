@@ -24,8 +24,8 @@
 
         el.addEventListener('mousedown', function(e) {
             lastPageY = e.pageY;
-            el.classList.add('__BittrDebuger__ss-grabbed');
-            d.body.classList.add('__BittrDebuger__ss-grabbed');
+            el.classList.add('__BtrD__ss-grabbed');
+            d.body.classList.add('__BtrD__ss-grabbed');
 
             d.addEventListener('mousemove', drag);
             d.addEventListener('mouseup', stop);
@@ -43,8 +43,8 @@
         }
 
         function stop() {
-            el.classList.remove('__BittrDebuger__ss-grabbed');
-            d.body.classList.remove('__BittrDebuger__ss-grabbed');
+            el.classList.remove('__BtrD__ss-grabbed');
+            d.body.classList.remove('__BtrD__ss-grabbed');
             d.removeEventListener('mousemove', drag);
             d.removeEventListener('mouseup', stop);
         }
@@ -55,13 +55,13 @@
         this.target = el;
         this.mg = mg;
 
-        this.bar = '<div class="__BittrDebuger__ss-scroll">';
+        this.bar = '<div class="__BtrD__ss-scroll">';
 
         this.wrapper = d.createElement('div');
-        this.wrapper.setAttribute('class', '__BittrDebuger__ss-wrapper');
+        this.wrapper.setAttribute('class', '__BtrD__ss-wrapper');
 
         this.el = d.createElement('div');
-        this.el.setAttribute('class', '__BittrDebuger__ss-content');
+        this.el.setAttribute('class', '__BtrD__ss-content');
 
         this.wrapper.appendChild(this.el);
 
@@ -79,7 +79,7 @@
         this.el.addEventListener('scroll', this.moveBar.bind(this));
         this.el.addEventListener('mouseenter', this.moveBar.bind(this));
 
-        this.target.classList.add('__BittrDebuger__ss-container');
+        this.target.classList.add('__BtrD__ss-container');
 
         var css = window.getComputedStyle(el);
         if (css['height'] === '0px' && css['max-height'] !== '0px') {
@@ -95,9 +95,9 @@
             this.scrollRatio = ownHeight / totalHeight;
             raf(function() {
                 if(_this.scrollRatio >= 1) {
-                    _this.bar.classList.add('__BittrDebuger__ss-hidden')
+                    _this.bar.classList.add('__BtrD__ss-hidden')
                 } else {
-                    _this.bar.classList.remove('__BittrDebuger__ss-hidden')
+                    _this.bar.classList.remove('__BtrD__ss-hidden')
                     _this.bar.style.cssText = 'height:' + (_this.scrollRatio) * 100 + '%; top:' + (_this.el.scrollTop / totalHeight ) * 100 + '%;right:-' + (_this.target.clientWidth - _this.bar.clientWidth - _this.mg) + 'px;';
                 }
             });
@@ -105,7 +105,7 @@
     }
 
     function initAll() {
-        var nodes = d.querySelectorAll('*[__BittrDebuger__ss-container]');
+        var nodes = d.querySelectorAll('*[__BtrD__ss-container]');
 
         for (var i = 0; i < nodes.length; i++) {
             initEl(nodes[i]);
@@ -126,16 +126,16 @@
         return {x: lx,y: ly};
     }
 
-    var merg = getPos(document.querySelector('.__BittrDebuger__middle .__BittrDebuger__exception-type')).y +
-               getPos(document.querySelector('.__BittrDebuger__middle .__BittrDebuger__exception-msg')).y;
+    var merg = getPos(document.querySelector('.__BtrD__middle .__BtrD__exception-type')).y +
+               getPos(document.querySelector('.__BtrD__middle .__BtrD__exception-msg')).y;
     var size = getPos(document.getElementById('repop'));
-    document.querySelectorAll('.__BittrDebuger__code-view').forEach(function(e) {
+    document.querySelectorAll('.__BtrD__code-view').forEach(function(e) {
         var styled = e.getAttribute('style');
         e.setAttribute("style", "height:" + (size.y - merg + 8)  + "px;" + (styled ? styled : ''));
         SimpleScrollbar.initEl(e, 3);
     });
 
-    document.querySelectorAll('.__BittrDebuger__global .__BittrDebuger__content').forEach(function(e) {
+    document.querySelectorAll('.__BtrD__global .__BtrD__content').forEach(function(e) {
         var styled = e.getAttribute('style');
         e.style.display = 'block';
         var inner = e.clientHeight;
@@ -144,8 +144,8 @@
         SimpleScrollbar.initEl(e, 16);
     });
 
-    var height = 35 + getPos(document.querySelector('.__BittrDebuger__left .__BittrDebuger__content-nav')).y;
-    document.querySelectorAll('.__BittrDebuger__left .__BittrDebuger__loops').forEach(function(e) {
+    var height = 35 + getPos(document.querySelector('.__BtrD__left .__BtrD__content-nav')).y;
+    document.querySelectorAll('.__BtrD__left .__BtrD__loops').forEach(function(e) {
         e.setAttribute("style", "width: 102%;height: calc(100vh - " + height + "px);");
         SimpleScrollbar.initEl(e, 13);
     });
@@ -163,16 +163,16 @@
     }
 
 
-    var last_active = document.querySelector('#cont-nav .__BittrDebuger__top-tog.__BittrDebuger__active');
-    delegate(document, "click", ".__BittrDebuger__top-tog", function() {
+    var last_active = document.querySelector('#cont-nav .__BtrD__top-tog.__BtrD__active');
+    delegate(document, "click", ".__BtrD__top-tog", function() {
         var id = this.getAttribute("id");
-        this.classList.add("__BittrDebuger__active");
+        this.classList.add("__BtrD__active");
         var last_id = last_active.getAttribute("id");
 
         console.log(id, last_id);
-        last_active.classList.remove("__BittrDebuger__active");
-        document.querySelector(".__BittrDebuger__content-body ." + last_id + ".__BittrDebuger__loops").classList.remove("__BittrDebuger__active");
-        document.querySelector(".__BittrDebuger__content-body ." + id + ".__BittrDebuger__loops").classList.add("__BittrDebuger__active");
+        last_active.classList.remove("__BtrD__active");
+        document.querySelector(".__BtrD__content-body ." + last_id + ".__BtrD__loops").classList.remove("__BtrD__active");
+        document.querySelector(".__BtrD__content-body ." + id + ".__BtrD__loops").classList.add("__BtrD__active");
         last_active = this;
     });
 
@@ -196,15 +196,15 @@
         _cache = lmap;
     }
 
-    var last_toggled = document.querySelector(".__BittrDebuger__attr.__BittrDebuger__middle #proc-main");
-    var panel = document.querySelector(".__BittrDebuger__attr.__BittrDebuger__middle #repop");
+    var last_toggled = document.querySelector(".__BtrD__attr.__BtrD__middle #proc-main");
+    var panel = document.querySelector(".__BtrD__attr.__BtrD__middle #repop");
 
     _atg(last_toggled);
 
-    delegate(document, "click", ".__BittrDebuger__loop-tog", function() {
+    delegate(document, "click", ".__BtrD__loop-tog", function() {
         var id = this.getAttribute("data-id");
         last_toggled.style.display = "none";
-        last_toggled = document.querySelector(".__BittrDebuger__attr.__BittrDebuger__middle #" + id);
+        last_toggled = document.querySelector(".__BtrD__attr.__BtrD__middle #" + id);
         last_toggled.style.display = "block";
 
         var a = this.getAttribute("data-id");
@@ -220,25 +220,30 @@
             var h = "";
             if (b) {
                 if (d) {
-                    h += '<div class="__BittrDebuger__keyword">Class: ' + b + '</span><span style="margin: 3px;">' + c + '</span><span class="__BittrDebuger__char-null">' + d + '</span>';
+                    h += '<div class="__BtrD__keyword">Class: ' + b + '</span><span style="margin: 3px;">' + c + '</span><span class="__BtrD__char-null">' + d + '</span>';
                 } else {
-                    h += '<div class="__BittrDebuger__keyword">Function: <span class="__BittrDebuger__char-null">' + b + '</span>';
+                    h += '<div class="__BtrD__keyword">Function: <span class="__BtrD__char-null">' + b + '</span>';
                 }
                 h += '<span>()</span></div>';
             } else {
-                h += '<div class="__BittrDebuger__keyword">Class: <span class="__BittrDebuger__char-null">null</span></div>';
+                h += '<div class="__BtrD__keyword">Class: <span class="__BtrD__char-null">null</span></div>';
             }
             if (e) {
-                e = e.replace(/\\/g, '<b class="__BittrDebuger__char-object"> \\ </b>');
-                h += '<div class="__BittrDebuger__namespace">Namespace: ' + e + '</div>';
+                e = e.replace(/\\/g, '<b class="__BtrD__char-object"> \\ </b>');
+                h += '<div class="__BtrD__namespace">Namespace: ' + e + '</div>';
             } else {
-                h += '<div class="__BittrDebuger__namespace">Namespace: <span class="__BittrDebuger__char-null">null</span></div>';
+                h += '<div class="__BtrD__namespace">Namespace: <span class="__BtrD__char-null">null</span></div>';
             }
-            h += '<div class="__BittrDebuger__file">File: <span class="">' + f + '</span>:<span class="__BittrDebuger__char-integer">' + g + '</span></div>';
+            h += '<div class="__BtrD__file">File: <span class="">' + f + '</span>:<span class="__BtrD__char-integer">' + g + '</span></div>';
             panel.innerHTML = h;
             panel.style.display = "block";
         }
-        else { panel.style.display = "none";}
+        else {
+            var buf = document.getElementById("proc-buffer");
+            buf.setAttribute("style", "height:calc(100vh - " + merg + "px);");
+            SimpleScrollbar.initEl(buf, 26);
+            panel.style.display = "none";
+        }
     });
 
 
@@ -246,7 +251,7 @@
     if (last_cookie) {
         document.getElementById(last_cookie).nextElementSibling.style.display = 'block';
     }
-    delegate(document, "click", ".__BittrDebuger__global .__BittrDebuger__labeled", function() {
+    delegate(document, "click", ".__BtrD__global .__BtrD__labeled", function() {
         setCookie("BittrDebug_toggle_right", this.getAttribute("id"));
         var x = this.nextElementSibling;
         if (x.style.display === 'none') {
@@ -257,7 +262,7 @@
     });
 
 
-    delegate(document, "click", ".__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__listed .__BittrDebuger__caret", function() {
+    delegate(document, "click", ".__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__listed .__BtrD__caret", function() {
         var m = this.nextElementSibling;
         if (m.style.display === 'none') {
             m.style.display = 'block';
@@ -266,9 +271,9 @@
         }
     });
 
-    var u = document.querySelector(".__BittrDebuger__left .__BittrDebuger__content-body").clientWidth;
-    document.querySelectorAll(".__BittrDebuger__content-body .__BittrDebuger__l-parent").forEach(function(a) {
-        a.setAttribute("style", "width:" + (u - 5) + "px;")
+    var u = document.querySelector(".__BtrD__left .__BtrD__content-body").clientWidth;
+    document.querySelectorAll(".__BtrD__content-body .__BtrD__l-parent").forEach(function(a) {
+        a.setAttribute("style", "width:" + (u - 5) + "px;");
     })
 
 

@@ -67,12 +67,12 @@ class BittrDbug
         }
 
         $content = sprintf('<div style="font-family:Inconsolata !important;font-weight:bold !important;line-height:1.3 !important;font-size:14px !important;">
-        <div class="__BittrDebuger__header">%s</div>
-            <div class="__BittrDebuger__container-fluid">
-                <div class="__BittrDebuger__row __BittrDebuger__contents">
-                    <div class="__BittrDebuger__col-md-3 __BittrDebuger__attr __BittrDebuger__left">%s</div>
-                    <div class="__BittrDebuger__col-md-6 __BittrDebuger__attr __BittrDebuger__middle ">%s</div>
-                    <div class="__BittrDebuger__col-md-3 __BittrDebuger__attr __BittrDebuger__right">%s</div>
+        <div class="__BtrD__header">%s</div>
+            <div class="__BtrD__container-fluid">
+                <div class="__BtrD__row __BtrD__contents">
+                    <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__left">%s</div>
+                    <div class="__BtrD__col-md-6 __BtrD__attr __BtrD__middle ">%s</div>
+                    <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__right">%s</div>
                 </div>
         </div></div>',
             $this->top(),
@@ -185,7 +185,7 @@ class BittrDbug
             $down++;
         }
         Highlight::showLineNumber(true, $start_number);
-        Highlight::setHighlight($line, ['class' => '__BittrDebuger__highlighted'], true);
+        Highlight::setHighlight($line, ['class' => '__BtrD__highlighted'], true);
         $_code[$line-1] = $codes[$line-1];
         ksort($_code);
 
@@ -194,7 +194,7 @@ class BittrDbug
 
     private function highlight(string $message): string
     {
-        return preg_replace('/(\'(.*?)\'|"(.*?)")/s', '<span class="__BittrDebuger__char-string">$1</span>', $message);
+        return preg_replace('/(\'(.*?)\'|"(.*?)")/s', '<span class="__BtrD__char-string">$1</span>', $message);
     }
 
     private function objects($objects): string
@@ -223,7 +223,7 @@ class BittrDbug
         }
 
         $temp .= '<span class="char-object">' . $obj->getName() . '</span> 
-        [  <span class="__BittrDebuger__caret"></span>  <div class="__BittrDebuger__env-arr">';
+        [  <span class="__BtrD__caret"></span>  <div class="__BtrD__env-arr">';
 
         $temp .= $format . '</div>]';
         return $temp;
@@ -239,32 +239,32 @@ class BittrDbug
             if ($type == 'string')
             {
                 $arg =  str_replace('<', '&lt;', $arg);
-                $format = '<span class="__BittrDebuger__char-string">' . $arg . '</span>';
+                $format = '<span class="__BtrD__char-string">' . $arg . '</span>';
             }
             elseif ($type == 'integer')
             {
-                $format = '<span class="__BittrDebuger__char-integer">' . $arg . '</span>';
+                $format = '<span class="__BtrD__char-integer">' . $arg . '</span>';
             }
             elseif ($type == 'boolean')
             {
                 $arg = ($arg) ? 'true' : 'false';
-                $format = '<span class="__BittrDebuger__char-bool">' . $arg . '</span>';
+                $format = '<span class="__BtrD__char-bool">' . $arg . '</span>';
             }
             elseif ($type == 'double')
             {
-                $format = '<span class="__BittrDebuger__char-double">' . $arg . '</span>';
+                $format = '<span class="__BtrD__char-double">' . $arg . '</span>';
             }
             elseif ($type == 'NULL')
             {
-                $format = '<span class="__BittrDebuger__char-null">null</span>';
+                $format = '<span class="__BtrD__char-null">null</span>';
             }
             elseif ($type == 'float')
             {
-                $format = '<span class="__BittrDebuger__char-float">' . $arg . '</span>';
+                $format = '<span class="__BtrD__char-float">' . $arg . '</span>';
             }
             elseif ($type == 'array')
             {
-                $format .= '[  <span class="__BittrDebuger__caret"></span>  <div class="__BittrDebuger__env-arr">';
+                $format .= '[  <span class="__BtrD__caret"></span>  <div class="__BtrD__env-arr">';
 
                 foreach ($arg as $key => $value)
                 {
@@ -299,22 +299,22 @@ class BittrDbug
         $select = '';
         foreach ($theme as $names => $vals)
         {
-            $select .= '<li><a href="?theme=' . $names . '">' . $names . '</a></li> <li role="separator" class="__BittrDebuger__divider"></li>';
+            $select .= '<li><a href="?theme=' . $names . '">' . $names . '</a></li> <li role="separator" class="__BtrD__divider"></li>';
         }
 
-        return '<div class="__BittrDebuger__logo __BittrDebuger__tops">
-            <span class="__BittrDebuger__ogo-img"></span>
-            <span class="__BittrDebuger__theme">Theme: ' . $selected_theme . '</span>
+        return '<div class="__BtrD__logo __BtrD__tops">
+            <span class="__BtrD__logo-img"></span>
+            <span class="__BtrD__theme">Theme: ' . $selected_theme . '</span>
         </div>
-        <div class="__BittrDebuger__hints __BittrDebuger__tops">
-            <div class="__BittrDebuger__type __BittrDebuger__type-object">OBJECT</div>
-            <div class="__BittrDebuger__type __BittrDebuger__type-null">NULL</div>
-            <div class="__BittrDebuger__type __BittrDebuger__type-bool">BOOL</div>
-            <div class="__BittrDebuger__type __BittrDebuger__type-array">ARRAY</div>
-            <div class="__BittrDebuger__type __BittrDebuger__type-float">FLOAT</div>
-            <div class="__BittrDebuger__type __BittrDebuger__type-double">DOUBLE</div>
-            <div class="__BittrDebuger__type __BittrDebuger__type-string">STRING</div>
-            <div class="__BittrDebuger__type __BittrDebuger__type-integer">INTEGER</div>
+        <div class="__BtrD__hints __BtrD__tops">
+            <div class="__BtrD__type __BtrD__type-object">OBJECT</div>
+            <div class="__BtrD__type __BtrD__type-null">NULL</div>
+            <div class="__BtrD__type __BtrD__type-bool">BOOL</div>
+            <div class="__BtrD__type __BtrD__type-array">ARRAY</div>
+            <div class="__BtrD__type __BtrD__type-float">FLOAT</div>
+            <div class="__BtrD__type __BtrD__type-double">DOUBLE</div>
+            <div class="__BtrD__type __BtrD__type-string">STRING</div>
+            <div class="__BtrD__type __BtrD__type-integer">INTEGER</div>
         </div>
         ';
     }
@@ -360,53 +360,53 @@ class BittrDbug
 
             $dsc = 'title="'. $namespace . '" data-file="' . $_file . '"data-class="' . $class . '"
                     data-type="' . $type . '" data-function="' . $function . '" data-line="' . $_line . '"';
-            $traced .= '<div class="__BittrDebuger__loop-tog __BittrDebuger__l-parent" data-id="proc-' . $i . '" ' . $dsc . '>
-                            <div class="__BittrDebuger__id __BittrDebuger__loop-tog __BittrDebuger__code">' . $i . '</div>
-                            <div class="__BittrDebuger__holder">
-                                <span class="__BittrDebuger__name">'. $class . '<b>' . $type .
-                                '</b>' . $function . '<i class="__BittrDebuger__line">' . $_line . '</i></span>
-                                <span class="__BittrDebuger__path">' . $_file . '</span> 
+            $traced .= '<div class="__BtrD__loop-tog __BtrD__l-parent" data-id="proc-' . $i . '" ' . $dsc . '>
+                            <div class="__BtrD__id __BtrD__loop-tog __BtrD__code">' . $i . '</div>
+                            <div class="__BtrD__holder">
+                                <span class="__BtrD__name">'. $class . '<b>' . $type .
+                                '</b>' . $function . '<i class="__BtrD__line">' . $_line . '</i></span>
+                                <span class="__BtrD__path">' . $_file . '</span> 
                             </div>   
                         </div>';
 
 
             $micro_time = microtime(true) - $start;
 
-            $memory .= '<div class="__BittrDebuger__memory __BittrDebuger__loop-tog __BittrDebuger__l-parent" data-id="proc-' . $i . '" ' . $dsc . '>
-                            <div class="__BittrDebuger__id __BittrDebuger__loop-tog __BittrDebuger__code">' . $i . '</div>
-                            <div class="__BittrDebuger__holder">
-                                <span class="__BittrDebuger__name">' . memory_get_usage() . '</span>
-                                <span class="__BittrDebuger__path"> ' .$micro_time . '</span> 
+            $memory .= '<div class="__BtrD__memory __BtrD__loop-tog __BtrD__l-parent" data-id="proc-' . $i . '" ' . $dsc . '>
+                            <div class="__BtrD__id __BtrD__loop-tog __BtrD__code">' . $i . '</div>
+                            <div class="__BtrD__holder">
+                                <span class="__BtrD__name">' . memory_get_usage() . '</span>
+                                <span class="__BtrD__path"> ' .$micro_time . '</span> 
                             </div>
                        </div>';
 
             $_code = rtrim($this->chunk($_file, $_line));
 
-            $this->contents[] = '<div class="__BittrDebuger__code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
+            $this->contents[] = '<div class="__BtrD__code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
         }
 
-        return '<div class="__BittrDebuger__content-nav" id="cont-nav">
-                    <div class="__BittrDebuger__top-tog __BittrDebuger__active" id="__BittrDebuger__location">Location</div> 
-                    <div class="__BittrDebuger__top-tog" id="__BittrDebuger__function">Trace</div> 
-                    <div class="__BittrDebuger__top-tog" id="__BittrDebuger__memory">Memory</div> 
+        return '<div class="__BtrD__content-nav" id="cont-nav">
+                    <div class="__BtrD__top-tog __BtrD__active" id="__BtrD__location">Location</div> 
+                    <div class="__BtrD__top-tog" id="__BtrD__function">Trace</div> 
+                    <div class="__BtrD__top-tog" id="__BtrD__memory">Memory</div> 
                 </div>
-                <div class="__BittrDebuger__content-body">
-                    <div class="__BittrDebuger__location __BittrDebuger__loops __BittrDebuger__active">
-                        <div class="__BittrDebuger__loop-tog __BittrDebuger__l-parent" data-id="proc-main" data-line="' . $line . '" data-file="' . $file . '">
-                            <div class="__BittrDebuger__id __BittrDebuger__loop-tog __BittrDebuger__code">' . $code . '</div>
-                            <div class="__BittrDebuger__holder">
-                                <span class="__BittrDebuger__name">' . $file_name . '<i class="line">' . $line . '</i> </span>
-                                <span class="__BittrDebuger__path">' . $file_path . '</span>             
+                <div class="__BtrD__content-body">
+                    <div class="__BtrD__location __BtrD__loops __BtrD__active">
+                        <div class="__BtrD__loop-tog __BtrD__l-parent" data-id="proc-main" data-line="' . $line . '" data-file="' . $file . '">
+                            <div class="__BtrD__id __BtrD__loop-tog __BtrD__code">' . $code . '</div>
+                            <div class="__BtrD__holder">
+                                <span class="__BtrD__name">' . $file_name . '<i class="line">' . $line . '</i> </span>
+                                <span class="__BtrD__path">' . $file_path . '</span>             
                             </div>   
                         </div>
-                        <div class="__BittrDebuger__loop-tog __BittrDebuger__l-parent" data-id="proc-buffer">
-                            <div class="__BittrDebuger__holder">
-                                <span class="__BittrDebuger__name" style="padding-left: 0px;">Output Buffer</span>
-                                <span class="__BittrDebuger__path">Toggle contents sent to output buffer</span>             
+                        <div class="__BtrD__loop-tog __BtrD__l-parent" data-id="proc-buffer">
+                            <div class="__BtrD__holder">
+                                <span class="__BtrD__name" style="padding-left: 0px;">Output Buffer</span>
+                                <span class="__BtrD__path">Toggle contents sent to output buffer</span>             
                             </div>   
                         </div>
                     </div>
-                    <div class="__BittrDebuger__function __BittrDebuger__loops">' . $traced . '</div><div class="__BittrDebuger__memory __BittrDebuger__loops">' .  $memory . '</div>
+                    <div class="__BtrD__function __BtrD__loops">' . $traced . '</div><div class="__BtrD__memory __BtrD__loops">' .  $memory . '</div>
                 </div> ';
     }
 
@@ -423,20 +423,20 @@ class BittrDbug
 
         $g = 'php ' . $type . ' ' . $message;
         $s = '[php] ' . $message;
-        return '<div class="__BittrDebuger__exception-type">
+        return '<div class="__BtrD__exception-type">
                     <span>' . $type . '</span>
-                    <div class="__BittrDebuger__action">
-                        <span title="lookup error message in stackoveflow" onclick="window.open(\'http://stackoverflow.com/search?q=' . $s . '\', \'_blank\')"><span class="__BittrDebuger__caret"></span> stackoverflow</span>
-                        <span title="lookup error message in google" onclick="window.open(\'https://www.google.com/search?q=' . $g . '\', \'_blank\')"><span class="__BittrDebuger__caret"></span> google</span>
+                    <div class="__BtrD__action">
+                        <span title="lookup error message in stackoveflow" onclick="window.open(\'http://stackoverflow.com/search?q=' . $s . '\', \'_blank\')"><span class="__BtrD__caret"></span> stackoverflow</span>
+                        <span title="lookup error message in google" onclick="window.open(\'https://www.google.com/search?q=' . $g . '\', \'_blank\')"><span class="__BtrD__caret"></span> google</span>
                     </div>
                 </div>
-                <div class="__BittrDebuger__exception-msg">' . $this->highlight($message) . '</div>
-                <div class="__BittrDebuger__code-view" id="proc-main">' . Highlight::render($code) . '</div>
-                <div class="browser-view" id="proc-buffer" style="overflow:auto;display: none">' . $output . '</div>' . implode($this->contents) . '
-                <div class="__BittrDebuger__active-desc" id="repop">
-                    <div class="__BittrDebuger__keyword">Class: <span class="__BittrDebuger__char-null">null</span></div>
-                    <div class="__BittrDebuger__namespace">Namespace: <span class="__BittrDebuger__char-null">null</span></div>
-                    <div class="__BittrDebuger__file">File: ' . $file . ':<span class="__BittrDebuger__char-integer">' . $line . '</span></div>
+                <div class="__BtrD__exception-msg">' . $this->highlight($message) . '</div>
+                <div class="__BtrD__code-view" id="proc-main">' . Highlight::render($code) . '</div>
+                <div class="__BtrD__browser-view" id="proc-buffer" style="display:none">' . $output . '</div>' . implode($this->contents) . '
+                <div class="__BtrD__active-desc" id="repop">
+                    <div class="__BtrD__keyword">Class: <span class="__BtrD__char-null">null</span></div>
+                    <div class="__BtrD__namespace">Namespace: <span class="__BtrD__char-null">null</span></div>
+                    <div class="__BtrD__file">File: ' . $file . ':<span class="__BtrD__char-integer">' . $line . '</span></div>
                     
                 </div>';
     }
@@ -458,14 +458,14 @@ class BittrDbug
         $count = 1;
         foreach ($globals as $names => $attributes)
         {
-            $side .= '<div class="__BittrDebuger__global">
-                    <div class="__BittrDebuger__labeled" id="tog-' . $count . '"><span class="__BittrDebuger__caret"></span> &nbsp;&nbsp; ' . $names . '</div>
-                    <div class="__BittrDebuger__content" style="display:none;">' . PHP_EOL;
+            $side .= '<div class="__BtrD__global">
+                    <div class="__BtrD__labeled" id="tog-' . $count . '"><span class="__BtrD__caret"></span> &nbsp;&nbsp; ' . $names . '</div>
+                    <div class="__BtrD__content" style="display:none;">' . PHP_EOL;
             foreach ($attributes as $key => $values)
             {
-                $side .= '<div class="__BittrDebuger__listed">
-                            <span class="__BittrDebuger__index">' . $key . '</span> :
-                            <span class="__BittrDebuger__value">' . $this->get($values) . '</span>
+                $side .= '<div class="__BtrD__listed">
+                            <span class="__BtrD__index">' . $key . '</span> :
+                            <span class="__BtrD__value">' . $this->get($values) . '</span>
                         </div>';
             }
             $side .= '</div></div>';
@@ -492,7 +492,7 @@ class BittrDbug
         <style>
             @font-face{font-family:Inconsolata;src:url(data:font/truetype;charset=utf-8;base64,' . $font_bld . ') format("woff2");}
             ' . file_get_contents($theme_file . 'min.css') . $theme . '
-            .header .logo .logo-img {background: url(data:image/png;base64,' . $image . ') no-repeat;background-size: contain;}
+            .__BtrD__header .__BtrD__logo .__BtrD__logo-img {background: url(data:image/png;base64,' . $image . ') no-repeat;background-size: contain;}
         </style>
         <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
