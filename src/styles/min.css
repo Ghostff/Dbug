@@ -1,16 +1,11 @@
-.contents .middle,
-body {
-    overflow: hidden
-}
-
-.contents .right .global,
-.left .content-body .loops .holder:hover,
-.left .content-nav .top-tog {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global,
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__holder:hover,
+.__BittrDebuger__left .__BittrDebuger__content-nav .__BittrDebuger__top-tog {
     cursor: pointer
 }
 
-.contents .listed:last-child,
-.contents .right .global:last-child {
+.__BittrDebuger__contents .__BittrDebuger__listed:last-child,
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global:last-child {
     border-bottom: none
 }
 
@@ -23,42 +18,20 @@ html {
 }
 
 body {
-    margin: 0;
-    font-family: Inconsolata;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #333;
-    background-color: #fff
+    margin: 0 !important;
+    overflow: hidden !important;
 }
 
-.container,
-.container-fluid {
+.__BittrDebuger__container, .__BittrDebuger__container-fluid {
     margin-right: auto;
     margin-left: auto;
     padding-right: 15px;
     padding-left: 15px
 }
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-menu,
-nav,
-section,
-summary {
-    display: block
-}
-
-.caret,
-.header .hints .type,
-.left .content-nav .top-tog {
+.__BittrDebuger__caret,
+.__BittrDebuger__header .__BittrDebuger__hints .__BittrDebuger__type,
+.__BittrDebuger__left .__BittrDebuger__content-nav .__BittrDebuger__top-tog {
     display: inline-block
 }
 
@@ -70,838 +43,53 @@ summary {
     box-sizing: border-box
 }
 
-button,
-input,
-select,
-textarea {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit
-}
-
-a {
-    color: #337ab7;
-    text-decoration: none
-}
-
-a:focus,
-a:hover {
-    color: #23527c;
-    text-decoration: underline
-}
-
-a:focus {
-    outline: -webkit-focus-ring-color auto 5px;
-    outline-offset: -2px
-}
-
 @media (min-width:768px) {
-    .container {
+    .__BittrDebuger__container {
         width: 750px
     }
 }
 
 @media (min-width:992px) {
-    .container {
+    .__BittrDebuger__container {
         width: 970px
     }
 }
 
 @media (min-width:1200px) {
-    .container {
+    .__BittrDebuger__container {
         width: 1170px
     }
 }
 
-.row {
+.__BittrDebuger__row {
     margin-right: -15px;
     margin-left: -15px
 }
 
-.col-lg-1,
-.col-lg-10,
-.col-lg-11,
-.col-lg-12,
-.col-lg-2,
-.col-lg-3,
-.col-lg-4,
-.col-lg-5,
-.col-lg-6,
-.col-lg-7,
-.col-lg-8,
-.col-lg-9,
-.col-md-1,
-.col-md-10,
-.col-md-11,
-.col-md-12,
-.col-md-2,
-.col-md-3,
-.col-md-4,
-.col-md-5,
-.col-md-6,
-.col-md-7,
-.col-md-8,
-.col-md-9,
-.col-sm-1,
-.col-sm-10,
-.col-sm-11,
-.col-sm-12,
-.col-sm-2,
-.col-sm-3,
-.col-sm-4,
-.col-sm-5,
-.col-sm-6,
-.col-sm-7,
-.col-sm-8,
-.col-sm-9,
-.col-xs-1,
-.col-xs-10,
-.col-xs-11,
-.col-xs-12,
-.col-xs-2,
-.col-xs-3,
-.col-xs-4,
-.col-xs-5,
-.col-xs-6,
-.col-xs-7,
-.col-xs-8,
-.col-xs-9 {
+
+.__BittrDebuger__col-md-3,
+.__BittrDebuger__col-md-6 {
     position: relative;
     min-height: 1px;
     padding-right: 15px;
     padding-left: 15px
 }
 
-.col-xs-1,
-.col-xs-10,
-.col-xs-11,
-.col-xs-12,
-.col-xs-2,
-.col-xs-3,
-.col-xs-4,
-.col-xs-5,
-.col-xs-6,
-.col-xs-7,
-.col-xs-8,
-.col-xs-9 {
-    float: left
-}
-
-.col-xs-12 {
-    width: 100%
-}
-
-.col-xs-11 {
-    width: 91.66666667%
-}
-
-.col-xs-10 {
-    width: 83.33333333%
-}
-
-.col-xs-9 {
-    width: 75%
-}
-
-.col-xs-8 {
-    width: 66.66666667%
-}
-
-.col-xs-7 {
-    width: 58.33333333%
-}
-
-.col-xs-6 {
-    width: 50%
-}
-
-.col-xs-5 {
-    width: 41.66666667%
-}
-
-.col-xs-4 {
-    width: 33.33333333%
-}
-
-.col-xs-3 {
-    width: 25%
-}
-
-.col-xs-2 {
-    width: 16.66666667%
-}
-
-.col-xs-1 {
-    width: 8.33333333%
-}
-
-.col-xs-pull-12 {
-    right: 100%
-}
-
-.col-xs-pull-11 {
-    right: 91.66666667%
-}
-
-.col-xs-pull-10 {
-    right: 83.33333333%
-}
-
-.col-xs-pull-9 {
-    right: 75%
-}
-
-.col-xs-pull-8 {
-    right: 66.66666667%
-}
-
-.col-xs-pull-7 {
-    right: 58.33333333%
-}
-
-.col-xs-pull-6 {
-    right: 50%
-}
-
-.col-xs-pull-5 {
-    right: 41.66666667%
-}
-
-.col-xs-pull-4 {
-    right: 33.33333333%
-}
-
-.col-xs-pull-3 {
-    right: 25%
-}
-
-.col-xs-pull-2 {
-    right: 16.66666667%
-}
-
-.col-xs-pull-1 {
-    right: 8.33333333%
-}
-
-.col-xs-pull-0 {
-    right: auto
-}
-
-.col-xs-push-12 {
-    left: 100%
-}
-
-.col-xs-push-11 {
-    left: 91.66666667%
-}
-
-.col-xs-push-10 {
-    left: 83.33333333%
-}
-
-.col-xs-push-9 {
-    left: 75%
-}
-
-.col-xs-push-8 {
-    left: 66.66666667%
-}
-
-.col-xs-push-7 {
-    left: 58.33333333%
-}
-
-.col-xs-push-6 {
-    left: 50%
-}
-
-.col-xs-push-5 {
-    left: 41.66666667%
-}
-
-.col-xs-push-4 {
-    left: 33.33333333%
-}
-
-.col-xs-push-3 {
-    left: 25%
-}
-
-.col-xs-push-2 {
-    left: 16.66666667%
-}
-
-.col-xs-push-1 {
-    left: 8.33333333%
-}
-
-.col-xs-push-0 {
-    left: auto
-}
-
-.col-xs-offset-12 {
-    margin-left: 100%
-}
-
-.col-xs-offset-11 {
-    margin-left: 91.66666667%
-}
-
-.col-xs-offset-10 {
-    margin-left: 83.33333333%
-}
-
-.col-xs-offset-9 {
-    margin-left: 75%
-}
-
-.col-xs-offset-8 {
-    margin-left: 66.66666667%
-}
-
-.col-xs-offset-7 {
-    margin-left: 58.33333333%
-}
-
-.col-xs-offset-6 {
-    margin-left: 50%
-}
-
-.col-xs-offset-5 {
-    margin-left: 41.66666667%
-}
-
-.col-xs-offset-4 {
-    margin-left: 33.33333333%
-}
-
-.col-xs-offset-3 {
-    margin-left: 25%
-}
-
-.col-xs-offset-2 {
-    margin-left: 16.66666667%
-}
-
-.col-xs-offset-1 {
-    margin-left: 8.33333333%
-}
-
-.col-xs-offset-0 {
-    margin-left: 0
-}
-
-@media (min-width:768px) {
-    .col-sm-1,
-    .col-sm-10,
-    .col-sm-11,
-    .col-sm-12,
-    .col-sm-2,
-    .col-sm-3,
-    .col-sm-4,
-    .col-sm-5,
-    .col-sm-6,
-    .col-sm-7,
-    .col-sm-8,
-    .col-sm-9 {
-        float: left
-    }
-    .col-sm-12 {
-        width: 100%
-    }
-    .col-sm-11 {
-        width: 91.66666667%
-    }
-    .col-sm-10 {
-        width: 83.33333333%
-    }
-    .col-sm-9 {
-        width: 75%
-    }
-    .col-sm-8 {
-        width: 66.66666667%
-    }
-    .col-sm-7 {
-        width: 58.33333333%
-    }
-    .col-sm-6 {
-        width: 50%
-    }
-    .col-sm-5 {
-        width: 41.66666667%
-    }
-    .col-sm-4 {
-        width: 33.33333333%
-    }
-    .col-sm-3 {
-        width: 25%
-    }
-    .col-sm-2 {
-        width: 16.66666667%
-    }
-    .col-sm-1 {
-        width: 8.33333333%
-    }
-    .col-sm-pull-12 {
-        right: 100%
-    }
-    .col-sm-pull-11 {
-        right: 91.66666667%
-    }
-    .col-sm-pull-10 {
-        right: 83.33333333%
-    }
-    .col-sm-pull-9 {
-        right: 75%
-    }
-    .col-sm-pull-8 {
-        right: 66.66666667%
-    }
-    .col-sm-pull-7 {
-        right: 58.33333333%
-    }
-    .col-sm-pull-6 {
-        right: 50%
-    }
-    .col-sm-pull-5 {
-        right: 41.66666667%
-    }
-    .col-sm-pull-4 {
-        right: 33.33333333%
-    }
-    .col-sm-pull-3 {
-        right: 25%
-    }
-    .col-sm-pull-2 {
-        right: 16.66666667%
-    }
-    .col-sm-pull-1 {
-        right: 8.33333333%
-    }
-    .col-sm-pull-0 {
-        right: auto
-    }
-    .col-sm-push-12 {
-        left: 100%
-    }
-    .col-sm-push-11 {
-        left: 91.66666667%
-    }
-    .col-sm-push-10 {
-        left: 83.33333333%
-    }
-    .col-sm-push-9 {
-        left: 75%
-    }
-    .col-sm-push-8 {
-        left: 66.66666667%
-    }
-    .col-sm-push-7 {
-        left: 58.33333333%
-    }
-    .col-sm-push-6 {
-        left: 50%
-    }
-    .col-sm-push-5 {
-        left: 41.66666667%
-    }
-    .col-sm-push-4 {
-        left: 33.33333333%
-    }
-    .col-sm-push-3 {
-        left: 25%
-    }
-    .col-sm-push-2 {
-        left: 16.66666667%
-    }
-    .col-sm-push-1 {
-        left: 8.33333333%
-    }
-    .col-sm-push-0 {
-        left: auto
-    }
-    .col-sm-offset-12 {
-        margin-left: 100%
-    }
-    .col-sm-offset-11 {
-        margin-left: 91.66666667%
-    }
-    .col-sm-offset-10 {
-        margin-left: 83.33333333%
-    }
-    .col-sm-offset-9 {
-        margin-left: 75%
-    }
-    .col-sm-offset-8 {
-        margin-left: 66.66666667%
-    }
-    .col-sm-offset-7 {
-        margin-left: 58.33333333%
-    }
-    .col-sm-offset-6 {
-        margin-left: 50%
-    }
-    .col-sm-offset-5 {
-        margin-left: 41.66666667%
-    }
-    .col-sm-offset-4 {
-        margin-left: 33.33333333%
-    }
-    .col-sm-offset-3 {
-        margin-left: 25%
-    }
-    .col-sm-offset-2 {
-        margin-left: 16.66666667%
-    }
-    .col-sm-offset-1 {
-        margin-left: 8.33333333%
-    }
-    .col-sm-offset-0 {
-        margin-left: 0
-    }
-}
-
 @media (min-width:992px) {
-    .col-md-1,
-    .col-md-10,
-    .col-md-11,
-    .col-md-12,
-    .col-md-2,
-    .col-md-3,
-    .col-md-4,
-    .col-md-5,
-    .col-md-6,
-    .col-md-7,
-    .col-md-8,
-    .col-md-9 {
+    .__BittrDebuger__col-md-3,
+    .__BittrDebuger__col-md-6 {
         float: left
     }
-    .col-md-12 {
-        width: 100%
-    }
-    .col-md-11 {
-        width: 91.66666667%
-    }
-    .col-md-10 {
-        width: 83.33333333%
-    }
-    .col-md-9 {
-        width: 75%
-    }
-    .col-md-8 {
-        width: 66.66666667%
-    }
-    .col-md-7 {
-        width: 58.33333333%
-    }
-    .col-md-6 {
+
+    .__BittrDebuger__col-md-6 {
         width: 50%
     }
-    .col-md-5 {
-        width: 41.66666667%
-    }
-    .col-md-4 {
-        width: 33.33333333%
-    }
-    .col-md-3 {
+    .__BittrDebuger__col-md-3 {
         width: 25%
-    }
-    .col-md-2 {
-        width: 16.66666667%
-    }
-    .col-md-1 {
-        width: 8.33333333%
-    }
-    .col-md-pull-12 {
-        right: 100%
-    }
-    .col-md-pull-11 {
-        right: 91.66666667%
-    }
-    .col-md-pull-10 {
-        right: 83.33333333%
-    }
-    .col-md-pull-9 {
-        right: 75%
-    }
-    .col-md-pull-8 {
-        right: 66.66666667%
-    }
-    .col-md-pull-7 {
-        right: 58.33333333%
-    }
-    .col-md-pull-6 {
-        right: 50%
-    }
-    .col-md-pull-5 {
-        right: 41.66666667%
-    }
-    .col-md-pull-4 {
-        right: 33.33333333%
-    }
-    .col-md-pull-3 {
-        right: 25%
-    }
-    .col-md-pull-2 {
-        right: 16.66666667%
-    }
-    .col-md-pull-1 {
-        right: 8.33333333%
-    }
-    .col-md-pull-0 {
-        right: auto
-    }
-    .col-md-push-12 {
-        left: 100%
-    }
-    .col-md-push-11 {
-        left: 91.66666667%
-    }
-    .col-md-push-10 {
-        left: 83.33333333%
-    }
-    .col-md-push-9 {
-        left: 75%
-    }
-    .col-md-push-8 {
-        left: 66.66666667%
-    }
-    .col-md-push-7 {
-        left: 58.33333333%
-    }
-    .col-md-push-6 {
-        left: 50%
-    }
-    .col-md-push-5 {
-        left: 41.66666667%
-    }
-    .col-md-push-4 {
-        left: 33.33333333%
-    }
-    .col-md-push-3 {
-        left: 25%
-    }
-    .col-md-push-2 {
-        left: 16.66666667%
-    }
-    .col-md-push-1 {
-        left: 8.33333333%
-    }
-    .col-md-push-0 {
-        left: auto
-    }
-    .col-md-offset-12 {
-        margin-left: 100%
-    }
-    .col-md-offset-11 {
-        margin-left: 91.66666667%
-    }
-    .col-md-offset-10 {
-        margin-left: 83.33333333%
-    }
-    .col-md-offset-9 {
-        margin-left: 75%
-    }
-    .col-md-offset-8 {
-        margin-left: 66.66666667%
-    }
-    .col-md-offset-7 {
-        margin-left: 58.33333333%
-    }
-    .col-md-offset-6 {
-        margin-left: 50%
-    }
-    .col-md-offset-5 {
-        margin-left: 41.66666667%
-    }
-    .col-md-offset-4 {
-        margin-left: 33.33333333%
-    }
-    .col-md-offset-3 {
-        margin-left: 25%
-    }
-    .col-md-offset-2 {
-        margin-left: 16.66666667%
-    }
-    .col-md-offset-1 {
-        margin-left: 8.33333333%
-    }
-    .col-md-offset-0 {
-        margin-left: 0
     }
 }
 
-@media (min-width:1200px) {
-    .col-lg-1,
-    .col-lg-10,
-    .col-lg-11,
-    .col-lg-12,
-    .col-lg-2,
-    .col-lg-3,
-    .col-lg-4,
-    .col-lg-5,
-    .col-lg-6,
-    .col-lg-7,
-    .col-lg-8,
-    .col-lg-9 {
-        float: left
-    }
-    .col-lg-12 {
-        width: 100%
-    }
-    .col-lg-11 {
-        width: 91.66666667%
-    }
-    .col-lg-10 {
-        width: 83.33333333%
-    }
-    .col-lg-9 {
-        width: 75%
-    }
-    .col-lg-8 {
-        width: 66.66666667%
-    }
-    .col-lg-7 {
-        width: 58.33333333%
-    }
-    .col-lg-6 {
-        width: 50%
-    }
-    .col-lg-5 {
-        width: 41.66666667%
-    }
-    .col-lg-4 {
-        width: 33.33333333%
-    }
-    .col-lg-3 {
-        width: 25%
-    }
-    .col-lg-2 {
-        width: 16.66666667%
-    }
-    .col-lg-1 {
-        width: 8.33333333%
-    }
-    .col-lg-pull-12 {
-        right: 100%
-    }
-    .col-lg-pull-11 {
-        right: 91.66666667%
-    }
-    .col-lg-pull-10 {
-        right: 83.33333333%
-    }
-    .col-lg-pull-9 {
-        right: 75%
-    }
-    .col-lg-pull-8 {
-        right: 66.66666667%
-    }
-    .col-lg-pull-7 {
-        right: 58.33333333%
-    }
-    .col-lg-pull-6 {
-        right: 50%
-    }
-    .col-lg-pull-5 {
-        right: 41.66666667%
-    }
-    .col-lg-pull-4 {
-        right: 33.33333333%
-    }
-    .col-lg-pull-3 {
-        right: 25%
-    }
-    .col-lg-pull-2 {
-        right: 16.66666667%
-    }
-    .col-lg-pull-1 {
-        right: 8.33333333%
-    }
-    .col-lg-pull-0 {
-        right: auto
-    }
-    .col-lg-push-12 {
-        left: 100%
-    }
-    .col-lg-push-11 {
-        left: 91.66666667%
-    }
-    .col-lg-push-10 {
-        left: 83.33333333%
-    }
-    .col-lg-push-9 {
-        left: 75%
-    }
-    .col-lg-push-8 {
-        left: 66.66666667%
-    }
-    .col-lg-push-7 {
-        left: 58.33333333%
-    }
-    .col-lg-push-6 {
-        left: 50%
-    }
-    .col-lg-push-5 {
-        left: 41.66666667%
-    }
-    .col-lg-push-4 {
-        left: 33.33333333%
-    }
-    .col-lg-push-3 {
-        left: 25%
-    }
-    .col-lg-push-2 {
-        left: 16.66666667%
-    }
-    .col-lg-push-1 {
-        left: 8.33333333%
-    }
-    .col-lg-push-0 {
-        left: auto
-    }
-    .col-lg-offset-12 {
-        margin-left: 100%
-    }
-    .col-lg-offset-11 {
-        margin-left: 91.66666667%
-    }
-    .col-lg-offset-10 {
-        margin-left: 83.33333333%
-    }
-    .col-lg-offset-9 {
-        margin-left: 75%
-    }
-    .col-lg-offset-8 {
-        margin-left: 66.66666667%
-    }
-    .col-lg-offset-7 {
-        margin-left: 58.33333333%
-    }
-    .col-lg-offset-6 {
-        margin-left: 50%
-    }
-    .col-lg-offset-5 {
-        margin-left: 41.66666667%
-    }
-    .col-lg-offset-4 {
-        margin-left: 33.33333333%
-    }
-    .col-lg-offset-3 {
-        margin-left: 25%
-    }
-    .col-lg-offset-2 {
-        margin-left: 16.66666667%
-    }
-    .col-lg-offset-1 {
-        margin-left: 8.33333333%
-    }
-    .col-lg-offset-0 {
-        margin-left: 0
-    }
-}
-
-.caret {
+.__BittrDebuger__caret {
     width: 0;
     height: 0;
     margin-left: 2px;
@@ -912,18 +100,18 @@ a:focus {
     border-left: 4px solid transparent
 }
 
-.header {
+.__BittrDebuger__header {
     padding: 5px;
     height: 35px;
     width: 100%
 }
 
-.header .hints {
+.__BittrDebuger__header .__BittrDebuger__hints {
     position: absolute;
     right: 0
 }
 
-.header .type {
+.__BittrDebuger__header .__BittrDebuger__type {
     margin-left: 10px;
     width: 70px;
     text-align: center;
@@ -932,44 +120,44 @@ a:focus {
     margin-top: 5px
 }
 
-.header .logo span,
-.header .tops {
+.__BittrDebuger__header .__BittrDebuger__logo span,
+.__BittrDebuger__header .__BittrDebuger__tops {
     display: inline-block;
     margin-left: 20px;
     vertical-align: middle
 }
 
-.header .logo-img {
+.__BittrDebuger__header .__BittrDebuger__logo-img {
     width: 80px;
     height: 30px;
     margin-top: -2px
 }
 
-.header .logo span button,
-.header .logo span button:active,
-.header .logo span button:active:hover {
+.__BittrDebuger__header .__BittrDebuger__logo span button,
+.__BittrDebuger__header .__BittrDebuger__logo span button:active,
+.__BittrDebuger__header .__BittrDebuger__logo span button:active:hover {
     border: none
 }
 
-.header .logo span .dropdown-menu li a {
+.__BittrDebuger__header .__BittrDebuger__logo span .__BittrDebuger__dropdown-menu li a {
     padding: 8px 30px
 }
 
-.header .logo span .dropdown-menu .divider {
+.__BittrDebuger__header .__BittrDebuger__logo span .__BittrDebuger__dropdown-menu .__BittrDebuger__divider {
     margin: 0
 }
 
-.contents .attr {
+.__BittrDebuger__contents .__BittrDebuger__attr {
     height: 96vh;
     padding: 0!important
 }
 
-.contents .right {
+.__BittrDebuger__contents .__BittrDebuger__right {
     word-wrap: break-word;
     font-weight: 600!important
 }
 
-.left .content-nav .top-tog {
+.__BittrDebuger__left .__BittrDebuger__content-nav .__BittrDebuger__top-tog {
     font-weight: 600;
     width: 34%;
     text-align: center;
@@ -980,34 +168,36 @@ a:focus {
     text-transform: uppercase
 }
 
-.left .content-nav .top-tog:first-child {
+.__BittrDebuger__left .__BittrDebuger__content-nav .__BittrDebuger__top-tog:first-child {
     padding-left: 10px;
     border-left: none;
     margin-right: -1px;
 }
 
-.left .content-nav .top-tog:last-child {
+.__BittrDebuger__left .__BittrDebuger__content-nav .__BittrDebuger__top-tog:last-child {
     margin-left: -7px;
     border-right: none
 }
 
-.left .content-body {
+.__BittrDebuger__left .__BittrDebuger__content-body {
     height: 95%
 }
-.l-parent {
-    margin-left: 2px;
+.__BittrDebuger__l-parent {
+    margin-left: 3px;
+    margin-top: 1px
+    line-height: 2;
 }
-.left .content-body .loops {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops {
     margin-top: 3px
 }
 
 
-.left .content-body .loops {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops {
     width: 100%;
     display: none
 }
 
-.left .content-body .loops .holder i {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__holder i {
     float: right;
     margin-top: 10px;
     font-size: 10px;
@@ -1016,24 +206,24 @@ a:focus {
     font-style: normal
 }
 
-.left .content-body .loops .holder {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__holder {
     padding: 5px 10px
 }
 
-.left .content-body .loops div span {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops div span {
     display: block
 }
 
-.left .content-body .loops div .name {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops div .__BittrDebuger__name {
     font-weight: 600;
     padding-left: 10px
 }
 
-.left .content-body .loops div .path {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops div .__BittrDebuger__path {
     font-size: 11px
 }
 
-.left .content-body .loops .id {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__id {
     width: 15px;
     font-size: 10px;
     text-align: center;
@@ -1049,41 +239,41 @@ a:focus {
     vertical-align: middle
 }
 
-.left .content-body .loops.active {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops.__BittrDebuger__active {
     display: block;
 }
 
-.exception-type {
+.__BittrDebuger__exception-type {
     padding: 10px
 }
 
-.exception-type>.action,
-.exception-type>span {
+.__BittrDebuger__exception-type>.__BittrDebuger__action,
+.__BittrDebuger__exception-type>span {
     display: inline-block
 }
 
-.exception-type>.action {
+.__BittrDebuger__exception-type>.__BittrDebuger__action {
     float: right
 }
 
-.exception-type>.action span {
+.__BittrDebuger__exception-type>.__BittrDebuger__action span {
     cursor: pointer;
     font-size: 12px;
     padding: 0 10px 2px;
     border-radius: 10px
 }
 
-.exception-type>span {
+.__BittrDebuger__exception-type>span {
     border-radius: 10px;
     padding: 3px 10px
 }
 
-.exception-msg {
+.__BittrDebuger__exception-msg {
     padding: 10px;
     font-size: 13px
 }
 
-.active-desc {
+.__BittrDebuger__active-desc {
     position: absolute;
     width: 100%;
     bottom: 0;
@@ -1092,16 +282,16 @@ a:focus {
     z-index: 4 !important;
 }
 
-.active-desc .file b {
+.__BittrDebuger__active-desc .__BittrDebuger__file b {
     font-size: 10px;
     margin-top: -5px
 }
 
-.browser-view {
-    height: 90.3vh
+.__BittrDebuger__browser-view {
+    height: 90.__BittrDebuger__3vh
 }
 
-.code-view table {
+.__BittrDebuger__code-view table {
     font-size: 12px;
     font-weight: 400;
     width: 100%;
@@ -1110,71 +300,71 @@ a:focus {
     border-collapse: collapse
 }
 
-.code-view table .function,
-.code-view table .keyword {
+.__BittrDebuger__code-view table .__BittrDebuger__function,
+.__BittrDebuger__code-view table .__BittrDebuger__keyword {
     font-weight: 600;
 }
 
-.code-view table tr td:first-child {
+.__BittrDebuger__code-view table tr td:first-child {
     width: 60px;
     text-align: center
 }
 
-.code-view table tr .line-content {
+.__BittrDebuger__code-view table tr .__BittrDebuger__line-content {
     padding-left: 5px
 }
 
-.code-view table .highlighted td {
+.__BittrDebuger__code-view table .__BittrDebuger__highlighted td {
     padding: 8px 0!important
 }
 
-.code-view table .highlighted td:first-child {
+.__BittrDebuger__code-view table .__BittrDebuger__highlighted td:first-child {
     border: none;
     font-weight: 700
 }
 
-.contents .right .global:first-child {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global:first-child {
     border-top: none
 }
 
-.contents .right .global .env-arr {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__env-arr {
     padding-left: 20px
 }
 
-.contents .right .global .content {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__content {
     cursor: default
 }
 
-.contents .right .global .content .caret {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__content .__BittrDebuger__caret {
     cursor: pointer
 }
 
-.contents .right .global .content,
-.contents .right .global .labeled {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__content,
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__labeled {
     display: block;
 }
 
-.contents .right .global .labeled {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__labeled {
     font-weight: 600;
     padding: 10px
 }
 
-.contents .listed {
+.__BittrDebuger__contents .__BittrDebuger__listed {
     padding: 5px 14px 5px 10px
 }
 
-.contents .right .global .content {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__content {
     padding: 5px 0;
     width: 104%;
 }
 
-.contents .listed .index,
-.contents .listed .value {
+.__BittrDebuger__contents .__BittrDebuger__listed .__BittrDebuger__index,
+.__BittrDebuger__contents .__BittrDebuger__listed .__BittrDebuger__value {
     font-weight: 500;
     font-size: 10px
 }
 
-.ss-wrapper {
+.__BittrDebuger__ss-wrapper {
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -1182,7 +372,7 @@ a:focus {
     float: left;
 }
 
-.ss-content {
+.__BittrDebuger__ss-content {
     height: 100%;
     width: 104%;
     position: relative;
@@ -1190,7 +380,7 @@ a:focus {
     box-sizing: border-box;
 }
 
-.ss-scroll {
+.__BittrDebuger__ss-scroll {
     position: relative;
     width: 6px;
     border-radius: 4px;
@@ -1198,18 +388,18 @@ a:focus {
     z-index: 2;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.25s linear;
+    transition: opacity 0.__BittrDebuger__25s linear;
 }
 
-.ss-hidden {
+.__BittrDebuger__ss-hidden {
     display: none;
 }
 
-.ss-container:hover .ss-scroll {
+.__BittrDebuger__ss-container:hover .__BittrDebuger__ss-scroll {
     opacity: 1;
 }
 
-.ss-grabbed {
+.__BittrDebuger__ss-grabbed {
     -o-user-select: none;
     -ms-user-select: none;
     -moz-user-select: none;

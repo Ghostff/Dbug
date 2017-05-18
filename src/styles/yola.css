@@ -1,5 +1,5 @@
-.header,
-.left .content-nav {
+.__BittrDebuger__header,
+.__BittrDebuger__left .__BittrDebuger__content-nav {
     border-bottom: 1px solid #000
 }
 
@@ -8,77 +8,77 @@ body {
     color: #f5f7fa
 }
 
-.header {
+.__BittrDebuger__header {
     background: #252c33
 }
 
-.header .type {
+.__BittrDebuger__header .__BittrDebuger__type {
     color: #fff
 }
 
-.header .logo span button,
-.header .logo span button:active,
-.header .logo span button:active:hover {
+.__BittrDebuger__header .__BittrDebuger__logo span button,
+.__BittrDebuger__header .__BittrDebuger__logo span button:active,
+.__BittrDebuger__header .__BittrDebuger__logo span button:active:hover {
     color: #c1c9d4!important;
     background: 0 0!important
 }
 
-.header .logo span .dropdown-menu {
+.__BittrDebuger__header .__BittrDebuger__logo span .__BittrDebuger__dropdown-menu {
     background: #252c33
 }
 
-.header .logo span .dropdown-menu li a {
+.__BittrDebuger__header .__BittrDebuger__logo span .__BittrDebuger__dropdown-menu li a {
     color: #c1c9d4
 }
 
-.header .logo span .dropdown-menu li a:hover {
+.__BittrDebuger__header .__BittrDebuger__logo span .__BittrDebuger__dropdown-menu li a:hover {
     background-color: #2a3138
 }
 
-.header .logo span .dropdown-menu .divider {
+.__BittrDebuger__header .__BittrDebuger__logo span .__BittrDebuger__dropdown-menu .__BittrDebuger__divider {
     background-color: transparent;
     border-top: 1px solid #343c45;
     border-bottom: 1px solid #000
 }
 
-.contents,
-.left .content-body {
+.__BittrDebuger__contents,
+.__BittrDebuger__left .__BittrDebuger__content-body {
     border-top: 1px solid #555e65
 }
 
-.contents .attr {
+.__BittrDebuger__contents .__BittrDebuger__attr {
     color: #d8dadd
 }
 
-.contents .left {
+.__BittrDebuger__contents .__BittrDebuger__left {
     background: #343c45;
     border-right: 1px solid #555e65
 }
 
-.contents .middle {
+.__BittrDebuger__contents .__BittrDebuger__middle {
     background: #131c26;
     border-left: 1px solid #000;
     border-right: 1px solid #000
 }
 
-.contents .right {
+.__BittrDebuger__contents .__BittrDebuger__right {
     background: #363e47;
     border-left: 1px solid #555e65
 }
 
-.left .content-nav .top-tog {
+.__BittrDebuger__left .__BittrDebuger__content-nav .__BittrDebuger__top-tog {
     color: #d8dadd;
     border-right: 1px solid #000;
     border-left: 1px solid #555e65
 }
 
-.left .content-nav .active,
-.left .content-nav .top-tog:hover {
+.__BittrDebuger__left .__BittrDebuger__content-nav .__BittrDebuger__active,
+.__BittrDebuger__left .__BittrDebuger__content-nav .__BittrDebuger__top-tog:hover {
     background: #252c33;
     border-left: 1px solid #000
 }
 
-.left .content-body .loops .loop-tog {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__loop-tog {
     border: 1px solid #14171d;
     background: #343c45;
     -webkit-box-shadow: 0 1px 5px 0 rgba(71, 80, 88, 1);
@@ -86,171 +86,171 @@ body {
     box-shadow: 0 1px 5px 0 rgba(71, 80, 88, 1)
 }
 
-.left .content-body .loops .holder:hover {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__holder:hover {
     background: #222731
 }
 
-.left .content-body .loops .holder i {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__holder i {
     background: #1f577f;
     color: #fff;
     box-shadow: 0 1px #222731
 }
 
-.left .content-body .loops .holder b {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__holder b {
     color: #aee288
 }
 
-.left .content-body .loops .holder {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__holder {
     border: 1px solid #6b757e
 }
 
-.left .content-body .loops div .path {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops div .__BittrDebuger__path {
     color: #95a1a9
 }
 
-.left .content-body .loops .id {
+.__BittrDebuger__left .__BittrDebuger__content-body .__BittrDebuger__loops .__BittrDebuger__id {
     background: #14171d
 }
 
-.exception-type {
+.__BittrDebuger__exception-type {
     background: #343c45;
     border-bottom: 1px solid #000
 }
 
-.exception-type>.action span {
+.__BittrDebuger__exception-type>.__BittrDebuger__action span {
     background: #272e37;
     border-top: 1px solid #161821;
     border-bottom: 1px solid #3f4750
 }
 
-.exception-type>span {
+.__BittrDebuger__exception-type>span {
     background: #6789f8
 }
 
-.exception-msg {
+.__BittrDebuger__exception-msg {
     background: #343c45;
     border-top: 1px solid #555e65;
     border-bottom: 1px solid #555e65
 }
 
-.browser-view,
-.code-view {
+.__BittrDebuger__browser-view,
+.__BittrDebuger__code-view {
     border-top: 1px solid #000
 }
 
-.code-view table tr td:first-child {
+.__BittrDebuger__code-view table tr td:first-child {
     background: #24374b;
     border-right: 1px solid #0b1016
 }
 
-.code-view table .highlighted td {
+.__BittrDebuger__code-view table .__BittrDebuger__highlighted td {
     background: #24374b;
     border-top: 1px solid #000;
     border-bottom: 1px solid #000
 }
 
-.code-view table .highlighted td:first-child {
+.__BittrDebuger__code-view table .__BittrDebuger__highlighted td:first-child {
     color: #ec4c4e
 }
 
-.active-desc {
+.__BittrDebuger__active-desc {
     background: #343c45;
     border-top: 1px solid #555e65
 }
 
-.contents .right .global {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global {
     border-top: 1px solid #555e65;
     border-bottom: 1px solid #0d1012
 }
 
-.contents .listed {
+.__BittrDebuger__contents .__BittrDebuger__listed {
     border-bottom: 1px solid #313a46
 }
 
-.contents .right .global .content {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__content {
     background: #131c26
 }
 
-.ss-scroll {
+.__BittrDebuger__ss-scroll {
     background: rgba(0, 0, 0, 0.5);
 }
 
-.contents .right .global .env-arr .key {
+.__BittrDebuger__contents .__BittrDebuger__right .__BittrDebuger__global .__BittrDebuger__env-arr .__BittrDebuger__key {
     color: #3689b2
 }
 
-.contents .listed .index {
+.__BittrDebuger__contents .__BittrDebuger__listed .__BittrDebuger__index {
     color: #3689b2
 }
 
-.type-object {
+.__BittrDebuger__type-object {
     background: #5ba415
 }
 
-.type-null {
+.__BittrDebuger__type-null {
     background: #6789f8
 }
 
-.type-bool {
+.__BittrDebuger__type-bool {
     background: #f8b93c
 }
 
-.type-array {
+.__BittrDebuger__type-array {
     background: #6db679
 }
 
-.type-float {
+.__BittrDebuger__type-float {
     background: #9C6E25
 }
 
-.type-double {
+.__BittrDebuger__type-double {
     background: #9a6cf3
 }
 
-.type-integer {
+.__BittrDebuger__type-integer {
     background: #1BAABB
 }
 
-.type-string {
+.__BittrDebuger__type-string {
     background: #f99
 }
 
-.quote-string {
+.__BittrDebuger__quote-string {
     color: #ff7c88
 }
 
-.char-object {
+.__BittrDebuger__char-object {
     color: #5ba415
 }
 
-.char-null {
+.__BittrDebuger__char-null {
     color: #6789f8
 }
 
-.char-bool {
+.__BittrDebuger__char-bool {
     color: #f8b93c
 }
 
-.char-array {
+.__BittrDebuger__char-array {
     color: #6db679
 }
 
-.char-float {
+.__BittrDebuger__char-float {
     color: #9C6E25
 }
 
-.char-double {
+.__BittrDebuger__char-double {
     color: #9a6cf3
 }
 
-.char-string {
+.__BittrDebuger__char-string {
     color: #f99
 }
 
-.char-integer {
+.__BittrDebuger__char-integer {
     color: #1BAABB
 }
 
-.char-type {
+.__BittrDebuger__char-type {
     color: #aee288
 }
