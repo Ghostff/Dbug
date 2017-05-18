@@ -994,11 +994,8 @@ a:focus {
 .left .content-body {
     height: 95%
 }
-.loop-tog {
-    width: 98%;
-}
-.location .loop-tog {
-    width: 94%;
+.l-parent {
+    margin-left: 2px;
 }
 .left .content-body .loops {
     margin-top: 3px

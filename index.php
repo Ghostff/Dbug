@@ -32,7 +32,7 @@ function duplicateKey()
     renderError();
 }
 
-#duplicateKey();;
+duplicateKey();;
 //\BittrEHandler\Modules\Dump::error();
 
 

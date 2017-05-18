@@ -351,7 +351,7 @@ class BittrDbug
 
             $dsc = 'title="'. $namespace . '" data-file="' . $_file . '"data-class="' . $class . '"
                     data-type="' . $type . '" data-function="' . $function . '" data-line="' . $_line . '"';
-            $traced .= '<div class="loop-tog" data-id="proc-' . $i . '" ' . $dsc . '>
+            $traced .= '<div class="loop-tog l-parent" data-id="proc-' . $i . '" ' . $dsc . '>
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
                                 <span class="name">'. $class . '<b>' . $type . '</b>' . $function . '<i class="line">' . $_line . '</i></span>
@@ -362,7 +362,7 @@ class BittrDbug
 
             $micro_time = microtime(true) - $start;
 
-            $memory .= '<div class="memory loop-tog" data-id="proc-' . $i . '" ' . $dsc . '>
+            $memory .= '<div class="memory loop-tog l-parent" data-id="proc-' . $i . '" ' . $dsc . '>
                             <div class="id loop-tog code">' . $i . '</div>
                             <div class="holder">
                                 <span class="name">' . memory_get_usage() . '</span>
@@ -382,14 +382,14 @@ class BittrDbug
                 </div>
                 <div class="content-body">
                     <div class="location loops active">
-                        <div class="loop-tog" data-id="proc-main" data-line="' . $line . '" data-file="' . $file . '">
+                        <div class="loop-tog l-parent" data-id="proc-main" data-line="' . $line . '" data-file="' . $file . '">
                             <div class="id loop-tog code">' . $code . '</div>
                             <div class="holder">
                                 <span class="name">' . $file_name . '<i class="line">' . $line . '</i> </span>
                                 <span class="path">' . $file_path . '</span>             
                             </div>   
                         </div>
-                        <div class="loop-tog" data-id="proc-buffer">
+                        <div class="loop-tog l-parent" data-id="proc-buffer">
                             <div class="holder">
                                 <span class="name" style="padding-left: 0px;">Output Buffer</span>
                                 <span class="path">Toggle contents sent to output buffer</span>             

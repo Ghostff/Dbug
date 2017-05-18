@@ -265,6 +265,11 @@
         }
     });
 
+    var u = document.querySelector(".left .content-body").clientWidth;
+    document.querySelectorAll(".content-body .l-parent").forEach(function(a) {
+        a.setAttribute("style", "width:" + (u - 5) + "px;")
+    })
+
 
 })(window, document);
 
