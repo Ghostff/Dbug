@@ -127,7 +127,7 @@
     }
 
     var merg = getPos(document.querySelector('.__BtrD__middle .__BtrD__exception-type')).y +
-               getPos(document.querySelector('.__BtrD__middle .__BtrD__exception-msg')).y;
+        getPos(document.querySelector('.__BtrD__middle .__BtrD__exception-msg')).y;
     var size = getPos(document.getElementById('repop'));
     document.querySelectorAll('.__BtrD__code-view').forEach(function(e) {
         var styled = e.getAttribute('style');
@@ -201,6 +201,18 @@
 
     _atg(last_toggled);
 
+    function fixhtml(html){
+        var div = document.createElement('div');
+        div.innerHTML=html
+        return (div.innerHTML);
+    }
+
+    function b64DecodeUnicode(str) {
+        return decodeURIComponent(atob(str).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    }
+
     delegate(document, "click", ".__BtrD__loop-tog", function() {
         var id = this.getAttribute("data-id");
         last_toggled.style.display = "none";
@@ -240,6 +252,8 @@
         }
         else {
             var buf = document.getElementById("proc-buffer");
+            buf.innerHTML = fixhtml(b64DecodeUnicode(buf.innerText));
+            console.log(buf.innerText);
             buf.setAttribute("style", "height:calc(100vh - " + merg + "px);");
             SimpleScrollbar.initEl(buf, 26);
             panel.style.display = "none";
@@ -277,14 +291,5 @@
     })
 
 
+
 })(window, document);
-
-
-
-
-
-
-
-
-
-
