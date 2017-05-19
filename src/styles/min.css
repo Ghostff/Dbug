@@ -302,8 +302,8 @@ body {
     border-collapse: collapse
 }
 
-.__BtrD__code-view table .__BtrD__function,
-.__BtrD__code-view table .__BtrD__keyword {
+.__BtrD__code-view table .function,
+.__BtrD__code-view table .keyword {
     font-weight: 600;
 }
 

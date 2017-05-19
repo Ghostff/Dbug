@@ -132,7 +132,7 @@
     document.querySelectorAll('.__BtrD__code-view').forEach(function(e) {
         var styled = e.getAttribute('style');
         e.setAttribute("style", "height:" + (size.y - merg + 8)  + "px;" + (styled ? styled : ''));
-        SimpleScrollbar.initEl(e, 3);
+        SimpleScrollbar.initEl(e, 5);
     });
 
     document.querySelectorAll('.__BtrD__global .__BtrD__content').forEach(function(e) {
@@ -141,13 +141,13 @@
         var inner = e.clientHeight;
         e.style.display = 'none';
         e.setAttribute("style", "height:" + ((inner > 500) ? 600 : inner)  + "px;" + (styled ? styled : ''));
-        SimpleScrollbar.initEl(e, 16);
+        SimpleScrollbar.initEl(e, 20);
     });
 
     var height = 35 + getPos(document.querySelector('.__BtrD__left .__BtrD__content-nav')).y;
     document.querySelectorAll('.__BtrD__left .__BtrD__loops').forEach(function(e) {
         e.setAttribute("style", "width: 102%;height: calc(100vh - " + height + "px);");
-        SimpleScrollbar.initEl(e, 13);
+        SimpleScrollbar.initEl(e, 15);
     });
 
     function delegate(el, evt, sel, handler) {
