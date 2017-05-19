@@ -413,7 +413,7 @@ class BittrDbug
     private function middle(string $type, string $message, string $file, int $line): string
     {
         $code = rtrim($this->chunk($file, $line));
-        $output = ob_get_clean();
+        output = base64_encode(ob_get_clean());
         if ($output == '')
         {
             $output = '<h3 style="text-align: center;">No output sent to buffer</h3>';
