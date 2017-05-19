@@ -4,7 +4,7 @@ spl_autoload_register(function ($name) {
     include str_replace(['\\', 'Debug'], [DIRECTORY_SEPARATOR, 'src'], $name) . '.php';
 });
 
-new Debug\BittrDbug(\Debug\BittrDbug::PRETTIFY, 'default', 10);
+new Debug\BittrDbug(\Debug\BittrDbug::PRETTIFY, 'yola', 10);
 
 echo 111;
 class Foo
