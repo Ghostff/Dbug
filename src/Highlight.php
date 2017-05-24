@@ -69,7 +69,7 @@ class Highlight
     private static $parenthesis_ptrn = '/\(|\)/';
     private static $return_type_ptrn = '/(?<=\:\<\/span\>)\s*(?:\<\w+ \w+="\w+:#\w+" \w+="\w+"\>\?\<\/\w+\>)*(string|bool|array|float|int|callable|void)/';
     private static $curly_braces_ptrn = '/[\{\}]/';
-    private static $parameter_type_ptrn = '/(?<!\w)(string|bool|array|float|int|callable)\s*(?=\<span style="[\w:#-;]+" class="variable"\>\$)/';
+    private static $parameter_type_ptrn = '/(?<!\w)(string|bool|array|float|int|callable)\s*(?=\<span style="[\w:#-;]+" class="(variable|operators)"\>[\$||&amp;])/';
     private static $square_bracket_ptrn = '/\[|\]/';
     private static $multi_line_comment_ptrn = '/\/\*|\*\//';
 
