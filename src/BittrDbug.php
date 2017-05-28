@@ -23,7 +23,6 @@ class BittrDbug
     public function __construct($type = null, string $theme_or_log_path = null, int $line_range = 10)
     {
         ob_start();
-
         if ( $type == null || is_string($type))
         {
             $this->path = $theme_or_log_path;
@@ -67,14 +66,14 @@ class BittrDbug
         }
 
         $content = sprintf('<div style="font-family:Inconsolata !important;font-weight:bold !important;line-height:1.3 !important;font-size:14px !important;">
-        <div class="__BtrD__header">%s</div>
-            <div class="__BtrD__container-fluid">
-                <div class="__BtrD__row __BtrD__contents">
-                    <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__left">%s</div>
-                    <div class="__BtrD__col-md-6 __BtrD__attr __BtrD__middle ">%s</div>
-                    <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__right">%s</div>
-                </div>
-        </div></div>',
+            <div class="__BtrD__header">%s</div>
+                <div class="__BtrD__container-fluid">
+                    <div class="__BtrD__row __BtrD__contents">
+                        <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__left">%s</div>
+                        <div class="__BtrD__col-md-6 __BtrD__attr __BtrD__middle ">%s</div>
+                        <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__right">%s</div>
+                    </div>
+            </div></div>',
             $this->top(),
             $this->left($e->getFile(), $e->getLine(), $e->getCode(), $e->getTrace()),
             $this->middle($type, $e->getMessage(), $e->getFile(), $e->getLine()),
@@ -127,14 +126,15 @@ class BittrDbug
         $new_trace = PHP_EOL . $new_trace;
         $file = sprintf($template, date("d-m-Y H:i:s"), $type, $e->getMessage(), $e->getFile(), $e->getLine(), $new_trace);
         file_put_contents($this->path, $file, FILE_APPEND);
-        ob_end_clean();
     }
 
     public function Handle(int $severity, string $message, string $filename, int $lineno)
     {
         $l = error_reporting();
-        if ( $l & $severity ) {
-            switch ($severity) {
+        if ( $l & $severity )
+        {
+            switch ($severity)
+            {
                 case E_USER_ERROR:
                     $type = 'Fatal Error';
                     break;
@@ -421,8 +421,9 @@ class BittrDbug
 
         $message = (strlen($message) > 0) ? $message : 'No message passed in ' . $type . ' construct';
 
-        $g = 'php ' . $type . ' ' . $message;
-        $s = '[php] ' . $message;
+        $q_str = str_replace('"', '', $message);
+        $g = 'php ' . $type . ' ' . $q_str;
+        $s = '[php] ' . $q_str;
         return '<div class="__BtrD__exception-type">
                     <span>' . $type . '</span>
                     <div class="__BtrD__action">
@@ -488,7 +489,7 @@ class BittrDbug
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>BittrDbug Debug</title>
+        <title>Bittr Debug</title>
     </head>
     <body>
     ' . $content . '
