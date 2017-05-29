@@ -140,7 +140,8 @@
         e.style.display = 'block';
         var inner = e.clientHeight;
         e.style.display = 'none';
-        e.setAttribute("style", "height:" + ((inner > 500) ? 600 : inner)  + "px;" + (styled ? styled : ''));
+        var b_height = window.clientHeight || window.innerHeight;
+        e.setAttribute("style", "height:" + ((inner > 500) ? (b_height - getPos(document.getElementById('tog-8')).y - 100) : inner)  + "px;" + (styled ? styled : ''));
         SimpleScrollbar.initEl(e, 20);
     });
 
@@ -203,7 +204,7 @@
 
     function fixhtml(html){
         var div = document.createElement('div');
-        div.innerHTML=html
+        div.innerHTML = html;
         return (div.innerHTML);
     }
 
