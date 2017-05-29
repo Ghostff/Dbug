@@ -23,7 +23,6 @@ class BittrDbug
     public function __construct($type = null, string $theme_or_log_path = null, int $line_range = 10)
     {
         ob_start();
-
         if ( $type == null || is_string($type))
         {
             $this->path = $theme_or_log_path;
@@ -67,14 +66,14 @@ class BittrDbug
         }
 
         $content = sprintf('<div style="font-family:Inconsolata !important;font-weight:bold !important;line-height:1.3 !important;font-size:14px !important;">
-        <div class="__BtrD__header">%s</div>
-            <div class="__BtrD__container-fluid">
-                <div class="__BtrD__row __BtrD__contents">
-                    <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__left">%s</div>
-                    <div class="__BtrD__col-md-6 __BtrD__attr __BtrD__middle ">%s</div>
-                    <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__right">%s</div>
-                </div>
-        </div></div>',
+            <div class="__BtrD__header">%s</div>
+                <div class="__BtrD__container-fluid">
+                    <div class="__BtrD__row __BtrD__contents">
+                        <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__left">%s</div>
+                        <div class="__BtrD__col-md-6 __BtrD__attr __BtrD__middle ">%s</div>
+                        <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__right">%s</div>
+                    </div>
+            </div></div>',
             $this->top(),
             $this->left($e->getFile(), $e->getLine(), $e->getCode(), $e->getTrace()),
             $this->middle($type, $e->getMessage(), $e->getFile(), $e->getLine()),
@@ -127,14 +126,15 @@ class BittrDbug
         $new_trace = PHP_EOL . $new_trace;
         $file = sprintf($template, date("d-m-Y H:i:s"), $type, $e->getMessage(), $e->getFile(), $e->getLine(), $new_trace);
         file_put_contents($this->path, $file, FILE_APPEND);
-        ob_end_clean();
     }
 
     public function Handle(int $severity, string $message, string $filename, int $lineno)
     {
         $l = error_reporting();
-        if ( $l & $severity ) {
-            switch ($severity) {
+        if ( $l & $severity )
+        {
+            switch ($severity)
+            {
                 case E_USER_ERROR:
                     $type = 'Fatal Error';
                     break;
@@ -293,7 +293,7 @@ class BittrDbug
     private function top(): string
     {
         $selected_theme = $this->theme;
-        $theme_file = __DIR__ . '/theme.json';
+        $theme_file = __DIR__ . DIRECTORY_SEPARATOR . 'theme.json';
         $_theme = file_get_contents($theme_file);
         $theme = json_decode($_theme, true);
         $select = '';
@@ -358,13 +358,13 @@ class BittrDbug
                 $function = '';
             }
 
-            $dsc = 'title="'. $namespace . '" data-file="' . $_file . '"data-class="' . $class . '"
+            $dsc = 'title="'. $namespace . '" data-file="' . $_file . '" data-class="' . $class . '"
                     data-type="' . $type . '" data-function="' . $function . '" data-line="' . $_line . '"';
             $traced .= '<div class="__BtrD__loop-tog __BtrD__l-parent" data-id="proc-' . $i . '" ' . $dsc . '>
                             <div class="__BtrD__id __BtrD__loop-tog __BtrD__code">' . $i . '</div>
                             <div class="__BtrD__holder">
                                 <span class="__BtrD__name">'. $class . '<b>' . $type .
-                                '</b>' . $function . '<i class="__BtrD__line">' . $_line . '</i></span>
+                '</b>' . $function . '<i class="__BtrD__line">' . $_line . '</i></span>
                                 <span class="__BtrD__path">' . $_file . '</span> 
                             </div>   
                         </div>';
@@ -413,7 +413,7 @@ class BittrDbug
     private function middle(string $type, string $message, string $file, int $line): string
     {
         $code = rtrim($this->chunk($file, $line));
-        output = base64_encode(ob_get_clean());
+        $output = base64_encode(ob_get_clean());
         if ($output == '')
         {
             $output = '<h3 style="text-align: center;">No output sent to buffer</h3>';
@@ -421,8 +421,9 @@ class BittrDbug
 
         $message = (strlen($message) > 0) ? $message : 'No message passed in ' . $type . ' construct';
 
-        $g = 'php ' . $type . ' ' . $message;
-        $s = '[php] ' . $message;
+        $q_str = str_replace('"', '', $message);
+        $g = 'php ' . $type . ' ' . $q_str;
+        $s = '[php] ' . $q_str;
         return '<div class="__BtrD__exception-type">
                     <span>' . $type . '</span>
                     <div class="__BtrD__action">
@@ -477,10 +478,10 @@ class BittrDbug
     private function html(string $content): string
     {
         $DIRS = DIRECTORY_SEPARATOR;
-        $theme_file = __DIR__ . $DIRS . 'Styles' . $DIRS;
+        $theme_file = __DIR__ . $DIRS . 'Assets' . $DIRS;
         $theme = file_get_contents($theme_file . $this->theme . '.css');
         $image = base64_encode(file_get_contents($theme_file . $this->theme . '.png'));
-        $font_bld = base64_encode(file_get_contents($theme_file . 'fonts' . $DIRS . 'Inconsolata.woff2'));
+        $font_bld = base64_encode(file_get_contents($theme_file . 'Fonts' . $DIRS . 'Inconsolata.woff2'));
 
         return '<!DOCTYPE html>
 <html lang="en">
