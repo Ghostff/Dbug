@@ -478,10 +478,10 @@ class BittrDbug
     private function html(string $content): string
     {
         $DIRS = DIRECTORY_SEPARATOR;
-        $theme_file = __DIR__ . $DIRS . 'Styles' . $DIRS;
+        $theme_file = __DIR__ . $DIRS . 'Assets' . $DIRS;
         $theme = file_get_contents($theme_file . $this->theme . '.css');
         $image = base64_encode(file_get_contents($theme_file . $this->theme . '.png'));
-        $font_bld = base64_encode(file_get_contents($theme_file . 'fonts' . $DIRS . 'Inconsolata.woff2'));
+        $font_bld = base64_encode(file_get_contents($theme_file . 'Fonts' . $DIRS . 'Inconsolata.woff2'));
 
         return '<!DOCTYPE html>
 <html lang="en">
