@@ -44,7 +44,6 @@ class Highlight
 
     private static $highlight = [];
     private static $start_line = 0;
-    private static $cache_path = null;
     private static $show_line_number = false;
 
     private static $body = '';
@@ -212,11 +211,9 @@ class Highlight
      * processes supplied text
      *
      * @param string $code
-     * @param string $file_name
-     * @param bool $cache
      * @return string
      */
-    private static function format(string $code, string $file_name, bool $cache): string
+    private static function format(string $code): string
     {
         $code = str_replace(
             ['<?php', '<?=', '?>', '\\\\'],
@@ -385,50 +382,7 @@ class Highlight
         $style = '.strip font,.strip span{color:inherit !important;all:initial !important;all:unset !important}';
         $pretty = '<table style="' . self::$body .'">'. $new_code . '</table><style>' . $style . '</style>';
 
-        if ($cache)
-        {
-            self::cache($file_name, $pretty);
-        }
         return $pretty;
-    }
-
-
-    /**
-     * caches formatted strings and handles gc. (currently available for file highlight alone)
-     *
-     * @param string $name
-     * @param string $new_cache
-     * @return string
-     */
-    private static function cache(string $name, string $new_cache = null): string
-    {
-        $file = self::$cache_path . DIRECTORY_SEPARATOR . '_x86';
-        if ($new_cache == null)
-        {
-            @$content = file_get_contents($file);
-            $content = (array) json_decode($content);
-
-            if ((isset($content[$name])) && ($content[$name][0] == filemtime($name))) {
-                return file_get_contents(self::$cache_path . DIRECTORY_SEPARATOR . $content[$name][1]);
-            }
-        }
-        else
-        {
-            if ( ! is_dir(self::$cache_path)) {
-                mkdir(self::$cache_path);
-                file_put_contents($file, '');
-            }
-            @$content = file_get_contents($file);
-            $content = (array) json_decode($content);
-            if (( ! isset($content[$name])) || ((isset($content[$name])) && ($content[$name][0] != filemtime($name)))) {
-                $_name =  time() + mt_rand(1, 500);
-                $content[$name] = array(filemtime($name), $_name);
-                file_put_contents($file, json_encode($content));
-                file_put_contents(self::$cache_path . DIRECTORY_SEPARATOR . $_name, $new_cache);
-            }
-        }
-        return '';
-
     }
 
 
@@ -436,24 +390,10 @@ class Highlight
      * check if code is a file or a string then renders accordingly
      *
      * @param string $code
-     * @param bool $is_file
-     * @param bool $cache
-     * @param bool $tabs_to_space
      * @return string
      */
-    public static function render(string $code, bool $is_file = false, bool $cache = true, bool $tabs_to_space = true): string
+    public static function render(string $code): string
     {
-        self::$cache_path = __DIR__ . DIRECTORY_SEPARATOR . '.caches';
-        if ($is_file) {
-            if ($cache) {
-                $cached = self::cache($code);
-                if ($cached != '') {
-                    return $cached;
-                }
-            }
-
-            return self::format(file_get_contents($code), $code, $cache, $tabs_to_space);
-        }
-        return self::format($code, '', false, true);
+        return self::format($code);
     }
 }
