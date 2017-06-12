@@ -57,6 +57,12 @@ class BittrDbug
 
     const PRETTIFY = 'prettify';
 
+    /**
+     * BittrDbug constructor.
+     * @param null $type
+     * @param string|null $theme_or_log_path
+     * @param int $line_range
+     */
     public function __construct($type = null, string $theme_or_log_path = null, int $line_range = 10)
     {
         ob_start();
@@ -90,6 +96,9 @@ class BittrDbug
 
     }
 
+    /**
+     * @param \Throwable $e
+     */
     public function prettify(\Throwable $e)
     {
         $type = $this->type;
@@ -120,6 +129,9 @@ class BittrDbug
         echo $this->html($content); exit;
     }
 
+    /**
+     * @param \Throwable $e
+     */
     public function fileLog(\Throwable $e)
     {
         $type = $this->type;
@@ -161,10 +173,32 @@ class BittrDbug
         }
 
         $new_trace = PHP_EOL . $new_trace;
-        $file = sprintf($template, date("d-m-Y H:i:s"), $type, $e->getMessage(), $e->getFile(), $e->getLine(), $new_trace);
-        file_put_contents($this->path, $file, FILE_APPEND);
+        $split = explode(' ', date("d-m-Y H:i:s"));
+        $date = $split[0];
+        $time = $split[1];
+        $path = $this->path;
+
+        $file = sprintf($template, $date . ' ' . $time, $type, $e->getMessage(), $e->getFile(), $e->getLine(), $new_trace);
+        if ( ! is_dir($path))
+        {
+            throw new \RuntimeException('path (' . $path . ') not found');
+        }
+
+        $DS = DIRECTORY_SEPARATOR;
+        if ( ! is_dir($path . $DS . $date))
+        {
+            mkdir($path . $DS . $date , 0777, true);
+        }
+        file_put_contents($path . $DS . $date . $DS . '.log', $file, FILE_APPEND);
     }
 
+    /**
+     * @param int $severity
+     * @param string $message
+     * @param string $filename
+     * @param int $lineno
+     * @throws \ErrorException
+     */
     public function Handle(int $severity, string $message, string $filename, int $lineno)
     {
         $l = error_reporting();
@@ -192,10 +226,20 @@ class BittrDbug
                     break;
             }
         }
+
+        if ($type === null)
+        {
+            return;
+        }
         $this->type = $type;
         throw new \ErrorException($message, 0, $severity, $filename, $lineno);
     }
 
+    /**
+     * @param string $file
+     * @param int $line
+     * @return string
+     */
     private function chunk(string $file, int $line): string
     {
         $chunk_count = $this->chunk;
@@ -229,11 +273,19 @@ class BittrDbug
         return implode($_code);
     }
 
+    /**
+     * @param string $message
+     * @return string
+     */
     private function highlight(string $message): string
     {
         return preg_replace('/(\'(.*?)\'|"(.*?)")/s', '<span class="__BtrD__char-string">$1</span>', $message);
     }
 
+    /**
+     * @param $objects
+     * @return string
+     */
     private function objects($objects): string
     {
         $obj = new \ReflectionObject($objects);
@@ -266,6 +318,11 @@ class BittrDbug
         return $temp;
     }
 
+    /**
+     * @param $arguments
+     * @param bool $array_loop
+     * @return string
+     */
     private function get($arguments, bool $array_loop = false): string
     {
         $arguments = [$arguments];
@@ -327,6 +384,9 @@ class BittrDbug
         return $format;
     }
 
+    /**
+     * @return string
+     */
     private function top(): string
     {
         $selected_theme = $this->theme;
@@ -356,6 +416,13 @@ class BittrDbug
         ';
     }
 
+    /**
+     * @param string $file
+     * @param string $line
+     * @param int $code
+     * @param array $trace
+     * @return string
+     */
     private function left(string $file, string $line, int $code, array $trace = [])
     {
         $__file = explode(DIRECTORY_SEPARATOR, $file);
@@ -447,6 +514,13 @@ class BittrDbug
                 </div> ';
     }
 
+    /**
+     * @param string $type
+     * @param string $message
+     * @param string $file
+     * @param int $line
+     * @return string
+     */
     private function middle(string $type, string $message, string $file, int $line): string
     {
         $code = rtrim($this->chunk($file, $line));
@@ -479,6 +553,9 @@ class BittrDbug
                 </div>';
     }
 
+    /**
+     * @return string
+     */
     private function right(): string
     {
         $globals = array(
@@ -512,6 +589,10 @@ class BittrDbug
         return $side;
     }
 
+    /**
+     * @param string $content
+     * @return string
+     */
     private function html(string $content): string
     {
         $DIRS = DIRECTORY_SEPARATOR;
