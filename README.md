@@ -1,4 +1,4 @@
-# BittrDbug a *very lightweight Error/Exception handler for PHP(7+)
+# Dbug a *very lightweight Error/Exception handler for PHP(7+)
 
 Basic usage:
 ```php
