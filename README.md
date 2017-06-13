@@ -2,7 +2,7 @@
 
 Basic usage:
 ```php
-use Debug\BittrDbug;
+use Dbug\BittrDbug;
 
 /**
  * @param error handle type
@@ -17,7 +17,7 @@ Output protoype:
 
 Using callback function:
 ```php
-use Debug\BittrDbug;
+use Dbug\BittrDbug;
 
 new BittrDbug(function (\Throwable $e) {
     var_dump($e->getMessage());
@@ -27,7 +27,7 @@ new BittrDbug(function (\Throwable $e) {
 
 You can also log errors instead of outputting them in browser:
 ```php
-use Debug\BittrDbug;
+use Dbug\BittrDbug;
 
 /**
  * @param error handle type
