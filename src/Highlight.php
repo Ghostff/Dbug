@@ -37,7 +37,7 @@
  *
  */
 
-namespace Debug;
+namespace Dbug;
 
 class Highlight
 {
