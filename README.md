@@ -1,6 +1,18 @@
 # Dbug a *very lightweight Error/Exception handler for PHP(7+)
 [![Latest Stable Version](https://img.shields.io/badge/release-v1.0.0-brightgreen.svg)](https://github.com/Ghostff/Text_Tables_Generator/releases) ![License](https://img.shields.io/packagist/l/gomoob/php-pushwoosh.svg) [![Latest Stable Version](https://img.shields.io/badge/packagist-v5.5.4-blue.svg)](https://packagist.org/packages/ghostff/text-tables-generator) [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg)](http://php.net/releases/7_0_0.php)
 ----------
+
+#Installation   
+You can download the  Latest [release version ](https://github.com/Ghostff/Dbug/releases/) as a standalone, alternatively you can use [Composer](https://getcomposer.org/) 
+```json
+$ composer require ghostff/dbug
+```
+```json
+"require": {
+    "ghostff/dbug": "^1.0"
+}
+```    
+
 Basic usage:
 ```php
 use Dbug\BittrDbug;
@@ -37,4 +49,5 @@ use Dbug\BittrDbug;
 new BittrDbug(BittrDbug::FILE_LOG, 'path/to/my/log/');
 #This should be implemented before any other script execution except your autoloader(if using one).
 ```
+
 
