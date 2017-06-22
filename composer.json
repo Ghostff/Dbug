@@ -1,5 +1,5 @@
 {
-    "name": "ghostff/Dbug",
+    "name": "ghostff/dbug",
     "description": "A very lightweight Error/Exception handler for PHP",
     "type": "library",
     "keywords" : ["error", "error-reporting", "error-handling", "exception-handler", "debuger", "error-log"],
