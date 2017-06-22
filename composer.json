@@ -1,0 +1,24 @@
+{
+    "name": "ghostff/Dbug",
+    "description": "A very lightweight Error/Exception handler for PHP",
+    "type": "library",
+    "keywords" : ["error", "error-reporting", "error-handling", "exception-handler", "debuger", "error-log"],
+    "license": "BSD",
+    "authors": [
+        {
+            "name": "Chrys Ugwu",
+            "email": "frankchris@hotmail.com"
+        }
+    ],
+    "require": {
+		"php": ">=7.0"	
+	},
+	"require-dev": {
+        "phpunit/phpunit": "5.5.*"
+    },
+	"autoload" : {
+        "psr-4" : {
+          "Dbug\\" : "src/"
+        }
+    }
+}
