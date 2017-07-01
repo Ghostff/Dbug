@@ -49,5 +49,6 @@ use Dbug\BittrDbug;
 new BittrDbug(BittrDbug::FILE_LOG, 'path/to/my/log/');
 #This should be implemented before any other script execution except your autoloader(if using one).
 ```
+For file logging, you can set your ```path``` to a directory outside your webroot or maybe add add a ```.htaccess``` to prevent direct access to your log directory.
 
 

@@ -59,17 +59,17 @@ class BittrDbug
 
     /**
      * BittrDbug constructor.
-     * @param null $type
+     * @param mixed $type
      * @param string|null $theme_or_log_path
      * @param int $line_range
      */
-    public function __construct($type = null, string $theme_or_log_path = null, int $line_range = 10)
+    public function __construct($type, string $theme_or_log_path = null, int $line_range = 10)
     {
         ob_start();
-        if ( $type == null || is_string($type))
+        if (is_string($type))
         {
             $this->path = $theme_or_log_path;
-            if ($type == 'prettify')
+            if ($type == self::PRETTIFY)
             {
                 if ($theme_or_log_path == null)
                 {
@@ -173,23 +173,28 @@ class BittrDbug
         }
 
         $new_trace = PHP_EOL . $new_trace;
-        $split = explode(' ', date("d-m-Y H:i:s"));
-        $date = $split[0];
-        $time = $split[1];
+        $date = date("d-m-Y H:i:s");
         $path = $this->path;
 
-        $file = sprintf($template, $date . ' ' . $time, $type, $e->getMessage(), $e->getFile(), $e->getLine(), $new_trace);
+        $file = sprintf($template, $date, $type, $e->getMessage(), $e->getFile(), $e->getLine(), $new_trace);
         if ( ! is_dir($path))
         {
             throw new \RuntimeException('path (' . $path . ') not found');
         }
 
         $DS = DIRECTORY_SEPARATOR;
-        if ( ! is_dir($path . $DS . $date))
+        
+        $split = explode('-', $date);
+        $day = $split[0];
+        $month = $split[1];
+        $year = strstr($split[2], ' ', true);
+        
+        $path = $path . $DS . $year . $DS . $month . $DS;
+        if ( ! is_dir($path))
         {
-            mkdir($path . $DS . $date , 0777, true);
+            mkdir($path, 0777, true);
         }
-        file_put_contents($path . $DS . $date . $DS . '.log', $file, FILE_APPEND);
+        file_put_contents($path . $day . '.log', $file, FILE_APPEND);
     }
 
     /**
