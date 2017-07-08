@@ -36,6 +36,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+ 
+declare(strict_types=1);
 
 namespace Dbug;
 
@@ -181,7 +183,6 @@ class Highlight
             $theme = json_decode($_theme, true);
 
             $return_int = isset($theme[$name]) ? 2 : (isset($theme[$default]) ? 1 : 0);
-
             if ($return_int !== 0)
             {
                 $properties = ($return_int == 2) ? $theme[$name] : $theme[$default];
@@ -197,6 +198,8 @@ class Highlight
                     $styles = array_map(function(string $keyword, string $attributes): string {
                         return $keyword . ':' . $attributes . ';';
                     }, array_keys($styles), $styles);
+                    
+                    
 
                     $style .= implode($styles);
                     self::$$property = $style;
@@ -232,7 +235,7 @@ class Highlight
         $QT = null; #qoute_type
         $line_number = self::$show_line_number;
 
-        foreach (preg_split('/\n/', $code) as $lines)
+        foreach (explode("\n", $code) as $lines)
         {
 
             $lines = preg_replace(
@@ -240,7 +243,7 @@ class Highlight
                 '<span style="color:' . self::$semi_colon .'" class="semi_colon">$0</span>',
                 $lines
             );
-            #single line comment
+            
             $SLC = false;
             $start_number++;
 
@@ -320,7 +323,8 @@ class Highlight
                 }, $lines);
             }
 
-            $pattern = [
+            $lines = self::isFunction($lines);
+            $lines = preg_replace([
                 self::$operators_ptrn,
                 self::$number_ptrn,
                 self::$class_ptrn,
@@ -343,9 +347,7 @@ class Highlight
                 '/PP_PHP_SHORT_TAG_OPEN/',
                 '/PP_PHP_CLOSE_TAG/',
                 '/PP_PHP_DOUBLE_BACK_SLASH/'
-            ];
-
-            $replacement = [
+            ], [
                 '<span style="color:' . self::$operators .'" class="operators">$0</span>',
                 '<span style="color:' . self::$number .'" class="number">$0</span>',
                 '<span style="color:' . self::$class .'" class="number">$0</span>',
@@ -368,11 +370,7 @@ class Highlight
                 '<span style="color:' . self::$tag_open .'" class="tag short">&lt;?=</span>',
                 '<span style="color:' . self::$tag_close .'" class="tag clode">?></span>',
                 '\\\\\\',
-            ];
-
-
-            $lines = self::isFunction($lines);
-            $lines = preg_replace($pattern, $replacement, $lines);
+            ],$lines);
             $new_code .= $lines . '</td></tr>';
 
         }

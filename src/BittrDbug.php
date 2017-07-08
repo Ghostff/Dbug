@@ -36,6 +36,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+ 
+declare(strict_types=1);
 
 namespace Dbug;
 
@@ -65,11 +67,15 @@ class BittrDbug
      */
     public function __construct($type, string $theme_or_log_path = null, int $line_range = 10)
     {
+        ini_set('display_errors', '1');
+        ini_set('display_startup_errors', '1');
+        error_reporting(E_ALL);
+        
         ob_start();
         if (is_string($type))
         {
             $this->path = $theme_or_log_path;
-            if ($type == self::PRETTIFY)
+            if ($type == 'prettify')
             {
                 if ($theme_or_log_path == null)
                 {
@@ -121,12 +127,12 @@ class BittrDbug
                     </div>
             </div></div>',
             $this->top(),
-            $this->left($e->getFile(), $e->getLine(), $e->getCode(), $e->getTrace()),
+            $this->left($e->getFile(), (string) $e->getLine(), (string) $e->getCode(), $e->getTrace()),
             $this->middle($type, $e->getMessage(), $e->getFile(), $e->getLine()),
             $this->right()
         );
 
-        echo $this->html($content); exit;
+        die($this->html($content));
     }
 
     /**
@@ -150,7 +156,7 @@ class BittrDbug
         $trace = $e->getTrace();
 
         $_trace = count($trace) - 1;
-        for ($i = $_trace; $i >= 0; $i--)
+        for ($i = $_trace; $i >= 0; --$i)
         {
             $t = $trace[$i];
             if ( ! isset($t['file']))
@@ -368,7 +374,7 @@ class BittrDbug
                 foreach ($arg as $key => $value)
                 {
                     $key = str_replace('<', '&lt;', $key);
-                    if ( is_array($value))
+                    if (is_array($value))
                     {
                         $format .= '<span class="key">' . $key . '</span> : ' . $this->get($value, true) . ',<br />';
                     }
@@ -394,19 +400,9 @@ class BittrDbug
      */
     private function top(): string
     {
-        $selected_theme = $this->theme;
-        $theme_file = __DIR__ . '/theme.json';
-        $_theme = file_get_contents($theme_file);
-        $theme = json_decode($_theme, true);
-        $select = '';
-        foreach ($theme as $names => $vals)
-        {
-            $select .= '<li><a href="?theme=' . $names . '">' . $names . '</a></li> <li role="separator" class="__BtrD__divider"></li>';
-        }
-
         return '<div class="__BtrD__logo __BtrD__tops">
             <span class="__BtrD__logo-img"></span>
-            <span class="__BtrD__theme">Theme: ' . $selected_theme . '</span>
+            <span class="__BtrD__theme">Theme: ' . $this->theme . '</span>
         </div>
         <div class="__BtrD__hints __BtrD__tops">
             <div class="__BtrD__type __BtrD__type-object">OBJECT</div>
@@ -428,8 +424,9 @@ class BittrDbug
      * @param array $trace
      * @return string
      */
-    private function left(string $file, string $line, int $code, array $trace = [])
+    private function left(string $file, string $line, string $code, array $trace = [])
     {
+        
         $__file = explode(DIRECTORY_SEPARATOR, $file);
         $file_name = end($__file);
         $file_path = rtrim($file, $file_name);
@@ -493,7 +490,8 @@ class BittrDbug
 
             $this->contents[] = '<div class="__BtrD__code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
         }
-
+        
+        $margin = strlen($code) * 3;
         return '<div class="__BtrD__content-nav" id="cont-nav">
                     <div class="__BtrD__top-tog __BtrD__active" id="__BtrD__location">Location</div> 
                     <div class="__BtrD__top-tog" id="__BtrD__function">Trace</div> 
@@ -504,7 +502,7 @@ class BittrDbug
                         <div class="__BtrD__loop-tog __BtrD__l-parent" data-id="proc-main" data-line="' . $line . '" data-file="' . $file . '">
                             <div class="__BtrD__id __BtrD__loop-tog __BtrD__code">' . $code . '</div>
                             <div class="__BtrD__holder">
-                                <span class="__BtrD__name">' . $file_name . '<i class="line">' . $line . '</i> </span>
+                                <span class="__BtrD__name" style="margin-left:' . $margin . 'px">' . $file_name . '<i class="line">' . $line . '</i> </span>
                                 <span class="__BtrD__path">' . $file_path . '</span>             
                             </div>   
                         </div>
@@ -563,7 +561,7 @@ class BittrDbug
      */
     private function right(): string
     {
-        $globals = array(
+        $globals = [
             'Server' => $_SERVER ?? [],
             'Get' => $_GET ?? [],
             'Post' => $_POST ?? [],
@@ -572,7 +570,7 @@ class BittrDbug
             'Session' => $_SESSION ?? [],
             'Cookie' => $_COOKIE ?? [],
             'Env' => $_ENV ?? []
-        );
+        ];
 
         $side = '';
         $count = 1;
@@ -603,7 +601,7 @@ class BittrDbug
         $DIRS = DIRECTORY_SEPARATOR;
         $theme_file = __DIR__ . $DIRS . 'Assets' . $DIRS;
         $theme = file_get_contents($theme_file . $this->theme . '.css');
-        $image = base64_encode(file_get_contents($theme_file . $this->theme . '.png'));
+        $image = base64_encode(@file_get_contents($theme_file . $this->theme . '.png') ?: '');
         $font_bld = base64_encode(file_get_contents($theme_file . 'Fonts' . $DIRS . 'Inconsolata.woff2'));
 
         return '<!DOCTYPE html>
@@ -613,15 +611,15 @@ class BittrDbug
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Bittr Debug</title>
-    </head>
-    <body>
-    ' . $content . '
-    <style>
+        <style>
         @font-face{font-family:Inconsolata;src:url(data:font/truetype;charset=utf-8;base64,' . $font_bld . ') format("woff2");}
-        .__BtrD__middle,body{overflow:hidden!important}.__BtrD__contents .__BtrD__right .__BtrD__global,.__BtrD__left .__BtrD__content-body .__BtrD__loops .__BtrD__holder:hover,.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog{cursor:pointer}.__BtrD__contents .__BtrD__listed:last-child,.__BtrD__contents .__BtrD__right .__BtrD__global:last-child{border-bottom:none}html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;font-size:10px;-webkit-tap-highlight-color:transparent}body{margin:0!important}.__BtrD__container,.__BtrD__container-fluid{margin-right:auto;margin-left:auto;padding-right:15px;padding-left:15px}.__BtrD__caret,.__BtrD__header .__BtrD__hints .__BtrD__type,.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog{display:inline-block}*,:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}@media (min-width:768px){.__BtrD__container{width:750px}}@media (min-width:992px){.__BtrD__container{width:970px}}@media (min-width:1200px){.__BtrD__container{width:1170px}}.__BtrD__row{margin-right:-15px;margin-left:-15px}.__BtrD__col-md-3,.__BtrD__col-md-6{position:relative;min-height:1px;padding-right:15px;padding-left:15px}@media (min-width:992px){.__BtrD__col-md-3,.__BtrD__col-md-6{float:left}.__BtrD__col-md-6{width:50%}.__BtrD__col-md-3{width:25%}}.__BtrD__caret{width:0;height:0;margin-left:2px;vertical-align:middle;border-top:4px dashed;border-top:4px solid\9;border-right:4px solid transparent;border-left:4px solid transparent}.__BtrD__header{padding:5px;height:35px;width:100%}.__BtrD__header .__BtrD__hints{position:absolute;right:0}.__BtrD__header .__BtrD__type{margin-left:10px;width:70px;text-align:center;border-radius:10px;font-size:10px;margin-top:5px}.__BtrD__header .__BtrD__logo span,.__BtrD__header .__BtrD__tops{display:inline-block;margin-left:20px;vertical-align:middle}.__BtrD__header .__BtrD__logo-img{width:80px;height:30px;margin-top:-2px}.__BtrD__header .__BtrD__logo span button,.__BtrD__header .__BtrD__logo span button:active,.__BtrD__header .__BtrD__logo span button:active:hover{border:none}.__BtrD__header .__BtrD__logo span .__BtrD__dropdown-menu li a{padding:8px 30px}.__BtrD__header .__BtrD__logo span .__BtrD__dropdown-menu .__BtrD__divider{margin:0}.__BtrD__contents .__BtrD__attr{height:96vh;padding:0!important}.__BtrD__contents .__BtrD__right{word-wrap:break-word;font-weight:600!important}.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog{font-weight:600;width:34%;text-align:center;margin-left:-8px;padding-top:5px;font-size:12px;padding-bottom:5px;text-transform:uppercase}.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog:first-child{padding-left:10px;border-left:none;margin-right:-1px}.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog:last-child{margin-left:-7px;border-right:none}.__BtrD__left .__BtrD__content-body{height:95%}.__BtrD__l-parent{margin-left:3px;margin-top:1px}.__BtrD__left .__BtrD__content-body .__BtrD__loops{margin-top:3px;width:100%;display:none}.__BtrD__left .__BtrD__content-body .__BtrD__loops .__BtrD__holder i{float:right;margin-top:10px;font-size:10px;border-radius:10px;padding:1px 10px;font-style:normal}.__BtrD__left .__BtrD__content-body .__BtrD__loops .__BtrD__holder{padding:5px 10px}.__BtrD__left .__BtrD__content-body .__BtrD__loops div span{display:block}.__BtrD__left .__BtrD__content-body .__BtrD__loops div .__BtrD__name{font-weight:600;padding-left:10px}.__BtrD__left .__BtrD__content-body .__BtrD__loops div .__BtrD__path{font-size:11px}.__BtrD__left .__BtrD__content-body .__BtrD__loops .__BtrD__id{width:15px;font-size:10px;text-align:center;border:none;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;position:absolute;left:4px;padding-top:5px;padding-bottom:5px;display:inline-block;vertical-align:middle}.__BtrD__left .__BtrD__content-body .__BtrD__loops.__BtrD__active{display:block}.__BtrD__exception-type{padding:10px}.__BtrD__exception-type>.__BtrD__action,.__BtrD__exception-type>span{display:inline-block}.__BtrD__exception-type>.__BtrD__action{float:right}.__BtrD__exception-type>.__BtrD__action span{cursor:pointer;font-size:12px;padding:0 10px 2px;border-radius:10px}.__BtrD__exception-type>span{border-radius:10px;padding:3px 10px}.__BtrD__exception-msg{padding:10px;font-size:13px}.__BtrD__active-desc{position:absolute;width:100%;bottom:0;padding:10px;font-size:12px;z-index:4!important}.__BtrD__active-desc .__BtrD__file b{font-size:10px;margin-top:-5px}.__BtrD__browser-view{width:103%}.__BtrD__code-view table{font-size:12px;font-weight:400;width:100%;white-space:nowrap;table-layout:fixed;border-collapse:collapse}.__BtrD__code-view table .function,.__BtrD__code-view table .keyword{font-weight:600}.__BtrD__code-view table tr td:first-child{width:60px;text-align:center}.__BtrD__code-view table tr .__BtrD__line-content{padding-left:5px}.__BtrD__code-view table .__BtrD__highlighted td{padding:8px 0!important}.__BtrD__code-view table .__BtrD__highlighted td:first-child{border:none;font-weight:700}.__BtrD__contents .__BtrD__right .__BtrD__global:first-child{border-top:none}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__env-arr{padding-left:20px}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__content{cursor:default}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__content .__BtrD__caret{cursor:pointer}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__content,.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__labeled{display:block}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__labeled{font-weight:600;padding:10px}.__BtrD__contents .__BtrD__listed{padding:5px 14px 5px 10px}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__content{padding:5px 0;width:104%}.__BtrD__contents .__BtrD__listed .__BtrD__index,.__BtrD__contents .__BtrD__listed .__BtrD__value{font-weight:500;font-size:10px}.__BtrD__ss-wrapper{overflow:hidden;width:100%;height:100%;position:relative;float:left}.__BtrD__ss-content{height:100%;width:104%;position:relative;overflow:auto;box-sizing:border-box}.__BtrD__ss-scroll{position:relative;width:6px;border-radius:4px;top:0;z-index:2;cursor:pointer;opacity:0;transition:opacity .25s linear}.__BtrD__ss-hidden{display:none}.__BtrD__ss-container:hover .__BtrD__ss-scroll{opacity:1}.__BtrD__ss-grabbed{-o-user-select:none;-ms-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none}
+        .__BtrD__middle,body{overflow:hidden!important}.__BtrD__contents .__BtrD__right .__BtrD__global,.__BtrD__left .__BtrD__content-body .__BtrD__loops .__BtrD__holder:hover,.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog{cursor:pointer}.__BtrD__contents .__BtrD__listed:last-child,.__BtrD__contents .__BtrD__right .__BtrD__global:last-child{border-bottom:none}html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;font-size:10px;-webkit-tap-highlight-color:transparent}body{margin:0!important}.__BtrD__container,.__BtrD__container-fluid{margin-right:auto;margin-left:auto;padding-right:15px;padding-left:15px}.__BtrD__caret,.__BtrD__header .__BtrD__hints .__BtrD__type,.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog{display:inline-block}*,:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}@media (min-width:768px){.__BtrD__container{width:750px}}@media (min-width:992px){.__BtrD__container{width:970px}}@media (min-width:1200px){.__BtrD__container{width:1170px}}.__BtrD__row{margin-right:-15px;margin-left:-15px}.__BtrD__col-md-3,.__BtrD__col-md-6{position:relative;min-height:1px;padding-right:15px;padding-left:15px}@media (min-width:992px){.__BtrD__col-md-3,.__BtrD__col-md-6{float:left}.__BtrD__col-md-6{width:50%}.__BtrD__col-md-3{width:25%}}.__BtrD__caret{width:0;height:0;margin-left:2px;vertical-align:middle;border-top:4px dashed;border-top:4px solid\9;border-right:4px solid transparent;border-left:4px solid transparent}.__BtrD__header{padding:5px;height:35px;width:100%}.__BtrD__header .__BtrD__hints{position:absolute;right:0}.__BtrD__header .__BtrD__type{margin-left:10px;width:70px;text-align:center;border-radius:10px;font-size:10px;margin-top:5px}.__BtrD__header .__BtrD__logo span,.__BtrD__header .__BtrD__tops{display:inline-block;margin-left:20px;vertical-align:middle}.__BtrD__header .__BtrD__logo-img{width:80px;height:30px;margin-top:-2px}.__BtrD__header .__BtrD__logo span button,.__BtrD__header .__BtrD__logo span button:active,.__BtrD__header .__BtrD__logo span button:active:hover{border:none}.__BtrD__header .__BtrD__logo span .__BtrD__dropdown-menu li a{padding:8px 30px}.__BtrD__header .__BtrD__logo span .__BtrD__dropdown-menu .__BtrD__divider{margin:0}.__BtrD__contents .__BtrD__attr{height:96vh;padding:0!important}.__BtrD__contents .__BtrD__right{word-wrap:break-word;font-weight:600!important}.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog{font-weight:600;width:32%;text-align:center;margin-left:-8px;padding-top:5px;font-size:12px;padding-bottom:5px;text-transform:uppercase}.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog:first-child{padding-left:10px;border-left:none;margin-right:-1px}.__BtrD__left .__BtrD__content-nav .__BtrD__top-tog:last-child{margin-left:-7px;border-right:none}.__BtrD__left .__BtrD__content-body{height:95%}.__BtrD__l-parent{margin-left:3px;margin-top:1px}.__BtrD__left .__BtrD__content-body .__BtrD__loops{margin-top:3px;width:100%;display:none}.__BtrD__left .__BtrD__content-body .__BtrD__loops .__BtrD__holder i{float:right;margin-top:10px;font-size:10px;border-radius:10px;padding:1px 10px;font-style:normal}.__BtrD__left .__BtrD__content-body .__BtrD__loops .__BtrD__holder{padding:5px 10px}.__BtrD__left .__BtrD__content-body .__BtrD__loops div span{display:block}.__BtrD__left .__BtrD__content-body .__BtrD__loops div .__BtrD__name{font-weight:600;padding-left:10px}.__BtrD__left .__BtrD__content-body .__BtrD__loops div .__BtrD__path{font-size:11px}.__BtrD__left .__BtrD__content-body .__BtrD__loops .__BtrD__id{font-size:10px;text-align:center;border:none;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;position:absolute;left:4px;padding:4px 3px 4px 1px;display:inline-block;vertical-align:middle}.__BtrD__left .__BtrD__content-body .__BtrD__loops.__BtrD__active{display:block}.__BtrD__exception-type{padding:10px}.__BtrD__exception-type>.__BtrD__action,.__BtrD__exception-type>span{display:inline-block}.__BtrD__exception-type>.__BtrD__action{float:right}.__BtrD__exception-type>.__BtrD__action span{cursor:pointer;font-size:12px;padding:0 10px 2px;border-radius:10px}.__BtrD__exception-type>span{border-radius:10px;padding:3px 10px}.__BtrD__exception-msg{padding:10px;font-size:13px}.__BtrD__active-desc{position:absolute;width:100%;bottom:0;padding:10px;font-size:12px;z-index:4!important}.__BtrD__active-desc .__BtrD__file b{font-size:10px;margin-top:-5px}.__BtrD__browser-view{width:103%}.__BtrD__code-view table{font-size:12px;font-weight:400;width:100%;white-space:nowrap;table-layout:fixed;border-collapse:collapse}.__BtrD__code-view table .function,.__BtrD__code-view table .keyword{font-weight:600}.__BtrD__code-view table tr td:first-child{width:60px;text-align:center}.__BtrD__code-view table tr .__BtrD__line-content{padding-left:5px}.__BtrD__code-view table .__BtrD__highlighted td{padding:8px 0!important}.__BtrD__code-view table .__BtrD__highlighted td:first-child{border:none;font-weight:700}.__BtrD__contents .__BtrD__right .__BtrD__global:first-child{border-top:none}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__env-arr{padding-left:20px}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__content{cursor:default}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__content .__BtrD__caret{cursor:pointer}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__content,.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__labeled{display:block}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__labeled{font-weight:600;padding:10px}.__BtrD__contents .__BtrD__listed{padding:5px 14px 5px 10px}.__BtrD__contents .__BtrD__right .__BtrD__global .__BtrD__content{padding:5px 0;width:104%}.__BtrD__contents .__BtrD__listed .__BtrD__index,.__BtrD__contents .__BtrD__listed .__BtrD__value{font-weight:500;font-size:10px}.__BtrD__ss-wrapper{overflow:hidden;width:100%;height:100%;position:relative;float:left}.__BtrD__ss-content{height:100%;width:104%;position:relative;overflow:auto;box-sizing:border-box}.__BtrD__ss-scroll{position:relative;width:6px;border-radius:4px;top:0;z-index:2;cursor:pointer;opacity:0;transition:opacity .25s linear}.__BtrD__ss-hidden{display:none}.__BtrD__ss-container:hover .__BtrD__ss-scroll{opacity:1}.__BtrD__ss-grabbed{-o-user-select:none;-ms-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none}
         ' . $theme . '
         .__BtrD__header .__BtrD__logo .__BtrD__logo-img {background: url(data:image/png;base64,' . $image . ') no-repeat;background-size: contain;}
     </style>
+    </head>
+    <body>
+    ' . $content . '
     <script>' . file_get_contents($theme_file . 'min.js') . '</script>
     </body>
 </html>';
