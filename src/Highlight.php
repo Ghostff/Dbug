@@ -265,7 +265,7 @@ class Highlight
 
             $new_code .= $gui_highlight . $gui_line_number;
 
-            if ( ! $is_MLQ)
+            if (! $is_MLQ)
             {
                 if ($is_MLC)
                 {
@@ -288,7 +288,7 @@ class Highlight
                 }, $lines);
             }
 
-            if ( ! $is_MLC)
+            if (! $is_MLC)
             {
                 if ($is_MLQ)
                 {

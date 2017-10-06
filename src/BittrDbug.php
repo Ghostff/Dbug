@@ -41,22 +41,19 @@ declare(strict_types=1);
 
 namespace Dbug;
 
+use Throwable;
+
 class BittrDbug
 {
+    private $time = 0;
+    private $chunk = 0;
+    private $path = null;
+    private $type = null;
+    private $theme = null;
+    private $method = null;
     private $contents = [];
 
-    private $type = null;
-
-    private $chunk = 0;
-
-    private $time = 0;
-
-    private $theme = null;
-
-    private $path = null;
-
     const FILE_LOG = 'fileLog';
-
     const PRETTIFY = 'prettify';
 
     /**
@@ -67,11 +64,8 @@ class BittrDbug
      */
     public function __construct($type, string $theme_or_log_path = null, int $line_range = 10)
     {
-        ini_set('display_errors', '1');
-        ini_set('display_startup_errors', '1');
-        error_reporting(E_ALL);
-        
         ob_start();
+        $this->method = $type;
         if (is_string($type))
         {
             $this->path = $theme_or_log_path;
@@ -89,7 +83,6 @@ class BittrDbug
                         $this->theme = 'default';
                     }
                 }
-
             }
             $type = [$this, $type];
         }
@@ -99,25 +92,64 @@ class BittrDbug
         $this->time = microtime(true);
         set_exception_handler($type);
         set_error_handler([$this, 'handle']);
+        register_shutdown_function(function()
+        {
+            if ((! is_null($error = error_get_last())))
+            {
+                ob_end_clean();
+                ob_start();
+                $this->handle($error['type'], $error['message'], $error['file'], $error['line']);
+            }
+        });
 
     }
 
     /**
-     * @param \Throwable $e
+     * @param Throwable $exception
+     * @internal param Throwable $e
      */
-    public function prettify(\Throwable $e)
+    public function prettify(Throwable $exception)
     {
-        $type = $this->type;
-        if ($type !== null)
+        $this->render($exception, [], get_class($exception));
+    }
+
+    /**
+     * @param Throwable|null $exception
+     * @param array $error
+     * @param string|null $type
+     */
+    private function render(Throwable $exception = null, array $error = [], string $type = null)
+    {
+        if ($exception)
         {
-            $this->type = null;
+            $file = $exception->getFile();
+            $line = $exception->getLine();
+            $code = $exception->getCode();
+            $trace = $exception->getTrace();
+            $message = $exception->getMessage();
         }
         else
         {
-            $type = get_class($e);
+            $file = $error['file'];
+            $line = $error['line'];
+            $code = $error['code'];
+            $trace = $error['trace'];
+            $message = $error['message'];
         }
 
-        $content = sprintf('<div style="font-family:Inconsolata !important;font-weight:bold !important;line-height:1.3 !important;font-size:14px !important;">
+        if ($this->method == self::FILE_LOG)
+        {
+            $this->fileLog($message, $file, $line, $type, $trace);
+            return;
+        }
+        elseif (is_callable($this->method))
+        {
+            $class = $this->method;
+            return $class(new MyThrowable($message, $file, $line, $type, $trace, $code, $this->traceAsString($trace)));
+        }
+        else
+        {
+            $content = sprintf('<div style="font-family:Inconsolata !important;font-weight:bold !important;line-height:1.3 !important;font-size:14px !important;">
             <div class="__BtrD__header">%s</div>
                 <div class="__BtrD__container-fluid">
                     <div class="__BtrD__row __BtrD__contents">
@@ -126,111 +158,131 @@ class BittrDbug
                         <div class="__BtrD__col-md-3 __BtrD__attr __BtrD__right">%s</div>
                     </div>
             </div></div>',
-            $this->top(),
-            $this->left($e->getFile(), (string) $e->getLine(), (string) $e->getCode(), $e->getTrace()),
-            $this->middle($type, $e->getMessage(), $e->getFile(), $e->getLine()),
-            $this->right()
-        );
+                $this->top(),
+                $this->left($file, (string) $line, (string) $code, $trace),
+                $this->middle($type, $message, $file, $line),
+                $this->right()
+            );
 
-        die($this->html($content));
+            exit($this->html($content));
+        }
     }
 
     /**
-     * @param \Throwable $e
+     * @param array $trace_array
+     * @return string
      */
-    public function fileLog(\Throwable $e)
+    private function traceAsString(array $trace_array): string
     {
-        $type = $this->type;
-        if ($type !== null)
+        $trace = '';
+        foreach ($trace_array as $count => $value)
         {
-            $this->type = null;
-        }
-        else
-        {
-            $type = get_class($e);
-        }
-
-        $template = '[%s] [%s] --- %s --- %s:%d [%s]' . PHP_EOL;
-        $new_trace = '';
-
-        $trace = $e->getTrace();
-
-        $_trace = count($trace) - 1;
-        for ($i = $_trace; $i >= 0; --$i)
-        {
-            $t = $trace[$i];
-            if ( ! isset($t['file']))
+            if (! isset($value['file']))
             {
+                $trace .= '    {main}';
                 continue;
             }
 
-            if (isset($t['type']))
+            if (isset($value['class']))
             {
-                $peaces = explode('\\', $t['class']);
-                $class = end($peaces);
-                $function = $class . $t['type'] . $t['function'];
+                $trace .= "    #{$count} {$value['class']}{$value['type']}{$value['function']}() called at {$value['file']}:{$value['line']}\n";
             }
             else
             {
-                $function = $t['function'];
+                $trace .= "    #{$count} {$value['function']}() called at {$value['file']}:{$value['line']}\n";
             }
-
-            $new_trace .= '    [' . $function. '] ' . $t['file'] . ':' . $t['line'] . PHP_EOL;
         }
+        return $trace;
+    }
 
-        $new_trace = PHP_EOL . $new_trace;
-        $date = date("d-m-Y H:i:s");
+    /**
+     * @param string $message
+     * @param string $file
+     * @param int $line
+     * @param string $type
+     * @param array $trace
+     * @internal param Throwable $e
+     */
+    private function fileLog(string $message, string $file, int $line, string $type, array $trace)
+    {
+        $log = $this->traceAsString($trace);
+        $date = date('d-m-Y H:i:s');
+        $template = "({$type}) {$message}\nFile : {$file}:{$line}\nDate : {$date}\nTrace: [\n{$log}]\n\n";
+
         $path = $this->path;
-
-        $file = sprintf($template, $date, $type, $e->getMessage(), $e->getFile(), $e->getLine(), $new_trace);
-        if ( ! is_dir($path))
-        {
-            throw new \RuntimeException('path (' . $path . ') not found');
-        }
-
         $DS = DIRECTORY_SEPARATOR;
-        
+
         $split = explode('-', $date);
         $day = $split[0];
         $month = $split[1];
         $year = strstr($split[2], ' ', true);
-        
-        $path = $path . $DS . $year . $DS . $month . $DS;
-        if ( ! is_dir($path))
+
+        $path = "{$path}{$DS}{$year}{$DS}{$month}{$DS}";
+        if (! is_dir($path))
         {
             mkdir($path, 0777, true);
         }
-        file_put_contents($path . $day . '.log', $file, FILE_APPEND);
+        file_put_contents("{$path}{$day}.log", $template, FILE_APPEND);
     }
 
     /**
      * @param int $severity
      * @param string $message
-     * @param string $filename
-     * @param int $lineno
-     * @throws \ErrorException
+     * @param string $file_name
+     * @param int $line_no
+     * @internal param string $filename
+     * @internal param int $lineno
      */
-    public function Handle(int $severity, string $message, string $filename, int $lineno)
+    public function handle(int $severity, string $message, string $file_name, int $line_no)
     {
-        $l = error_reporting();
-        if ( $l & $severity )
+        if (error_reporting() & $severity )
         {
             switch ($severity)
             {
-                case E_USER_ERROR:
+                case E_ERROR:
                     $type = 'Fatal Error';
                     break;
-                case E_USER_WARNING:
                 case E_WARNING:
                     $type = 'Warning';
                     break;
-                case E_USER_NOTICE:
-                case E_NOTICE:
-                case @E_STRICT:
-                    $type = 'Notice';
+                case E_PARSE:
+                    $type = 'Parse Error';
                     break;
-                case @E_RECOVERABLE_ERROR:
-                    $type = 'Catchable';
+                case E_NOTICE:
+                    $type = 'Notice Error';
+                    break;
+                case E_CORE_ERROR:
+                    $type = 'Core Error';
+                    break;
+                case E_CORE_WARNING:
+                    $type = 'Core Warning';
+                    break;
+                case E_COMPILE_ERROR:
+                    $type = 'Compile Error';
+                    break;
+                case E_COMPILE_WARNING:
+                    $type = 'Compile Warning';
+                    break;
+                case E_USER_ERROR:
+                    $type = 'User Fatal Error';
+                    break;
+                case E_USER_WARNING:
+                    $type = 'User Warning';
+                    break;
+                case E_USER_NOTICE:
+                    $type = 'User Notice';
+                    break;
+                case E_STRICT:
+                    $type = 'Strict';
+                    break;
+                case E_RECOVERABLE_ERROR:
+                    $type = 'Recoverable Error';
+                    break;
+                case E_DEPRECATED:
+                    $type = 'Deprecated Error';
+                    break;
+                case E_USER_DEPRECATED:
+                    $type = 'User Deprecated Error';
                     break;
                 default:
                     $type = 'Unknown Error';
@@ -238,12 +290,21 @@ class BittrDbug
             }
         }
 
-        if ($type === null)
+        if (! isset($type))
         {
             return;
         }
         $this->type = $type;
-        throw new \ErrorException($message, 0, $severity, $filename, $lineno);
+
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        array_shift($trace);
+        $this->render(null, [
+            'file' => $file_name,
+            'line' => $line_no,
+            'code' => 0,
+            'trace' => $trace,
+            'message' => $message
+        ], $type);
     }
 
     /**
@@ -290,7 +351,7 @@ class BittrDbug
      */
     private function highlight(string $message): string
     {
-        return preg_replace('/(\'(.*?)\'|"(.*?)")/s', '<span class="__BtrD__char-string">$1</span>', $message);
+        return preg_replace('/(\'(.*?)(?<!\\\)\'|"(.*?)(?<!\\\)")/s', '<span class="__BtrD__char-string">$1</span>', $message);
     }
 
     /**
@@ -331,10 +392,9 @@ class BittrDbug
 
     /**
      * @param $arguments
-     * @param bool $array_loop
      * @return string
      */
-    private function get($arguments, bool $array_loop = false): string
+    private function get($arguments): string
     {
         $arguments = [$arguments];
         $format = '';
@@ -426,7 +486,6 @@ class BittrDbug
      */
     private function left(string $file, string $line, string $code, array $trace = [])
     {
-        
         $__file = explode(DIRECTORY_SEPARATOR, $file);
         $file_name = end($__file);
         $file_path = rtrim($file, $file_name);
@@ -439,7 +498,7 @@ class BittrDbug
         for ($i = 0; $i <= $_trace; $i++)
         {
             $traces = $trace[$i];
-            if ( ! isset($traces['line']))
+            if (! isset($traces['line']))
             {
                 continue;
             }
@@ -486,7 +545,7 @@ class BittrDbug
                             </div>
                        </div>';
 
-            $_code = rtrim($this->chunk($_file, $_line));
+            $_code = rtrim($this->chunk($_file, ($_line != '') ? (int) $_line : 0));
 
             $this->contents[] = '<div class="__BtrD__code-view" id="proc-' . $i . '" style="display:none;">' . Highlight::render($_code) . '</div>';
         }
@@ -527,7 +586,7 @@ class BittrDbug
     private function middle(string $type, string $message, string $file, int $line): string
     {
         $code = rtrim($this->chunk($file, $line));
-        $output = base64_encode(ob_get_clean());
+        $output = base64_encode(ob_get_clean() ?: '');
         if ($output == '')
         {
             $output = '<h3 style="text-align: center;">No output sent to buffer</h3>';
@@ -625,4 +684,45 @@ class BittrDbug
 </html>';
     }
 
+}
+
+/*
+* This class is made to serve as an alternative to
+*      new BittrDbug(function (Throwable $e) { ... });
+* Which has been removed. This can be done instead
+*      new BittrDbug(function (MyThrowable $e) { ... });
+* Though without getPrevious()
+*/
+class MyThrowable
+{
+    protected $message = null;
+    protected $code = null;
+    protected $file = null;
+    protected $line = null;
+    protected $trace = [];
+    protected $trace_string = null;
+
+    public function __construct(string $message, string $file, int $line, string $type, array $trace, int $code, string $trace_string)
+    {
+        $this->message = $message;
+        $this->file = $file;
+        $this->line = $line;
+        $this->trace = $trace;
+        $this->code = $code;
+        $this->trace_string = $trace_string;
+    }
+
+    final public function getMessage(): string {return $this->message;}
+
+    final public function getCode(): int {return $this->code;}
+
+    final public function getFile(): string {return $this->file;}
+
+    final public function getLine(): int {return $this->line;}
+
+    final public function getTrace(): array {return $this->trace;}
+
+    final public function getTraceAsString(): string{return $this->trace_string;}
+
+    public function __toString(): string{return print_r($this,true);}
 }
