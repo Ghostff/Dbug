@@ -33,7 +33,14 @@ Using callback function:
 use Dbug\BittrDbug;
 
 new BittrDbug(function (BittrDbug $e) {
-    var_dump($e->getMessage());
+    var_dump(
+        $e->getMessage();  # returns string;
+        $e->getCode();  # returns int;
+        $e->getFile();  # returns string;
+        $e->getLine();  # returns int;
+        $e->getTrace();  # returns array;
+        $e->getTraceAsString();  # returns string;
+    );
 });
 #This should be implemented before any other script execution except your autoloader(if using one).
 ```
