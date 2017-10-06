@@ -32,7 +32,7 @@ Using callback function:
 ```php
 use Dbug\BittrDbug;
 
-new BittrDbug(function (\Throwable $e) {
+new BittrDbug(function (BittrDbug $e) {
     var_dump($e->getMessage());
 });
 #This should be implemented before any other script execution except your autoloader(if using one).

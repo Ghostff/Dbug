@@ -46,12 +46,18 @@ use Throwable;
 class BittrDbug
 {
     private $time = 0;
-    private $chunk = 0;
+    private $code = null;
     private $path = null;
     private $type = null;
+    private $file = null;
+    private $line = null;
+    private $chunk = 0;
+    private $trace = [];
     private $theme = null;
     private $method = null;
+    private $message = null;
     private $contents = [];
+    private $trace_string = null;
 
     const FILE_LOG = 'fileLog';
     const PRETTIFY = 'prettify';
@@ -108,7 +114,7 @@ class BittrDbug
      * @param Throwable $exception
      * @internal param Throwable $e
      */
-    public function prettify(Throwable $exception)
+    private function prettify(Throwable $exception)
     {
         $this->render($exception, [], get_class($exception));
     }
@@ -145,7 +151,14 @@ class BittrDbug
         elseif (is_callable($this->method))
         {
             $class = $this->method;
-            return $class(new MyThrowable($message, $file, $line, $type, $trace, $code, $this->traceAsString($trace)));
+            $clone = clone $this;
+            $clone->message = $message;
+            $clone->file = $file;
+            $clone->line = $line;
+            $clone->trace = $trace;
+            $clone->code = $code;
+            $clone->trace_string = $this->traceAsString($trace);
+            return $class($clone);
         }
         else
         {
@@ -684,45 +697,51 @@ class BittrDbug
 </html>';
     }
 
-}
-
-/*
-* This class is made to serve as an alternative to
-*      new BittrDbug(function (Throwable $e) { ... });
-* Which has been removed. This can be done instead
-*      new BittrDbug(function (MyThrowable $e) { ... });
-* Though without getPrevious()
-*/
-class MyThrowable
-{
-    protected $message = null;
-    protected $code = null;
-    protected $file = null;
-    protected $line = null;
-    protected $trace = [];
-    protected $trace_string = null;
-
-    public function __construct(string $message, string $file, int $line, string $type, array $trace, int $code, string $trace_string)
+    /**
+     * @return string
+     */
+    public function getMessage(): string
     {
-        $this->message = $message;
-        $this->file = $file;
-        $this->line = $line;
-        $this->trace = $trace;
-        $this->code = $code;
-        $this->trace_string = $trace_string;
+        return $this->message;
     }
 
-    final public function getMessage(): string {return $this->message;}
+    /**
+     * @return int
+     */
+    public function getCode(): int
+    {
+        return $this->code;
+    }
 
-    final public function getCode(): int {return $this->code;}
+    /**
+     * @return string
+     */
+    public function getFile(): string
+    {
+        return $this->file;
+    }
 
-    final public function getFile(): string {return $this->file;}
+    /**
+     * @return int
+     */
+    public function getLine(): int
+    {
+        return $this->line;
+    }
 
-    final public function getLine(): int {return $this->line;}
+    /**
+     * @return array
+     */
+    public function getTrace(): array
+    {
+        return $this->trace;
+    }
 
-    final public function getTrace(): array {return $this->trace;}
-
-    final public function getTraceAsString(): string{return $this->trace_string;}
-
-    public function __toString(): string{return print_r($this,true);}
+    /**
+     * @return string
+     */
+    public function getTraceAsString(): string
+    {
+        return $this->trace_string;
+    }
 }
