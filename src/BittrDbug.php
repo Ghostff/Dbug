@@ -100,7 +100,7 @@ class BittrDbug
         set_error_handler([$this, 'handle']);
         register_shutdown_function(function()
         {
-            if ((! is_null($error = error_get_last())))
+            if (! is_null($error = error_get_last()))
             {
                 ob_end_clean();
                 ob_start();
