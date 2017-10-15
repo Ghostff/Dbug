@@ -70,7 +70,7 @@ class BittrDbug
      */
     public function __construct($type, string $theme_or_log_path = null, int $line_range = 10)
     {
-        ob_start();
+        ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_FLUSHABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
         $this->method = $type;
         if (is_string($type))
         {
@@ -98,12 +98,14 @@ class BittrDbug
         $this->time = microtime(true);
         set_exception_handler($type);
         set_error_handler([$this, 'handle']);
-        register_shutdown_function(function()
+        register_shutdown_function(function ()
         {
             if (! is_null($error = error_get_last()))
             {
-                ob_end_clean();
-                ob_start();
+                while (ob_get_length())
+                {
+                    ob_end_clean();
+                }
                 $this->handle($error['type'], $error['message'], $error['file'], $error['line']);
             }
         });
@@ -114,7 +116,7 @@ class BittrDbug
      * @param Throwable $exception
      * @internal param Throwable $e
      */
-    private function prettify(Throwable $exception)
+    public function prettify(Throwable $exception)
     {
         $this->render($exception, [], get_class($exception));
     }
@@ -185,7 +187,7 @@ class BittrDbug
      * @param array $trace_array
      * @return string
      */
-    private function traceAsString(array $trace_array): string
+    public function traceAsString(array $trace_array): string
     {
         $trace = '';
         foreach ($trace_array as $count => $value)
@@ -397,9 +399,8 @@ class BittrDbug
         }
 
         $temp .= '<span class="char-object">' . $obj->getName() . '</span> 
-        [  <span class="__BtrD__caret"></span>  <div class="__BtrD__env-arr">';
-
-        $temp .= $format . '</div>]';
+        [  <span class="__BtrD__caret"></span>  <div class="__BtrD__env-arr">' . $format . '</div>]';
+     
         return $temp;
     }
 
@@ -486,8 +487,7 @@ class BittrDbug
             <div class="__BtrD__type __BtrD__type-double">DOUBLE</div>
             <div class="__BtrD__type __BtrD__type-string">STRING</div>
             <div class="__BtrD__type __BtrD__type-integer">INTEGER</div>
-        </div>
-        ';
+        </div>';
     }
 
     /**
@@ -497,7 +497,7 @@ class BittrDbug
      * @param array $trace
      * @return string
      */
-    private function left(string $file, string $line, string $code, array $trace = [])
+    private function left(string $file, string $line, string $code, array $trace = []): string
     {
         $__file = explode(DIRECTORY_SEPARATOR, $file);
         $file_name = end($__file);
@@ -661,6 +661,7 @@ class BittrDbug
             $side .= '</div></div>';
             $count++;
         }
+     
         return $side;
     }
 
@@ -695,6 +696,7 @@ class BittrDbug
     <script>' . file_get_contents($theme_file . 'min.js') . '</script>
     </body>
 </html>';
+     
     }
 
     /**
