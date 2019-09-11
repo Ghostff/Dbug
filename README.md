@@ -25,7 +25,7 @@ use Dbug\BittrDbug;
 new BittrDbug(BittrDbug::PRETTIFY, 'yola', 20);
 #This should be implemented before any other script execution except your autoloader(if using one).
 ```
-Output protoype:
+Error/Exception Display:
 ![Screenshot](demo.png)
 
 Using callback function:
